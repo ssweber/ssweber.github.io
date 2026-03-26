@@ -1,4 +1,4 @@
-# Ladder as Text
+# Ladder Logic as Text
 
 ```python
 from pyrung import Bool, Program, Rung, latch, reset
