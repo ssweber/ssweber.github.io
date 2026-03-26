@@ -1,0 +1,18 @@
+site_name: ssweber
+site_url: https://ssweber.github.io/
+
+theme:
+  name: material
+
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+nav:
+  - Home: index.md
+  - Blog:
+    - "These Aren't the Rungs You're Looking For": blog/these-arent-the-rungs.md
+    - "Why pyrung?": blog/why-pyrung.md
