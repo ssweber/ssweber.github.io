@@ -25,6 +25,11 @@
   color: var(--pl-text);
   max-width: 700px;
   margin: 1.5em 0;
+  overflow-x: hidden;
+}
+
+@media (max-width: 480px) {
+  .pl-block .pl-anno { display: none; }
 }
 
 .pl-block div {
@@ -145,7 +150,7 @@
 })();
 </script>
 
-That's a ladder rung. Condition on the `Rung`, instruction in the body. It reads like the diagram, runs as a deterministic scan cycle, tests with pytest, and compiles to real hardware.
+That's ladder logic. Condition on the `Rung`, instruction in the body. It reads like the diagram, runs as a deterministic scan cycle, tests with pytest, and compiles to real hardware.
 
 Ladder logic dominates North American discrete manufacturing, but the tooling hasn't kept up. No version control, no automated testing, no way to simulate without hardware. The Structured Text crowd has options. The ladder crowd doesn't.
 
