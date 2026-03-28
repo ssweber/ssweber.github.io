@@ -1,18 +1,149 @@
 # Ladder Logic as Text
 
-```python
-from pyrung import Bool, Program, Rung, latch, reset
+<style>
+.pl-block {
+  --pl-bg: #f5f5f5;
+  --pl-border: #e0e0e0;
+  --pl-text: #2d2d2d;
+  --pl-kw: #22863a;
+  --pl-cls: #b8600a;
+  --pl-fn: #0771b8;
+  --pl-op: #999;
+  --pl-lit: #8250df;
+  --pl-green: #22863a;
+  --pl-green-dim: #a8ddb5;
+  --pl-amber: #b8600a;
+  --pl-muted: #999;
 
-Start = Bool("Start")
-Stop = Bool("Stop")
-Motor = Bool("Motor")
+  background: var(--pl-bg);
+  border: 1px solid var(--pl-border);
+  border-radius: 4px;
+  padding: 1.2rem 1.4rem;
+  font-family: ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 0.84rem;
+  line-height: 1.8;
+  color: var(--pl-text);
+  max-width: 700px;
+  margin: 1.5em 0;
+}
 
-with Program() as logic:
-    with Rung(Start):
-        latch(Motor)
-    with Rung(Stop):
-        reset(Motor)
-```
+.pl-block div {
+  white-space: pre;
+  padding: 0 0.4rem;
+  border-left: 2px solid transparent;
+  transition: border-color 0.4s, opacity 0.4s;
+}
+.pl-block .pl-blank { min-height: 0.5em; }
+.pl-block .pl-anno {
+  font-size: 0.7rem;
+  opacity: 0;
+  transition: opacity 0.4s;
+  margin-left: 1.2rem;
+}
+
+.pl-kw  { color: var(--pl-kw); }
+.pl-cls { color: var(--pl-cls); }
+.pl-fn  { color: var(--pl-fn); }
+.pl-op  { color: var(--pl-op); }
+.pl-lit { color: var(--pl-lit); }
+
+/* Dark: system preference */
+@media (prefers-color-scheme: dark) {
+  .pl-block {
+    --pl-bg: #0d1110;
+    --pl-border: #1e2a22;
+    --pl-text: #c8d4cc;
+    --pl-kw: #39ff8a;
+    --pl-cls: #ffb830;
+    --pl-fn: #6ae9ff;
+    --pl-op: #5a6b60;
+    --pl-lit: #c792ea;
+    --pl-green: #39ff8a;
+    --pl-green-dim: #1a6638;
+    --pl-amber: #ffb830;
+    --pl-muted: #5a6b60;
+  }
+}
+
+/* Dark: Material for MkDocs slate toggle */
+[data-md-color-scheme="slate"] .pl-block {
+  --pl-bg: #0d1110;
+  --pl-border: #1e2a22;
+  --pl-text: #c8d4cc;
+  --pl-kw: #39ff8a;
+  --pl-cls: #ffb830;
+  --pl-fn: #6ae9ff;
+  --pl-op: #5a6b60;
+  --pl-lit: #c792ea;
+  --pl-green: #39ff8a;
+  --pl-green-dim: #1a6638;
+  --pl-amber: #ffb830;
+  --pl-muted: #5a6b60;
+}
+</style>
+
+<div class="pl-block">
+<div><span class="pl-kw">with</span> <span class="pl-cls">Program</span>() <span class="pl-kw">as</span> logic:</div>
+<div class="pl-blank"></div>
+<div id="r1c">    <span class="pl-kw">with</span> <span class="pl-cls">Rung</span>(Start<span class="pl-op">,</span> <span class="pl-op">~</span>Stop):<span class="pl-anno" id="a1c">True</span></div>
+<div id="r1b">        <span class="pl-fn">latch</span>(Motor)<span class="pl-anno" id="a1b">Motor ← True</span></div>
+<div class="pl-blank"></div>
+<div id="r2c">    <span class="pl-kw">with</span> <span class="pl-cls">Rung</span>(Stop):<span class="pl-anno" id="a2c">False</span></div>
+<div id="r2b">        <span class="pl-fn">reset</span>(Motor)<span class="pl-anno" id="a2b">skipped</span></div>
+</div>
+
+<script>
+(function() {
+  var rungs = [
+    { cond: 'r1c', body: 'r1b', ac: 'a1c', ab: 'a1b', pass: true },
+    { cond: 'r2c', body: 'r2b', ac: 'a2c', ab: 'a2b', pass: false }
+  ];
+  var idx = -1;
+  var s = getComputedStyle(document.querySelector('.pl-block'));
+
+  function clear(r) {
+    document.getElementById(r.cond).style.borderLeftColor = 'transparent';
+    document.getElementById(r.body).style.borderLeftColor = 'transparent';
+    document.getElementById(r.body).style.opacity = '1';
+    document.getElementById(r.ac).style.opacity = '0';
+    document.getElementById(r.ab).style.opacity = '0';
+  }
+
+  function show(r, done) {
+    var s = getComputedStyle(document.querySelector('.pl-block'));
+    var green = s.getPropertyValue('--pl-green').trim();
+    var greenDim = s.getPropertyValue('--pl-green-dim').trim();
+    var amber = s.getPropertyValue('--pl-amber').trim();
+    var muted = s.getPropertyValue('--pl-muted').trim();
+
+    document.getElementById(r.cond).style.borderLeftColor = r.pass ? green : amber;
+    document.getElementById(r.ac).style.color = r.pass ? green : amber;
+    document.getElementById(r.ab).style.color = r.pass ? green : muted;
+    if (!r.pass) document.getElementById(r.ab).style.fontStyle = 'italic';
+    setTimeout(function() {
+      document.getElementById(r.ac).style.opacity = '1';
+      setTimeout(function() {
+        document.getElementById(r.body).style.borderLeftColor = r.pass ? greenDim : 'transparent';
+        if (!r.pass) document.getElementById(r.body).style.opacity = '0.25';
+        document.getElementById(r.ab).style.opacity = '1';
+        setTimeout(done, 1200);
+      }, 600);
+    }, 400);
+  }
+
+  function step() {
+    if (idx >= 0) clear(rungs[idx]);
+    if (++idx >= rungs.length) {
+      idx = -1;
+      setTimeout(step, 1400);
+      return;
+    }
+    show(rungs[idx], function() { setTimeout(step, 200); });
+  }
+
+  setTimeout(step, 1200);
+})();
+</script>
 
 That's a ladder rung. Condition on the `Rung`, instruction in the body. It reads like the diagram, runs as a deterministic scan cycle, tests with pytest, and compiles to real hardware.
 
