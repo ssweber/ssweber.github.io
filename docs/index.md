@@ -164,7 +164,7 @@ Every scan produces an immutable state snapshot. Time is a variable you control.
 
 pyrung compiles to two backends from the same source:
 
-**Click PLC** via [laddercodec](https://github.com/ssweber/laddercodec). Your tested logic encodes to the bytes the CLICK editor expects on paste. No transposing by hand.
+**Click PLC** via [ClickNick](https://github.com/ssweber/clicknick). Your tested logic encodes to the bytes the CLICK editor expects on paste. No transposing by hand.
 
 **ProductivityOpen P1AM-200** via CircuitPython code generation. Your tested logic becomes a self-contained scan loop that runs directly on the hardware, with the same Modbus TCP interface as a Click. No proprietary toolchain in the path.
 
@@ -173,9 +173,8 @@ Write it once, test it once, pick your target.
 ```mermaid
 graph LR
     D[Click Project] -->|codegen| A[pyrung]
-    A -->|encode| B[laddercodec]
-    B -->|paste| C[ClickNick]
-    C --> D
+    A -->|encode| C[ClickNick]
+    C -->|paste| D
     D -->|download| E[Click PLC]
     A -->|generate| G[CircuitPython]
     G -->|deploy| H[P1AM-200]
@@ -191,11 +190,11 @@ Generate pyrung code from an existing `.ckp` project. You don't have to start fr
 
 Each of these works on its own, but they were designed to work with pyrung.
 
-**[ClickNick](https://github.com/ssweber/clicknick)** is the Windows-side glue. Autocomplete over the CLICK editor's instruction dialogs, a modern address editor with bulk editing and search/replace, a tag browser with hierarchy and array grouping, a DataView editor with drag-and-drop, and clipboard integration for pasting encoded rungs. Works alongside your existing `.ckp` projects.
+**[ClickNick](https://github.com/ssweber/clicknick)** is the Windows-side glue. A Ladder menu handles moving logic in and out of Click — encoding CSVs to the clipboard, decoding rungs back out, guided paste with nickname import, exporting projects, and converting to pyrung. Beyond that: autocomplete over the CLICK editor's instruction dialogs, a modern address editor with bulk editing and search/replace, a tag browser with hierarchy and array grouping, and a DataView editor with drag-and-drop. Works alongside your existing `.ckp` projects.
 
 **[pyclickplc](https://ssweber.github.io/pyclickplc/)** is the Modbus TCP layer. Read and write registers on real Click hardware, or run pyrung as an emulated Click that any Modbus client can talk to. Also manages nickname and DataView files. Both the Click PLC and the P1AM-200 speak the same Modbus interface, so pyclickplc doesn't need to know which one it's talking to.
 
-**[laddercodec](https://github.com/ssweber/laddercodec)** is the binary codec for Click's undocumented clipboard format. Encodes rungs described in CSV into the bytes the CLICK editor expects on paste. Reverse-engineered from scratch; the format remains undocumented by its creator.
+**[laddercodec](https://ssweber.github.io/laddercodec/)** is the binary codec for Click's undocumented clipboard format. Reverse-engineered from scratch; the format remains undocumented by its creator. Used by ClickNick under the hood.
 
 ## Limitations
 
