@@ -12,8 +12,6 @@ The logic itself was never complex. Each subroutine is basically a one-page func
 
 I wanted one source of truth. So I turned the cheatsheet into [pyrung](https://ssweber.github.io/pyrung/), a Python library where `with Rung(Start): latch(Motor)` maps directly to a ladder rung. The scan cycle runs for real, timers accumulate, rung order matters. You test with pytest, step through scans in VS Code.
 
-The first thing I noticed was that I could see the whole program. Forty subroutines fit in a scroll. Grep for a tag, rename it everywhere, diff what changed. None of that is a feature I built. That's just what happens when your code is text. When I showed it to a coworker, they could see the same ladder structure they already knew. It wasn't a foreign language, it was rungs in a different notation.
-
 Three rungs that copy a command value based on a state. In pyrung, that's six lines:
 
 ```python
@@ -33,6 +31,8 @@ with Rung(Cmd_State_Stop):
 In Click, that's an entire screen:
 
 ![The same three rungs in the Click editor, filling the full window with contacts, branch lines, and copy instruction blocks](state-machine-snippet.png)
+
+The first thing I noticed was that I could see the whole program. Forty subroutines fit in a scroll. Grep for a tag, rename it everywhere, diff what changed. None of that is a feature I built. That's just what happens when your code is text. When I showed it to a coworker, they could see the same ladder structure they already knew. It wasn't a foreign language, it was rungs in a different notation.
 
 Then I spent a month [reverse engineering Click's clipboard format](https://ssweber.github.io/blog/these-arent-the-rungs/) so I could round-trip without retyping anything. Export from Click, work in Python, paste back. Bugs I'd been chasing in the editor jumped out in minutes once the logic was laid flat as text.
 
