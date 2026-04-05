@@ -202,5 +202,7 @@ pyrung simulates Click PLC behavior as faithfully as possible, but it is not a c
 
 ## Blog
 
+- [The Complexity Was Never in the Logic](blog/complexity-was-never-in-the-logic.md) - The editor pain that led to pyrung.
+- [The Zen of Ladder](blog/zen-of-ladder.md) - A riff on the Zen of Python for the ladder logic crowd.
 - [These Aren't the Rungs You're Looking For](blog/these-arent-the-rungs.md) - How I reverse-engineered Click's clipboard format so my bytes could paste without any problems.
 - [Why pyrung?](blog/why-pyrung.md) - A look at the PLC tooling landscape and where pyrung fits.

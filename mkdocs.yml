@@ -14,5 +14,7 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Blog:
+    - "The Complexity Was Never in the Logic": blog/complexity-was-never-in-the-logic.md
+    - "The Zen of Ladder": blog/zen-of-ladder.md
     - "These Aren't the Rungs You're Looking For": blog/these-arent-the-rungs.md
     - "Why pyrung?": blog/why-pyrung.md
