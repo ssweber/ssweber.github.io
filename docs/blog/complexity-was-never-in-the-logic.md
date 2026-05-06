@@ -10,20 +10,20 @@ I wrote [ClickNick](https://github.com/ssweber/clicknick) to help with the addre
 
 The logic itself was never complex. Each subroutine is basically a one-page function. But the editor makes it feel enormous. You can't see more than a few rungs at a time, search and replace exist but they're clunky, there's no diff, no way to look at the whole program at once. The bottleneck was always the editor. This [isn't unique to Click](https://blog.jonasneubert.com/2019/10/29/ladder-logic/), either.
 
-I wanted one source of truth. So I turned the cheatsheet into [pyrung](https://ssweber.github.io/pyrung/), a Python library where `with Rung(Start): latch(Motor)` maps directly to a ladder rung. The scan cycle runs for real, timers accumulate, rung order matters. You test with pytest, step through scans in VS Code.
+I wanted one source of truth. So I turned the cheatsheet into [pyrung](https://ssweber.github.io/pyrung/), a Python library where `with rung(Start): latch(Motor)` maps directly to a ladder rung. The scan cycle runs for real, timers accumulate, rung order matters. You test with pytest, step through scans in VS Code.
 
 Three rungs that copy a command value based on a state. In pyrung, that's six lines:
 
 ```python
-with Rung(Cmd_State_Reset):
+with rung(Cmd_State_Reset):
     copy(1, Cmd_CtrlCmd)
     copy(1, Cmd_CmdChgRequestBool)
 
-with Rung(Cmd_State_Start):
+with rung(Cmd_State_Start):
     copy(2, Cmd_CtrlCmd)
     copy(1, Cmd_CmdChgRequestBool)
 
-with Rung(Cmd_State_Stop):
+with rung(Cmd_State_Stop):
     copy(3, Cmd_CtrlCmd)
     copy(1, Cmd_CmdChgRequestBool)
 ```

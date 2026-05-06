@@ -40,7 +40,7 @@ SOR BST GRT Temp 100 NXB GRT Pressure 50 BND OTE Alarm EOR
 
 **pyladdersim** (flat list):
 ```python
-rung = Rung([Contact("Start"), InvertedContact("Stop"), Output("Lamp")])
+rung = rung([Contact("Start"), InvertedContact("Stop"), Output("Lamp")])
 ```
 
 The structure that makes ladder readable is lost in all of these. The idea of a proper text-based ladder with testability has been [floating around since at least 2000](https://mail.python.org/pipermail/python-list/2000-March/049350.html), but nobody shipped it. A CODESYS Forge user [asked for ladder scripting in Python in 2017](https://forge.codesys.com/forge/talk/Engineering/thread/fdc3d03c95/); the answer was "You can't do Ladder with Scripting."
@@ -50,10 +50,10 @@ The structure that makes ladder readable is lost in all of these. The idea of a 
 The same two examples:
 
 ```python
-with Rung(Start | Motor, ~Stop):
+with rung(Start | Motor, ~Stop):
     out(Motor)
 
-with Rung(any_of(Temp > 100, Pressure > 50)):
+with rung(any_of(Temp > 100, Pressure > 50)):
     latch(Alarm)
 ```
 

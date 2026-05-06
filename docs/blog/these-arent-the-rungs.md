@@ -2,7 +2,7 @@
 
 ### How I reverse-engineered a PLC editor's clipboard format so my bytes could paste without any problems
 
-Ladder logic is the visual programming language for industrial controllers, rungs on a rail, each one a circuit that evaluates left to right: `|—[ Contact ]—( Output )|`. For years I haven't been able to test my CLICK PLC programs. I've got dozens of machines whose logic is stuck in an editor with no simulator, no scripting API, and no documented file format. So I built [pyrung](https://ssweber.github.io/pyrung/), a Python DSL where `with Rung(condition): instruction` maps directly to a ladder rung, meaning you can write logic in Python and test it with pytest.
+Ladder logic is the visual programming language for industrial controllers, rungs on a rail, each one a circuit that evaluates left to right: `|—[ Contact ]—( Output )|`. For years I haven't been able to test my CLICK PLC programs. I've got dozens of machines whose logic is stuck in an editor with no simulator, no scripting API, and no documented file format. So I built [pyrung](https://ssweber.github.io/pyrung/), a Python DSL where `with rung(condition): instruction` maps directly to a ladder rung, meaning you can write logic in Python and test it with pytest.
 
 But I don't want to transpose after testing. The missing piece was getting rungs from Python into the CLICK editor without retyping them. There's no documented import format, but I found it does put ctrl-c rungs onto the clipboard in some binary format. Maybe I could figure it out. With an AI that could hold context across hex dumps and structural hypotheses, I decided to give it a go.
 

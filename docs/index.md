@@ -90,10 +90,10 @@
 <div class="pl-block">
 <div><span class="pl-kw">with</span> <span class="pl-cls">Program</span>() <span class="pl-kw">as</span> logic:</div>
 <div class="pl-blank"></div>
-<div id="r1c">    <span class="pl-kw">with</span> <span class="pl-cls">Rung</span>(Start<span class="pl-op">,</span> <span class="pl-op">~</span>Stop):<span class="pl-anno" id="a1c">True</span></div>
+<div id="r1c">    <span class="pl-kw">with</span> <span class="pl-cls">rung</span>(Start<span class="pl-op">,</span> <span class="pl-op">~</span>Stop):<span class="pl-anno" id="a1c">True</span></div>
 <div id="r1b">        <span class="pl-fn">latch</span>(Motor)<span class="pl-anno" id="a1b">Motor ← True</span></div>
 <div class="pl-blank"></div>
-<div id="r2c">    <span class="pl-kw">with</span> <span class="pl-cls">Rung</span>(Stop):<span class="pl-anno" id="a2c">False</span></div>
+<div id="r2c">    <span class="pl-kw">with</span> <span class="pl-cls">rung</span>(Stop):<span class="pl-anno" id="a2c">False</span></div>
 <div id="r2b">        <span class="pl-fn">reset</span>(Motor)<span class="pl-anno" id="a2b">skipped</span></div>
 </div>
 
@@ -150,7 +150,7 @@
 })();
 </script>
 
-That's ladder logic. Condition on the `Rung`, instruction in the body. It reads like the diagram, runs as a deterministic scan cycle, tests with pytest, and compiles to real hardware.
+That's ladder logic. Condition on the `rung`, instruction in the body. It reads like the diagram, runs as a deterministic scan cycle, tests with pytest, and compiles to real hardware.
 
 Ladder logic dominates North American discrete manufacturing, but the tooling hasn't kept up. No version control, no automated testing, no way to simulate without hardware. The Structured Text crowd has options. The ladder crowd doesn't.
 
