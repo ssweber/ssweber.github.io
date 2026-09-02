@@ -1,208 +1,85 @@
-# Ladder Logic as Text
+# Ladder logic as text.
 
-<style>
-.pl-block {
-  --pl-bg: #f5f5f5;
-  --pl-border: #e0e0e0;
-  --pl-text: #2d2d2d;
-  --pl-kw: #22863a;
-  --pl-cls: #b8600a;
-  --pl-fn: #0771b8;
-  --pl-op: #999;
-  --pl-lit: #8250df;
-  --pl-green: #22863a;
-  --pl-green-dim: #a8ddb5;
-  --pl-amber: #b8600a;
-  --pl-muted: #999;
+Version control, automated tests, offline simulation, code review — for the people who program machines in ladder, on the PLC they already use.
 
-  background: var(--pl-bg);
-  border: 1px solid var(--pl-border);
-  border-radius: 4px;
-  padding: 1.2rem 1.4rem;
-  font-family: ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'Fira Code', Consolas, monospace;
-  font-size: 0.84rem;
-  line-height: 1.8;
-  color: var(--pl-text);
-  max-width: 700px;
-  margin: 1.5em 0;
-  overflow-x: hidden;
-}
+<section class="pl-demo" data-pl-demo data-state="latched" role="group" aria-labelledby="pl-demo-title">
+  <h2 id="pl-demo-title" class="pl-demo__title">The same two rungs, two useful views</h2>
+  <div class="pl-demo__views">
+    <figure class="pl-ladder">
+      <figcaption>Conventional ladder</figcaption>
+      <svg viewBox="0 0 320 185" role="img" aria-label="Two ladder rungs. Start latches Motor; Stop resets Motor.">
+        <line class="pl-ladder__rail" x1="22" y1="22" x2="22" y2="161"></line>
+        <line class="pl-ladder__rail" x1="298" y1="22" x2="298" y2="161"></line>
 
-@media (max-width: 480px) {
-  .pl-block .pl-anno { display: none; }
-}
+        <g class="pl-ladder__rung" data-ladder-rung="set">
+          <line class="pl-ladder__wire" x1="22" y1="61" x2="86" y2="61"></line>
+          <line class="pl-ladder__contact" x1="86" y1="47" x2="86" y2="75"></line>
+          <line class="pl-ladder__contact" x1="112" y1="47" x2="112" y2="75"></line>
+          <line class="pl-ladder__wire" x1="112" y1="61" x2="246" y2="61"></line>
+          <circle class="pl-ladder__coil" cx="263" cy="61" r="17"></circle>
+          <line class="pl-ladder__wire" x1="280" y1="61" x2="298" y2="61"></line>
+          <text class="pl-ladder__label" x="99" y="39" text-anchor="middle">Start</text>
+          <text class="pl-ladder__coil-mark" x="263" y="66" text-anchor="middle">S</text>
+          <text class="pl-ladder__label" x="263" y="38" text-anchor="middle">Motor</text>
+          <path class="pl-ladder__power" d="M22 61 H86 M86 61 H112 M112 61 H246 M280 61 H298"></path>
+        </g>
 
-.pl-block div {
-  white-space: pre;
-  padding: 0 0.4rem;
-  border-left: 2px solid transparent;
-  transition: border-color 0.4s, opacity 0.4s;
-}
-.pl-block .pl-blank { min-height: 0.5em; }
-.pl-block .pl-anno {
-  font-size: 0.7rem;
-  opacity: 0;
-  transition: opacity 0.4s;
-  margin-left: 1.2rem;
-}
+        <g class="pl-ladder__rung" data-ladder-rung="reset">
+          <line class="pl-ladder__wire" x1="22" y1="127" x2="86" y2="127"></line>
+          <line class="pl-ladder__contact" x1="86" y1="113" x2="86" y2="141"></line>
+          <line class="pl-ladder__contact" x1="112" y1="113" x2="112" y2="141"></line>
+          <line class="pl-ladder__wire" x1="112" y1="127" x2="246" y2="127"></line>
+          <circle class="pl-ladder__coil" cx="263" cy="127" r="17"></circle>
+          <line class="pl-ladder__wire" x1="280" y1="127" x2="298" y2="127"></line>
+          <text class="pl-ladder__label" x="99" y="105" text-anchor="middle">Stop</text>
+          <text class="pl-ladder__coil-mark" x="263" y="132" text-anchor="middle">R</text>
+          <text class="pl-ladder__label" x="263" y="104" text-anchor="middle">Motor</text>
+          <path class="pl-ladder__power" d="M22 127 H86 M86 127 H112 M112 127 H246 M280 127 H298"></path>
+        </g>
 
-.pl-kw  { color: var(--pl-kw); }
-.pl-cls { color: var(--pl-cls); }
-.pl-fn  { color: var(--pl-fn); }
-.pl-op  { color: var(--pl-op); }
-.pl-lit { color: var(--pl-lit); }
+        <g class="pl-ladder__motor" aria-hidden="true">
+          <circle cx="263" cy="166" r="5"></circle>
+          <text x="251" y="170" text-anchor="end">Motor</text>
+          <text data-motor-label x="273" y="170">ON</text>
+        </g>
+      </svg>
+    </figure>
 
-/* Dark: system preference */
-@media (prefers-color-scheme: dark) {
-  .pl-block {
-    --pl-bg: #0d1110;
-    --pl-border: #1e2a22;
-    --pl-text: #c8d4cc;
-    --pl-kw: #39ff8a;
-    --pl-cls: #ffb830;
-    --pl-fn: #6ae9ff;
-    --pl-op: #5a6b60;
-    --pl-lit: #c792ea;
-    --pl-green: #39ff8a;
-    --pl-green-dim: #1a6638;
-    --pl-amber: #ffb830;
-    --pl-muted: #5a6b60;
-  }
-}
+    <div class="pl-source">
+      <div class="pl-source__label">Ladder as pyrung text</div>
+      <div class="pl-block" role="img" aria-label="pyrung source for the Start latch and Stop reset rungs">
+        <div><span class="pl-kw">with</span> <span class="pl-cls">Program</span>() <span class="pl-kw">as</span> logic:</div>
+        <div class="pl-blank"></div>
+        <div data-pl-condition data-code-rung="set">    <span class="pl-kw">with</span> <span class="pl-cls">rung</span>(Start):<span class="pl-anno" data-pl-condition-note>False</span></div>
+        <div data-pl-body data-code-rung="set">        <span class="pl-fn">latch</span>(Motor)<span class="pl-anno" data-pl-body-note>skipped</span></div>
+        <div class="pl-blank"></div>
+        <div data-pl-condition data-code-rung="reset">    <span class="pl-kw">with</span> <span class="pl-cls">rung</span>(Stop):<span class="pl-anno" data-pl-condition-note>False</span></div>
+        <div data-pl-body data-code-rung="reset">        <span class="pl-fn">reset</span>(Motor)<span class="pl-anno" data-pl-body-note>skipped</span></div>
+      </div>
+    </div>
+  </div>
+  <p class="pl-status" data-pl-status aria-live="polite">Start released. Stop open. Motor remains latched on.</p>
+</section>
 
-/* Dark: Material for MkDocs slate toggle */
-[data-md-color-scheme="slate"] .pl-block {
-  --pl-bg: #0d1110;
-  --pl-border: #1e2a22;
-  --pl-text: #c8d4cc;
-  --pl-kw: #39ff8a;
-  --pl-cls: #ffb830;
-  --pl-fn: #6ae9ff;
-  --pl-op: #5a6b60;
-  --pl-lit: #c792ea;
-  --pl-green: #39ff8a;
-  --pl-green-dim: #1a6638;
-  --pl-amber: #ffb830;
-  --pl-muted: #5a6b60;
-}
-</style>
+That's ladder logic. Condition on the `rung`, instruction in the body. It reads like the diagram, runs as a scan cycle, tests offline, and goes back into CLICK.
 
-<div class="pl-block">
-<div><span class="pl-kw">with</span> <span class="pl-cls">Program</span>() <span class="pl-kw">as</span> logic:</div>
-<div class="pl-blank"></div>
-<div id="r1c">    <span class="pl-kw">with</span> <span class="pl-cls">rung</span>(Start<span class="pl-op">,</span> <span class="pl-op">~</span>Stop):<span class="pl-anno" id="a1c">True</span></div>
-<div id="r1b">        <span class="pl-fn">latch</span>(Motor)<span class="pl-anno" id="a1b">Motor ← True</span></div>
-<div class="pl-blank"></div>
-<div id="r2c">    <span class="pl-kw">with</span> <span class="pl-cls">rung</span>(Stop):<span class="pl-anno" id="a2c">False</span></div>
-<div id="r2b">        <span class="pl-fn">reset</span>(Motor)<span class="pl-anno" id="a2b">skipped</span></div>
+<div class="visitor-paths" markdown>
+<div class="visitor-path visitor-path--primary" markdown>
+## I have a CLICK project
+
+**[ClickNick](https://ssweber.github.io/clicknick/)** works beside CLICK Programming Software: nickname autocomplete, program checks, offline runs, and a readable text copy of every save. Changes go back in through CLICK's own paste.
+
+[Start with ClickNick](https://ssweber.github.io/clicknick/){ .md-button .md-button--primary }
+</div>
+<div class="visitor-path" markdown>
+## I want to write ladder as text
+
+**[pyrung](https://ssweber.github.io/pyrung/)** is the Python DSL underneath. Write ladder in Python, test it scan by scan, and deploy to a CLICK PLC or the P1AM-200.
+
+[Read the pyrung docs](https://ssweber.github.io/pyrung/){ .md-button }
+</div>
 </div>
 
-<script>
-(function() {
-  var rungs = [
-    { cond: 'r1c', body: 'r1b', ac: 'a1c', ab: 'a1b', pass: true },
-    { cond: 'r2c', body: 'r2b', ac: 'a2c', ab: 'a2b', pass: false }
-  ];
-  var idx = -1;
-  var s = getComputedStyle(document.querySelector('.pl-block'));
+Project family: [ClickNick](https://ssweber.github.io/clicknick/) · [pyrung](https://ssweber.github.io/pyrung/) · [laddercodec](https://ssweber.github.io/laddercodec/) · [pyclickplc](https://ssweber.github.io/pyclickplc/)
 
-  function clear(r) {
-    document.getElementById(r.cond).style.borderLeftColor = 'transparent';
-    document.getElementById(r.body).style.borderLeftColor = 'transparent';
-    document.getElementById(r.body).style.opacity = '1';
-    document.getElementById(r.ac).style.opacity = '0';
-    document.getElementById(r.ab).style.opacity = '0';
-  }
-
-  function show(r, done) {
-    var s = getComputedStyle(document.querySelector('.pl-block'));
-    var green = s.getPropertyValue('--pl-green').trim();
-    var greenDim = s.getPropertyValue('--pl-green-dim').trim();
-    var amber = s.getPropertyValue('--pl-amber').trim();
-    var muted = s.getPropertyValue('--pl-muted').trim();
-
-    document.getElementById(r.cond).style.borderLeftColor = r.pass ? green : amber;
-    document.getElementById(r.ac).style.color = r.pass ? green : amber;
-    document.getElementById(r.ab).style.color = r.pass ? green : muted;
-    if (!r.pass) document.getElementById(r.ab).style.fontStyle = 'italic';
-    setTimeout(function() {
-      document.getElementById(r.ac).style.opacity = '1';
-      setTimeout(function() {
-        document.getElementById(r.body).style.borderLeftColor = r.pass ? greenDim : 'transparent';
-        if (!r.pass) document.getElementById(r.body).style.opacity = '0.25';
-        document.getElementById(r.ab).style.opacity = '1';
-        setTimeout(done, 1200);
-      }, 600);
-    }, 400);
-  }
-
-  function step() {
-    if (idx >= 0) clear(rungs[idx]);
-    if (++idx >= rungs.length) {
-      idx = -1;
-      setTimeout(step, 1400);
-      return;
-    }
-    show(rungs[idx], function() { setTimeout(step, 200); });
-  }
-
-  setTimeout(step, 1200);
-})();
-</script>
-
-That's ladder logic. Condition on the `rung`, instruction in the body. It reads like the diagram, runs as a deterministic scan cycle, tests with pytest, and compiles to real hardware.
-
-Ladder logic dominates North American discrete manufacturing, but the tooling hasn't kept up. No version control, no automated testing, no way to simulate without hardware. The Structured Text crowd has options. The ladder crowd doesn't.
-
-## pyrung
-
-[pyrung](https://ssweber.github.io/pyrung/) is a Python DSL for writing, simulating, and testing ladder logic. The `with` block naturally separates the condition from the instruction, which is exactly what a ladder rung does. A controls engineer can map it to the diagram they already know.
-
-Every scan produces an immutable state snapshot. Time is a variable you control. A DAP debugger lets you step through scans rung by rung in VS Code. Currently targets AutomationDirect Click PLC behavior faithfully: nearly the complete instruction set, memory banks, numeric quirks, scan-cycle semantics.
-
-### Two deployment targets
-
-pyrung compiles to two backends from the same source:
-
-**Click PLC** via [ClickNick](https://github.com/ssweber/clicknick). Your tested logic encodes to the bytes the CLICK editor expects on paste. No transposing by hand.
-
-**ProductivityOpen P1AM-200** via CircuitPython code generation. Your tested logic becomes a self-contained scan loop that runs directly on the hardware, with the same Modbus TCP interface as a Click. No proprietary toolchain in the path.
-
-Write it once, test it once, pick your target.
-
-```mermaid
-graph LR
-    D[Click Project] -->|codegen| A[pyrung]
-    A -->|encode| C[ClickNick]
-    C -->|paste| D
-    D -->|download| E[Click PLC]
-    A -->|generate| G[CircuitPython]
-    G -->|deploy| H[P1AM-200]
-    E <-->|Modbus TCP| F[pyclickplc]
-    H <-->|Modbus TCP| F
-```
-
-### Existing projects welcome
-
-Generate pyrung code from an existing `.ckp` project. You don't have to start from scratch to get simulation and testing on programs you've already built.
-
-## The supporting projects
-
-Each of these works on its own, but they were designed to work with pyrung.
-
-**[ClickNick](https://github.com/ssweber/clicknick)** is the Windows-side glue. A Ladder menu handles moving logic in and out of Click — encoding CSVs to the clipboard, decoding rungs back out, guided paste with nickname import, exporting projects, and converting to pyrung. Beyond that: autocomplete over the CLICK editor's instruction dialogs, a modern address editor with bulk editing and search/replace, a tag browser with hierarchy and array grouping, and a DataView editor with drag-and-drop. Works alongside your existing `.ckp` projects.
-
-**[pyclickplc](https://ssweber.github.io/pyclickplc/)** is the Modbus TCP layer. Read and write registers on real Click hardware, or run pyrung as an emulated Click that any Modbus client can talk to. Also manages nickname and DataView files. Both the Click PLC and the P1AM-200 speak the same Modbus interface, so pyclickplc doesn't need to know which one it's talking to.
-
-**[laddercodec](https://ssweber.github.io/laddercodec/)** is the binary codec for Click's undocumented clipboard format. Reverse-engineered from scratch; the format remains undocumented by its creator. Used by ClickNick under the hood.
-
-## Limitations
-
-pyrung simulates Click PLC behavior as faithfully as possible, but it is not a certified simulator. If your program behaves differently in pyrung than on a Click PLC, that's a bug we want to know about, but you should always validate on real hardware before deploying to production. The CircuitPython target runs on a garbage-collected runtime, so sub-millisecond scan timing is not realistic. Modbus TCP has no built-in authentication; keep it on isolated networks.
-
-## Blog
-
-- [The Complexity Was Never in the Logic](blog/complexity-was-never-in-the-logic.md) - The editor pain that led to pyrung.
-- [The Zen of Ladder](blog/zen-of-ladder.md) - A riff on the Zen of Python for the ladder logic crowd.
-- [These Aren't the Rungs You're Looking For](blog/these-arent-the-rungs.md) - How I reverse-engineered Click's clipboard format so my bytes could paste without any problems.
-- [Why pyrung?](blog/why-pyrung.md) - A look at the PLC tooling landscape and where pyrung fits.
+See [how the pieces fit](overview.md) or browse the [Blog](blog/index.md).

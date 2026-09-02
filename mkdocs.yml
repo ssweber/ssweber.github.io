@@ -1,21 +1,46 @@
-site_name: ssweber
+site_name: pyrung.com
+site_description: Ladder logic as text. Tools for readable, testable CLICK and Python ladder workflows.
 site_url: https://ssweber.github.io/
+repo_url: https://github.com/ssweber/ssweber.github.io
+repo_name: ssweber/ssweber.github.io
 
 theme:
   name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - content.code.copy
+
+nav:
+  - Home: index.md
+  - Overview: overview.md
+  - ClickNick: https://ssweber.github.io/clicknick/
+  - pyrung docs: https://ssweber.github.io/pyrung/
+  - Blog:
+      - Blog: blog/index.md
+      - Gradual Typing for Ladder Logic: blog/gradual-typing-for-ladder-logic.md
+      - The Complexity Was Never in the Logic: blog/complexity-was-never-in-the-logic.md
+      - The Zen of Ladder: blog/zen-of-ladder.md
+      - These Aren't the Rungs You're Looking For: blog/these-arent-the-rungs.md
+      - Why pyrung?: blog/why-pyrung.md
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/extra.js
 
 markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
-
-nav:
-  - Home: index.md
-  - Blog:
-    - "Gradual Typing for Ladder Logic": blog/gradual-typing-for-ladder-logic.md
-    - "The Complexity Was Never in the Logic": blog/complexity-was-never-in-the-logic.md
-    - "The Zen of Ladder": blog/zen-of-ladder.md
-    - "These Aren't the Rungs You're Looking For": blog/these-arent-the-rungs.md
-    - "Why pyrung?": blog/why-pyrung.md

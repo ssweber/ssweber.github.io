@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 1880" role="img" aria-labelledby="title desc">
+  <title id="title">The CLICK round trip</title>
+  <desc id="desc">CLICK Programming Software is the only place where an engineer saves Machine.ckp. ClickNick refreshes a readable workspace, pyrung checks it offline, and Preview Changes plus Guided Paste return selected rungs through CLICK for review and Save. Under the hood, laddercodec handles CLICK's clipboard format and pyclickplc can optionally talk Modbus TCP to a real CLICK PLC.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#657069"/>
+    </marker>
+    <style>
+      .canvas{fill:#f7f9f7;stroke:#d9e3dc;stroke-width:2}.heading{fill:#28312b;font:700 27px system-ui,-apple-system,"Segoe UI",sans-serif}.subheading{fill:#657069;font:18px system-ui,-apple-system,"Segoe UI",sans-serif}.title{fill:#28312b;font:700 22px system-ui,-apple-system,"Segoe UI",sans-serif}.body{fill:#344139;font:19px system-ui,-apple-system,"Segoe UI",sans-serif}.small{fill:#657069;font:17px system-ui,-apple-system,"Segoe UI",sans-serif}.tiny{fill:#657069;font:15px system-ui,-apple-system,"Segoe UI",sans-serif}.label{fill:#526058;font:700 15px system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:.03em}.mono{fill:#253a2d;font:18px ui-monospace,"Cascadia Code",Consolas,monospace}.authority{fill:#fff;stroke:#5f6d64;stroke-width:2}.workspace{fill:#eaf5ee;stroke:#17653a;stroke-width:2}.inner{fill:#fff;stroke:#b8d8c3;stroke-width:1.5}.proposal{fill:#fff6df;stroke:#b58a32;stroke-width:2}.library{fill:#eef5fa;stroke:#4d7890;stroke-width:2}.trust{fill:#fff;stroke:#17653a;stroke-width:2}.connector{fill:none;stroke:#657069;stroke-width:2.8;marker-end:url(#arrow)}.connector-both{fill:none;stroke:#657069;stroke-width:2.8;marker-start:url(#arrow);marker-end:url(#arrow)}.optional{stroke-dasharray:9 8}.divider{stroke:#d9e3dc;stroke-width:1.5}
+    </style>
+  </defs>
+
+  <rect class="canvas" x="10" y="10" width="620" height="1860" rx="24"/>
+  <text class="heading" x="40" y="56">The CLICK round trip</text>
+  <text class="subheading" x="40" y="88">Readable source can leave CLICK.</text>
+  <text class="subheading" x="40" y="113">The .ckp changes only when an engineer saves in CLICK.</text>
+
+  <rect class="authority" x="40" y="145" width="560" height="150" rx="16"/>
+  <text class="title" x="64" y="186">CLICK Programming Software</text>
+  <rect class="inner" x="64" y="206" width="230" height="59" rx="10"/>
+  <text class="mono" x="84" y="242">Machine.ckp</text>
+  <text class="body" x="322" y="230">Engineer reviews and saves.</text>
+  <text class="small" x="322" y="258">Only Save here changes the file.</text>
+
+  <path class="connector" d="M320 295 V341"/>
+  <text class="label" x="340" y="325">SAVE / RELOAD</text>
+
+  <rect class="workspace" x="40" y="350" width="560" height="420" rx="18"/>
+  <text class="title" x="64" y="390">ClickNick workspace</text>
+  <text class="small" x="64" y="417">Generated source refreshes from the CLICK project.</text>
+  <rect class="inner" x="60" y="440" width="250" height="175" rx="11"/>
+  <text class="label" x="80" y="468">REFRESHED</text>
+  <text class="mono" x="80" y="500">src/plc/</text>
+  <text class="small" x="80" y="526">readable ladder</text>
+  <text class="mono" x="80" y="558">csv/</text>
+  <text class="small" x="80" y="584">accepted snapshot</text>
+  <rect class="inner" x="330" y="440" width="250" height="175" rx="11"/>
+  <text class="label" x="350" y="468">PRESERVED</text>
+  <text class="mono" x="350" y="500">tests/ · notes/</text>
+  <text class="mono" x="350" y="528">fixtures/ · repros/</text>
+  <text class="tiny" x="350" y="560">yours, kept when</text>
+  <text class="tiny" x="350" y="582">source refreshes</text>
+  <rect x="60" y="635" width="520" height="110" rx="11" fill="#fff" stroke="#8bb594" stroke-width="1.5"/>
+  <text class="label" x="80" y="664">OFFLINE WORKBENCH</text>
+  <text class="mono" x="80" y="698">pyrung · checks · tests · Console</text>
+  <text class="small" x="80" y="728">why() · how() · modeled scans, not the real PLC.</text>
+
+  <path class="connector" d="M320 770 V816"/>
+  <text class="label" x="340" y="800">SOURCE EDITS</text>
+
+  <rect class="proposal" x="40" y="825" width="560" height="135" rx="16"/>
+  <text class="title" x="64" y="866">Preview Changes</text>
+  <text class="body" x="64" y="900">Rung-by-rung diff</text>
+  <text class="small" x="64" y="932">Choose what moves forward.</text>
+
+  <path class="connector" d="M320 960 V1006"/>
+  <text class="label" x="340" y="990">SELECTED RUNGS</text>
+
+  <rect class="authority" x="40" y="1015" width="560" height="120" rx="16"/>
+  <text class="title" x="64" y="1055">Guided Paste</text>
+  <text class="body" x="64" y="1088">CLICK’s own ladder paste</text>
+  <text class="small" x="64" y="1116">Step by step, in CLICK.</text>
+
+  <path class="connector" d="M320 1135 V1181"/>
+  <text class="label" x="340" y="1165">PASTE INTO CLICK</text>
+
+  <rect class="authority" x="40" y="1190" width="560" height="150" rx="16"/>
+  <text class="title" x="64" y="1231">Back in CLICK Programming Software</text>
+  <text class="body" x="64" y="1268">Engineer reviews pasted rungs.</text>
+  <text class="body" x="64" y="1302">Save updates <tspan class="mono">Machine.ckp</tspan>.</text>
+
+  <rect class="trust" x="40" y="1370" width="560" height="112" rx="14"/>
+  <text class="title" x="64" y="1411">ClickNick never edits Machine.ckp.</text>
+  <text class="body" x="64" y="1446">Only an engineer’s Save in CLICK does.</text>
+
+  <line class="divider" x1="40" y1="1515" x2="600" y2="1515"/>
+  <text class="label" x="40" y="1543">UNDER THE HOOD</text>
+
+  <rect class="authority" x="40" y="1570" width="245" height="132" rx="16"/>
+  <text class="title" x="64" y="1611">CLICK PLC</text>
+  <text class="body" x="64" y="1647">Real program · real I/O</text>
+  <text class="small" x="64" y="1678">The machine itself.</text>
+  <path class="connector-both optional" d="M285 1636 H340"/>
+  <rect class="library" x="340" y="1570" width="260" height="132" rx="16"/>
+  <text class="title" x="364" y="1611">pyclickplc</text>
+  <text class="body" x="364" y="1647">Modbus TCP for CLICK</text>
+  <text class="small" x="364" y="1678">Optional live PLC link.</text>
+
+  <rect class="library" x="40" y="1732" width="560" height="112" rx="16"/>
+  <text class="title" x="64" y="1770">laddercodec</text>
+  <text class="body" x="64" y="1800">The codec for CLICK’s clipboard format</text>
+  <text class="small" x="64" y="1826">What Guided Paste puts on the clipboard.</text>
+</svg>

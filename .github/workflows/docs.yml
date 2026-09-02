@@ -35,7 +35,10 @@ jobs:
         run: uv sync --group docs
 
       - name: Build docs
-        run: uv run mkdocs build --strict
+        run: uv run zensical build --clean --strict
+
+      - name: Guard public site
+        run: uv run --no-sync python .github/scripts/check_public_site.py site
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4

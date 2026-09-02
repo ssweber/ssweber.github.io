@@ -1,0 +1,10 @@
+# pyrung.com
+
+> Ladder logic as text. This account site is the small index for the pyrung.com project family; detailed documentation lives on each project site.
+
+- [Overview](https://ssweber.github.io/overview/): How the projects fit together, the CLICK workflow, and important boundaries.
+- [Blog](https://ssweber.github.io/blog/): Ladder design, practical CLICK work, and engineering notes.
+- [ClickNick](https://ssweber.github.io/clicknick/): The CLICK-facing workbench for autocomplete, checks, offline testing, workspaces, and reviewed ladder changes.
+- [pyrung](https://ssweber.github.io/pyrung/): Python ladder source, execution, testing, analysis, verification, and hardware targets.
+- [laddercodec](https://ssweber.github.io/laddercodec/): CLICK ladder clipboard and program format codec.
+- [pyclickplc](https://ssweber.github.io/pyclickplc/): CLICK-compatible Modbus TCP and address, nickname, and Data View tooling.
