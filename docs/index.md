@@ -67,19 +67,19 @@ That's ladder logic. Condition on the `rung`, instruction in the body. It reads 
 <div class="visitor-path visitor-path--primary" markdown>
 ## I have a CLICK project
 
-**[ClickNick](https://ssweber.github.io/clicknick/)** works beside CLICK Programming Software: nickname autocomplete, program checks, offline runs, and a readable text copy of every save. Changes go back in through CLICK's own paste.
+**[ClickNick](https://pyrung.com/clicknick/)** works beside CLICK Programming Software: nickname autocomplete, program checks, offline runs, and a readable text copy of every save. Changes go back in through CLICK's own paste.
 
-[Start with ClickNick](https://ssweber.github.io/clicknick/){ .md-button .md-button--primary }
+[Start with ClickNick](https://pyrung.com/clicknick/){ .md-button .md-button--primary }
 </div>
 <div class="visitor-path" markdown>
 ## I want to write ladder as text
 
-**[pyrung](https://ssweber.github.io/pyrung/)** is the Python DSL underneath. Write ladder in Python, test it scan by scan, and deploy to a CLICK PLC or the P1AM-200.
+**[pyrung](https://pyrung.com/pyrung/)** is the Python DSL underneath. Write ladder in Python, test it scan by scan, and deploy to a CLICK PLC or the P1AM-200.
 
-[Read the pyrung docs](https://ssweber.github.io/pyrung/){ .md-button }
+[Read the pyrung docs](https://pyrung.com/pyrung/){ .md-button }
 </div>
 </div>
 
-Project family: [ClickNick](https://ssweber.github.io/clicknick/) · [pyrung](https://ssweber.github.io/pyrung/) · [laddercodec](https://ssweber.github.io/laddercodec/) · [pyclickplc](https://ssweber.github.io/pyclickplc/)
+Project family: [ClickNick](https://pyrung.com/clicknick/) · [pyrung](https://pyrung.com/pyrung/) · [laddercodec](https://pyrung.com/laddercodec/) · [pyclickplc](https://pyrung.com/pyclickplc/)
 
 See [how the pieces fit](overview.md) or browse the [Blog](blog/index.md).

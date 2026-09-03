@@ -1,6 +1,6 @@
 site_name: pyrung.com
 site_description: Ladder logic as text. Tools for readable, testable CLICK and Python ladder workflows.
-site_url: https://ssweber.github.io/
+site_url: https://pyrung.com/
 repo_url: https://github.com/ssweber/ssweber.github.io
 repo_name: ssweber/ssweber.github.io
 
@@ -16,8 +16,8 @@ theme:
 nav:
   - Home: index.md
   - Overview: overview.md
-  - ClickNick: https://ssweber.github.io/clicknick/
-  - pyrung docs: https://ssweber.github.io/pyrung/
+  - ClickNick: https://pyrung.com/clicknick/
+  - pyrung docs: https://pyrung.com/pyrung/
   - Blog:
       - Blog: blog/index.md
       - Gradual Typing for Ladder Logic: blog/gradual-typing-for-ladder-logic.md

@@ -23,7 +23,7 @@ The workspace is also where an AI agent works, if you use one. It can read the s
 
 ## Where the program runs
 
-The text in the workspace is a pyrung program. [pyrung](https://ssweber.github.io/pyrung/) is a Python DSL for writing, simulating, and testing ladder logic: the `with` block separates the condition from the instruction, which is exactly what a rung does. Every scan produces an immutable state snapshot. Time is a variable you control. A DAP debugger steps through scans rung by rung in VS Code.
+The text in the workspace is a pyrung program. [pyrung](https://pyrung.com/pyrung/) is a Python DSL for writing, simulating, and testing ladder logic: the `with` block separates the condition from the instruction, which is exactly what a rung does. Every scan produces an immutable state snapshot. Time is a variable you control. A DAP debugger steps through scans rung by rung in VS Code.
 
 | Where | What runs | Use it for |
 | --- | --- | --- |
@@ -47,7 +47,7 @@ pyrung simulates CLICK PLC behavior as faithfully as possible, but it is not a c
 
 Read and write CLICK registers as native Python values by bank, address, or nickname, or run a local Modbus TCP server that any Modbus client can talk to. Also manages nickname CSV and DataView files.
 
-[Explore pyclickplc →](https://ssweber.github.io/pyclickplc/)
+[Explore pyclickplc →](https://pyrung.com/pyclickplc/)
 </div>
 <div class="library-card" markdown>
 <span class="library-card__name">laddercodec</span>
@@ -56,12 +56,12 @@ Read and write CLICK registers as native Python values by bank, address, or nick
 
 Decodes CLICK clipboard and program-file bytes into rungs, and encodes rungs back into native clipboard data. Reverse-engineered from scratch; the format remains undocumented by its creator. ClickNick uses it under the hood.
 
-[Read the binary format →](https://ssweber.github.io/laddercodec/internals/binary-format/)
+[Read the binary format →](https://pyrung.com/laddercodec/internals/binary-format/)
 </div>
 </div>
 
 ## Choose a starting point
 
-- Have a `.ckp`? Start with [ClickNick](https://ssweber.github.io/clicknick/).
-- Want to write ladder in Python? Read the [pyrung docs](https://ssweber.github.io/pyrung/).
+- Have a `.ckp`? Start with [ClickNick](https://pyrung.com/clicknick/).
+- Want to write ladder in Python? Read the [pyrung docs](https://pyrung.com/pyrung/).
 - Want the design history? Browse the [Blog](blog/index.md).

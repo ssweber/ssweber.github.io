@@ -4,7 +4,7 @@ If you build custom machines, you know the logic is never the hard part. A state
 
 You've commissioned a machine and had it surprise you. Everything works at the bench, then something happens in the field because the logic did exactly what was written, just not what was meant. A flipped comparison, a missing contact, a path nobody tested because there wasn't time.
 
-I build machines on Click PLCs. Click doesn't have a simulator, so I built one: [pyrung](https://ssweber.github.io/pyrung/), a Python library that runs the same scan cycle, instruction behavior, and rung evaluation order as a real Click. You write ladder logic as Python text with readable tag names and familiar rung structure, and pyrung executes it faithfully.
+I build machines on Click PLCs. Click doesn't have a simulator, so I built one: [pyrung](https://pyrung.com/pyrung/), a Python library that runs the same scan cycle, instruction behavior, and rung evaluation order as a real Click. You write ladder logic as Python text with readable tag names and familiar rung structure, and pyrung executes it faithfully.
 
 I built it to test before I commission, but the engine turned out to be capable of things I didn't originally think possible.
 
