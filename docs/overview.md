@@ -15,7 +15,7 @@ ClickNick opens beside CLICK Programming Software. Each save regenerates a works
 
 ### The app
 
-Nickname autocomplete, program checks, an offline Console, and a readable text copy of every save, beside CLICK Programming Software. Windows.
+Nickname autocomplete, program checks, an offline Console, and your ladder (as Python) after every save, beside CLICK Programming Software. Windows.
 
 [ClickNick →](https://pyrung.com/clicknick/)
 </div>
