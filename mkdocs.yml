@@ -15,7 +15,7 @@ theme:
 
 nav:
   - Home: index.md
-  - Overview: overview.md
+  - How it fits: overview.md
   - ClickNick: https://pyrung.com/clicknick/
   - pyrung docs: https://pyrung.com/pyrung/
   - Blog:
