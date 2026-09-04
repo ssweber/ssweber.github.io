@@ -25,7 +25,7 @@
     {
       name: "latched",
       statusBefore: "Start released. Scanning with Motor latched on.",
-      statusAfter: "Start released. Stop open. Motor remains latched on.",
+      statusAfter: "Start released. Stop open. Motor stays latched.",
       motorBefore: "ON",
       motorAfter: "ON",
       rungs: [

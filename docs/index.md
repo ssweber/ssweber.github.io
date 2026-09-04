@@ -1,12 +1,12 @@
-# Ladder logic as text.
+# Write ladder logic in Python. Test it. Deploy it to CLICK.
 
-Version control, automated tests, offline simulation, code review — for the people who program machines in ladder, on the PLC they already use.
+pyrung turns a Python `with` block into a ladder rung: same rungs, same scan order, same timers as the CLICK PLC, with git, pytest, and a debugger around them.
 
 <section class="pl-demo" data-pl-demo data-state="latched" role="group" aria-labelledby="pl-demo-title">
-  <h2 id="pl-demo-title" class="pl-demo__title">The same two rungs, two useful views</h2>
+  <h2 id="pl-demo-title" class="pl-demo__title">If you can read ladder, you can read this</h2>
   <div class="pl-demo__views">
     <figure class="pl-ladder">
-      <figcaption>Conventional ladder</figcaption>
+      <figcaption>Graphical</figcaption>
       <svg viewBox="0 0 320 185" role="img" aria-label="Two ladder rungs. Start latches Motor; Stop resets Motor.">
         <line class="pl-ladder__rail" x1="22" y1="22" x2="22" y2="161"></line>
         <line class="pl-ladder__rail" x1="298" y1="22" x2="298" y2="161"></line>
@@ -46,7 +46,7 @@ Version control, automated tests, offline simulation, code review — for the pe
     </figure>
 
     <div class="pl-source">
-      <div class="pl-source__label">Ladder as pyrung text</div>
+      <div class="pl-source__label">Python</div>
       <div class="pl-block" role="img" aria-label="pyrung source for the Start latch and Stop reset rungs">
         <div><span class="pl-kw">with</span> <span class="pl-cls">Program</span>() <span class="pl-kw">as</span> logic:</div>
         <div class="pl-blank"></div>
@@ -58,28 +58,38 @@ Version control, automated tests, offline simulation, code review — for the pe
       </div>
     </div>
   </div>
-  <p class="pl-status" data-pl-status aria-live="polite">Start released. Stop open. Motor remains latched on.</p>
+  <p class="pl-status" data-pl-status aria-live="polite">Start released. Stop open. Motor stays latched.</p>
 </section>
 
-That's ladder logic. Condition on the `rung`, instruction in the body. It reads like the diagram, runs as a scan cycle, tests offline, and goes back into CLICK.
+Condition on the rung, instruction in the body. It reads like the diagram, runs as a deterministic scan cycle, tests with pytest, and pastes back into CLICK.
+
+## Why
+
+CLICK PLCs ship with no simulator, no version control beyond copies of a `.ckp`, and no way to test a program short of downloading it to a real PLC. You draw the ladder in CLICK Programming Software, download it to hardware, and hope. The Structured Text crowd has options. The ladder crowd doesn't. pyrung is that option: write and test the logic in Python first, then move the same rungs into CLICK.
+
+## Who it's for
+
+**Controls engineers** who want to test CLICK logic without hardware. Write with plain tag names, map them to X, Y, C, and DS addresses when you're ready, and let the validator tell you what CLICK's memory banks will and won't accept before you find out at the PLC.
+
+**Python developers** entering industrial automation. pyrung teaches ladder logic in the language and tools you already have: Python, pytest, and VS Code. Start with [Know Python? Learn Ladder Logic.](https://pyrung.com/pyrung/learn/)
+
+**Makers and P1AM-200 users** who want a real scan cycle without writing the plumbing. The same program you tested on your laptop generates a CircuitPython scan loop with timers, counters, Modbus TCP, and SD-backed retentive state.
+
+Rather keep drawing ladder in CLICK? **[ClickNick](https://pyrung.com/clicknick/)** adds nickname autocomplete, program checks, offline runs, and a readable text copy of every save. Built on pyrung.
 
 <div class="visitor-paths" markdown>
 <div class="visitor-path visitor-path--primary" markdown>
-## I have a CLICK project
+## Get started
 
-**[ClickNick](https://pyrung.com/clicknick/)** works beside CLICK Programming Software: nickname autocomplete, program checks, offline runs, and a readable text copy of every save. Changes go back in through CLICK's own paste.
+`pip install pyrung`, then the [Quickstart](https://pyrung.com/pyrung/getting-started/quickstart/). Existing CLICK project? [ClickNick](https://pyrung.com/clicknick/) generates the pyrung source from your `.ckp`.
 
-[Start with ClickNick](https://pyrung.com/clicknick/){ .md-button .md-button--primary }
+[pyrung docs](https://pyrung.com/pyrung/){ .md-button .md-button--primary }
 </div>
 <div class="visitor-path" markdown>
-## I want to write ladder as text
+## Under the hood
 
-**[pyrung](https://pyrung.com/pyrung/)** is the Python DSL underneath. Write ladder in Python, test it scan by scan, and deploy to a CLICK PLC or the P1AM-200.
+[laddercodec](https://pyrung.com/laddercodec/) encodes rungs into CLICK's clipboard format. [pyclickplc](https://pyrung.com/pyclickplc/) talks Modbus TCP to a CLICK PLC.
 
-[Read the pyrung docs](https://pyrung.com/pyrung/){ .md-button }
+[How the pieces fit](overview.md){ .md-button } [Blog](blog/index.md){ .md-button }
 </div>
 </div>
-
-Project family: [ClickNick](https://pyrung.com/clicknick/) · [pyrung](https://pyrung.com/pyrung/) · [laddercodec](https://pyrung.com/laddercodec/) · [pyclickplc](https://pyrung.com/pyclickplc/)
-
-See [how the pieces fit](overview.md) or browse the [Blog](blog/index.md).
