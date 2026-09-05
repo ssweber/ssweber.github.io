@@ -75,8 +75,6 @@ CLICK PLCs ship with no simulator, no version control beyond copies of a `.ckp`,
 
 **Makers and P1AM-200 users** who want a real scan cycle without writing the plumbing. The same program you tested on your laptop generates a CircuitPython scan loop with timers, counters, Modbus TCP, and SD-backed retentive state.
 
-Rather keep drawing ladder in CLICK? **[ClickNick](https://pyrung.com/clicknick/)** adds nickname autocomplete, program checks, offline runs, and your ladder (as Python) after every save. Built on pyrung.
-
 <div class="visitor-paths" markdown>
 <div class="visitor-path visitor-path--primary" markdown>
 ## Get started
@@ -93,3 +91,7 @@ Rather keep drawing ladder in CLICK? **[ClickNick](https://pyrung.com/clicknick/
 [How the pieces fit](overview.md){ .md-button } [Blog](blog/index.md){ .md-button }
 </div>
 </div>
+
+!!! tip "Rather keep drawing ladder in CLICK?"
+
+    [**ClickNick**](https://pyrung.com/clicknick/) adds nickname autocomplete, program checks, offline runs, and your ladder (as Python) after every save. Built on pyrung.
