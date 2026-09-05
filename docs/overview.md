@@ -33,7 +33,7 @@ A Python DSL that reads like ladder and scans like a CLICK, with pytest, a VS Co
 
 ### The codec
 
-Encodes and decodes CLICK's clipboard binary, so rungs move between text and CLICK Programming Software. Reverse-engineered; the format is undocumented by its creator.
+The compatibility layer for CLICK ladder data. Reads and writes CLICK's native representations and enables reliable round-tripping between CLICK and the pyrung/ClickNick toolchain.
 
 [laddercodec →](https://pyrung.com/laddercodec/)
 </div>

@@ -88,7 +88,7 @@ Rather keep drawing ladder in CLICK? **[ClickNick](https://pyrung.com/clicknick/
 <div class="visitor-path" markdown>
 ## Under the hood
 
-[laddercodec](https://pyrung.com/laddercodec/) encodes rungs into CLICK's clipboard format. [pyclickplc](https://pyrung.com/pyclickplc/) talks Modbus TCP to a CLICK PLC.
+[laddercodec](https://pyrung.com/laddercodec/) is the compatibility layer for CLICK ladder data, enabling reliable round-tripping between CLICK and the pyrung/ClickNick toolchain. [pyclickplc](https://pyrung.com/pyclickplc/) talks Modbus TCP to a CLICK PLC.
 
 [How the pieces fit](overview.md){ .md-button } [Blog](blog/index.md){ .md-button }
 </div>
