@@ -3,10 +3,23 @@
 pyrung turns a Python `with` block into a ladder rung: same rungs, same scan order, same timers as the CLICK PLC, with git, pytest, and a debugger around them.
 
 <section class="pl-demo" data-pl-demo data-state="latched" role="group" aria-labelledby="pl-demo-title">
-  <h2 id="pl-demo-title" class="pl-demo__title">If you can read ladder, you can read this</h2>
+  <h2 id="pl-demo-title" class="pl-demo__title">Same logic, two views</h2>
   <div class="pl-demo__views">
+    <div class="pl-source">
+      <div class="pl-source__label">pyrung</div>
+      <div class="pl-block" role="img" aria-label="pyrung source for the Start latch and Stop reset rungs">
+        <div><span class="pl-kw">with</span> <span class="pl-cls">Program</span>() <span class="pl-kw">as</span> logic:</div>
+        <div class="pl-blank"></div>
+        <div data-pl-condition data-code-rung="set">    <span class="pl-kw">with</span> <span class="pl-cls">rung</span>(Start):<span class="pl-anno" data-pl-condition-note>False</span></div>
+        <div data-pl-body data-code-rung="set">        <span class="pl-fn">latch</span>(Motor)<span class="pl-anno" data-pl-body-note>skipped</span></div>
+        <div class="pl-blank"></div>
+        <div data-pl-condition data-code-rung="reset">    <span class="pl-kw">with</span> <span class="pl-cls">rung</span>(Stop):<span class="pl-anno" data-pl-condition-note>False</span></div>
+        <div data-pl-body data-code-rung="reset">        <span class="pl-fn">reset</span>(Motor)<span class="pl-anno" data-pl-body-note>skipped</span></div>
+      </div>
+    </div>
+
     <figure class="pl-ladder">
-      <figcaption>Graphical</figcaption>
+      <figcaption>CLICK</figcaption>
       <svg viewBox="0 0 320 185" role="img" aria-label="Two ladder rungs. Start latches Motor; Stop resets Motor.">
         <line class="pl-ladder__rail" x1="22" y1="22" x2="22" y2="161"></line>
         <line class="pl-ladder__rail" x1="298" y1="22" x2="298" y2="161"></line>
@@ -44,24 +57,10 @@ pyrung turns a Python `with` block into a ladder rung: same rungs, same scan ord
         </g>
       </svg>
     </figure>
-
-    <div class="pl-source">
-      <div class="pl-source__label">Python</div>
-      <div class="pl-block" role="img" aria-label="pyrung source for the Start latch and Stop reset rungs">
-        <div><span class="pl-kw">with</span> <span class="pl-cls">Program</span>() <span class="pl-kw">as</span> logic:</div>
-        <div class="pl-blank"></div>
-        <div data-pl-condition data-code-rung="set">    <span class="pl-kw">with</span> <span class="pl-cls">rung</span>(Start):<span class="pl-anno" data-pl-condition-note>False</span></div>
-        <div data-pl-body data-code-rung="set">        <span class="pl-fn">latch</span>(Motor)<span class="pl-anno" data-pl-body-note>skipped</span></div>
-        <div class="pl-blank"></div>
-        <div data-pl-condition data-code-rung="reset">    <span class="pl-kw">with</span> <span class="pl-cls">rung</span>(Stop):<span class="pl-anno" data-pl-condition-note>False</span></div>
-        <div data-pl-body data-code-rung="reset">        <span class="pl-fn">reset</span>(Motor)<span class="pl-anno" data-pl-body-note>skipped</span></div>
-      </div>
-    </div>
   </div>
-  <p class="pl-status" data-pl-status aria-live="polite">Start released. Stop open. Motor stays latched.</p>
 </section>
 
-Condition on the rung, instruction in the body. It reads like the diagram, runs as a deterministic scan cycle, tests with pytest, and pastes back into CLICK.
+Condition on the rung, instruction in the body. Same scan order as the PLC, so what passes in pytest is what runs in CLICK.
 
 ## Why
 

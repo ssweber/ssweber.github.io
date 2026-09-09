@@ -1,13 +1,34 @@
 # How it fits
 
-<picture class="overview-diagram">
-  <source media="(max-width: 700px)" srcset="../assets/click-round-trip-mobile.svg">
-  <img src="assets/click-round-trip.svg" alt="CLICK Programming Software saves Machine.ckp; ClickNick refreshes a readable workspace, pyrung checks it offline, and Preview Changes plus Guided Paste return selected rungs through CLICK for engineer review and Save. laddercodec handles the clipboard format, while pyclickplc can optionally connect Python to a CLICK PLC over Modbus TCP." loading="lazy" decoding="async">
-</picture>
+Ladder leaves CLICK as readable source, gets tested in Python, and comes back through the clipboard. The project file changes only when you save it in CLICK Programming Software.
 
-ClickNick opens beside CLICK Programming Software. Each save regenerates a workspace: the ladder as pyrung text plus whatever you keep with the machine, tests, notes, reproductions. Changes go back the way rungs have always moved between CLICK projects, through the clipboard. Preview Changes shows the rung diff, Guided Paste puts the rungs on the clipboard in CLICK's native format, you paste, you save.
+<ol class="round-trip" aria-label="The CLICK round trip">
+  <li class="round-trip__step">
+    <span class="round-trip__where">CLICK</span>
+    <strong>Save the project</strong>
+    <p>Draw ladder as usual. Save <code>Machine.ckp</code>.</p>
+  </li>
+  <li class="round-trip__step">
+    <span class="round-trip__where">ClickNick</span>
+    <strong>Source refreshes</strong>
+    <p>Every save regenerates the ladder as pyrung text. Your tests and notes stay put.</p>
+  </li>
+  <li class="round-trip__step">
+    <span class="round-trip__where">pyrung</span>
+    <strong>Test offline</strong>
+    <p>Run scans, write pytest cases, trace cause and effect. No hardware.</p>
+  </li>
+  <li class="round-trip__step">
+    <span class="round-trip__where">ClickNick → CLICK</span>
+    <strong>Paste back</strong>
+    <p>Preview the rung diff. Guided Paste loads the clipboard. You paste and save in CLICK.</p>
+  </li>
+</ol>
 
-**ClickNick never edits a `.ckp`.** The project file changes only when you save it in CLICK Programming Software.
+<div class="round-trip__rule">
+  <strong>ClickNick never edits a <code>.ckp</code>.</strong>
+  The project file changes only when you save it in CLICK Programming Software. Everything else is a copy you can regenerate.
+</div>
 
 <div class="library-cards" markdown>
 <div class="library-card" markdown>
