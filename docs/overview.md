@@ -21,7 +21,7 @@ Ladder leaves CLICK as readable source, gets tested in Python, and comes back th
   <li class="round-trip__step">
     <span class="round-trip__where">ClickNick → CLICK</span>
     <strong>Paste back</strong>
-    <p>Preview the rung diff. Guided Paste loads the clipboard. You paste and save in CLICK.</p>
+    <p>Preview Changes shows the rung diff. Copy to Click puts the rungs you pick on the clipboard. Paste in CLICK, save.</p>
   </li>
 </ol>
 
