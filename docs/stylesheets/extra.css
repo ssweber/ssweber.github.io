@@ -273,24 +273,89 @@
   font-style: italic;
 }
 
-.pl-status {
-  min-height: 1.5em;
-  margin: 0.85rem 0 0;
+.md-typeset ol.round-trip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 1.4rem 0 1.5rem;
+  padding: 0;
+  list-style: none;
+  counter-reset: round-trip;
+}
+
+.md-typeset ol.round-trip > li {
+  position: relative;
+  min-width: 0;
+  margin: 0;
+  padding: 0.9rem 1rem 0.9rem;
+  background: var(--pyrung-panel);
+  border: 1px solid var(--pyrung-border);
+  border-radius: 0.55rem;
+  counter-increment: round-trip;
+}
+
+.md-typeset ol.round-trip > li::before {
+  content: counter(round-trip);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  margin-bottom: 0.55rem;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: var(--pyrung-accent);
+  border-radius: 999px;
+}
+
+.md-typeset ol.round-trip > li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -0.6rem;
+  width: 0.6rem;
+  height: 2px;
+  background: var(--pyrung-border);
+}
+
+.round-trip__where {
+  display: block;
+  margin-bottom: 0.2rem;
   color: var(--pyrung-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  /* No uppercase: "pyrung" is always lowercase. */
+}
+
+.md-typeset ol.round-trip > li strong {
+  display: block;
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+.md-typeset ol.round-trip > li p {
+  margin: 0.45rem 0 0;
+  font-size: 0.74rem;
+  line-height: 1.5;
+  color: var(--pyrung-muted);
+}
+
+.md-typeset .round-trip__rule {
+  margin: 0 0 1.5rem;
+  padding: 0.8rem 1rem;
   font-size: 0.78rem;
-  text-align: center;
+  line-height: 1.5;
+  background: var(--pyrung-accent-soft);
+  border: 1px solid #b8d8c3;
+  border-left: 4px solid var(--pyrung-accent);
+  border-radius: 0.45rem;
 }
 
-.overview-diagram {
+.md-typeset .round-trip__rule strong {
   display: block;
-  width: 100%;
-  margin: 1.25rem 0 1.5rem;
-}
-
-.overview-diagram img {
-  display: block;
-  width: 100%;
-  height: auto;
+  margin-bottom: 0.15rem;
 }
 
 .library-cards {
@@ -364,6 +429,16 @@
   border-radius: 999px;
 }
 
+@media (max-width: 1100px) and (min-width: 721px) {
+  .md-typeset ol.round-trip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .md-typeset ol.round-trip > li:not(:last-child)::after {
+    display: none;
+  }
+}
+
 @media (max-width: 720px) {
   .md-content,
   .md-content__inner,
@@ -380,8 +455,18 @@
 
   .pl-demo__views,
   .visitor-paths,
-  .library-cards {
+  .library-cards,
+  .md-typeset ol.round-trip {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .md-typeset ol.round-trip > li:not(:last-child)::after {
+    top: auto;
+    right: auto;
+    bottom: -0.6rem;
+    left: 1.6rem;
+    width: 2px;
+    height: 0.6rem;
   }
 
   .pl-block {
@@ -418,7 +503,8 @@
 
 [data-md-color-scheme="slate"] .pl-ladder,
 [data-md-color-scheme="slate"] .pl-source,
-[data-md-color-scheme="slate"] .library-card {
+[data-md-color-scheme="slate"] .library-card,
+[data-md-color-scheme="slate"] .round-trip__step {
   background: #101512;
 }
 

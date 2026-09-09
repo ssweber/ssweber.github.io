@@ -13,19 +13,15 @@
   var demoStates = [
     {
       name: "start",
-      statusBefore: "Start pressed. Scanning the latch rung.",
-      statusAfter: "Start pressed. The latch rung fires and Motor turns on.",
       motorBefore: "OFF",
       motorAfter: "ON",
       rungs: [
-        { name: "set", condition: "True", body: "Motor <- True", pass: true, motorAfter: "ON" },
+        { name: "set", condition: "True", body: "Motor ON", pass: true, motorAfter: "ON" },
         { name: "reset", condition: "False", body: "skipped", pass: false },
       ],
     },
     {
       name: "latched",
-      statusBefore: "Start released. Scanning with Motor latched on.",
-      statusAfter: "Start released. Stop open. Motor stays latched.",
       motorBefore: "ON",
       motorAfter: "ON",
       rungs: [
@@ -35,13 +31,11 @@
     },
     {
       name: "stop",
-      statusBefore: "Stop pressed. Scanning the reset rung.",
-      statusAfter: "Stop pressed. The reset rung fires and Motor turns off.",
       motorBefore: "ON",
       motorAfter: "OFF",
       rungs: [
         { name: "set", condition: "False", body: "skipped", pass: false },
-        { name: "reset", condition: "True", body: "Motor <- False", pass: true, motorAfter: "OFF" },
+        { name: "reset", condition: "True", body: "Motor OFF", pass: true, motorAfter: "OFF" },
       ],
     },
   ];
@@ -49,11 +43,10 @@
   function initializeLadderDemo(demo) {
     if (demo.dataset.plInitialized === "true") return;
 
-    var status = demo.querySelector("[data-pl-status]");
     var motor = demo.querySelector("[data-motor-label]");
     var conditions = demo.querySelectorAll("[data-pl-condition-note]");
     var bodies = demo.querySelectorAll("[data-pl-body-note]");
-    if (!status || !motor || conditions.length !== 2 || bodies.length !== 2) return;
+    if (!motor || conditions.length !== 2 || bodies.length !== 2) return;
     demo.dataset.plInitialized = "true";
 
     function setMotor(value) {
@@ -69,7 +62,6 @@
 
     function renderScan(scan) {
       demo.dataset.state = scan.name;
-      status.textContent = scan.statusBefore;
       setMotor(scan.motorBefore);
       scan.rungs.forEach(function (rung, index) {
         conditions[index].textContent = rung.condition;
@@ -80,7 +72,6 @@
 
     function renderStatic(scan) {
       renderScan(scan);
-      status.textContent = scan.statusAfter;
       setMotor(scan.motorAfter);
       demo.dataset.motion = "reduced";
     }
@@ -94,7 +85,6 @@
     }
 
     var scanIndex = 0;
-    var completedCycles = 0;
 
     function runRung(scan, rungIndex, done) {
       if (!document.body.contains(demo)) return;
@@ -113,8 +103,7 @@
           demo.dataset.activeStep = "body";
           if (rung.motorAfter) {
             setMotor(rung.motorAfter);
-            status.textContent = scan.statusAfter;
-          }
+                }
 
           window.setTimeout(function () {
             if (!document.body.contains(demo)) return;
@@ -139,14 +128,9 @@
           return;
         }
 
-        status.textContent = scan.statusAfter;
-        setMotor(scan.motorAfter);
+          setMotor(scan.motorAfter);
         scanIndex += 1;
-        if (scanIndex === demoStates.length) {
-          scanIndex = 0;
-          completedCycles += 1;
-          if (completedCycles === 1) status.setAttribute("aria-live", "off");
-        }
+        if (scanIndex === demoStates.length) scanIndex = 0;
         window.setTimeout(runScan, timing.nextScan);
       }
 
