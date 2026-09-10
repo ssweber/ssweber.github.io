@@ -2,7 +2,7 @@
 
 pyrung turns a Python `with` block into a ladder rung: same rungs, same scan order, same timers as the CLICK PLC, with git, pytest, and a debugger around them.
 
-<section class="pl-demo" data-pl-demo data-state="latched" role="group" aria-labelledby="pl-demo-title">
+<section class="pl-demo" data-pl-demo data-state="start" data-motor-state="on" role="group" aria-labelledby="pl-demo-title">
   <h2 id="pl-demo-title" class="pl-demo__title">Same logic, two views</h2>
   <div class="pl-demo__views">
     <div class="pl-source">
@@ -10,8 +10,8 @@ pyrung turns a Python `with` block into a ladder rung: same rungs, same scan ord
       <div class="pl-block" role="img" aria-label="pyrung source for the Start latch and Stop reset rungs">
         <div><span class="pl-kw">with</span> <span class="pl-cls">Program</span>() <span class="pl-kw">as</span> logic:</div>
         <div class="pl-blank"></div>
-        <div data-pl-condition data-code-rung="set">    <span class="pl-kw">with</span> <span class="pl-cls">rung</span>(Start):<span class="pl-anno" data-pl-condition-note>False</span></div>
-        <div data-pl-body data-code-rung="set">        <span class="pl-fn">latch</span>(Motor)<span class="pl-anno" data-pl-body-note>skipped</span></div>
+        <div data-pl-condition data-code-rung="set">    <span class="pl-kw">with</span> <span class="pl-cls">rung</span>(Start):<span class="pl-anno" data-pl-condition-note>True</span></div>
+        <div data-pl-body data-code-rung="set">        <span class="pl-fn">latch</span>(Motor)<span class="pl-anno" data-pl-body-note>Motor ON</span></div>
         <div class="pl-blank"></div>
         <div data-pl-condition data-code-rung="reset">    <span class="pl-kw">with</span> <span class="pl-cls">rung</span>(Stop):<span class="pl-anno" data-pl-condition-note>False</span></div>
         <div data-pl-body data-code-rung="reset">        <span class="pl-fn">reset</span>(Motor)<span class="pl-anno" data-pl-body-note>skipped</span></div>

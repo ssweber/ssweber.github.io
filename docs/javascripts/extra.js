@@ -2,12 +2,12 @@
   "use strict";
 
   var timing = {
-    firstScan: 1200,
-    conditionResult: 400,
-    bodyResult: 600,
-    holdBody: 1200,
-    nextRung: 200,
-    nextScan: 1400,
+    firstScan: 700,
+    conditionResult: 300,
+    bodyResult: 500,
+    holdBody: 900,
+    nextRung: 350,
+    nextScan: 500,
   };
 
   var demoStates = [
@@ -17,15 +17,6 @@
       motorAfter: "ON",
       rungs: [
         { name: "set", condition: "True", body: "Motor ON", pass: true, motorAfter: "ON" },
-        { name: "reset", condition: "False", body: "skipped", pass: false },
-      ],
-    },
-    {
-      name: "latched",
-      motorBefore: "ON",
-      motorAfter: "ON",
-      rungs: [
-        { name: "set", condition: "False", body: "skipped", pass: false },
         { name: "reset", condition: "False", body: "skipped", pass: false },
       ],
     },
@@ -54,10 +45,13 @@
       demo.dataset.motorState = value.toLowerCase();
     }
 
-    function clearActiveRung() {
-      delete demo.dataset.activeRung;
-      delete demo.dataset.activePass;
-      delete demo.dataset.activeStep;
+    function setRungEvaluation(rung, step) {
+      demo.querySelectorAll(
+        '[data-code-rung="' + rung.name + '"], [data-ladder-rung="' + rung.name + '"]'
+      ).forEach(function (element) {
+        element.dataset.evaluation = step;
+        element.dataset.pass = rung.pass ? "true" : "false";
+      });
     }
 
     function renderScan(scan) {
@@ -67,11 +61,17 @@
         conditions[index].textContent = rung.condition;
         bodies[index].textContent = rung.body;
       });
-      clearActiveRung();
+      demo.querySelectorAll("[data-evaluation]").forEach(function (element) {
+        delete element.dataset.evaluation;
+        delete element.dataset.pass;
+      });
     }
 
     function renderStatic(scan) {
       renderScan(scan);
+      scan.rungs.forEach(function (rung) {
+        setRungEvaluation(rung, "body");
+      });
       setMotor(scan.motorAfter);
       demo.dataset.motion = "reduced";
     }
@@ -80,7 +80,7 @@
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (reducedMotion) {
-      renderStatic(demoStates[1]);
+      renderStatic(demoStates[0]);
       return;
     }
 
@@ -90,24 +90,21 @@
       if (!document.body.contains(demo)) return;
 
       var rung = scan.rungs[rungIndex];
-      demo.dataset.activeRung = rung.name;
-      demo.dataset.activePass = rung.pass ? "true" : "false";
-      demo.dataset.activeStep = "condition";
+      setRungEvaluation(rung, "condition");
 
       window.setTimeout(function () {
         if (!document.body.contains(demo)) return;
-        demo.dataset.activeStep = "condition-result";
+        setRungEvaluation(rung, "condition-result");
 
         window.setTimeout(function () {
           if (!document.body.contains(demo)) return;
-          demo.dataset.activeStep = "body";
+          setRungEvaluation(rung, "body");
           if (rung.motorAfter) {
             setMotor(rung.motorAfter);
-                }
+          }
 
           window.setTimeout(function () {
             if (!document.body.contains(demo)) return;
-            clearActiveRung();
             window.setTimeout(done, timing.nextRung);
           }, timing.holdBody);
         }, timing.bodyResult);
@@ -128,7 +125,7 @@
           return;
         }
 
-          setMotor(scan.motorAfter);
+        setMotor(scan.motorAfter);
         scanIndex += 1;
         if (scanIndex === demoStates.length) scanIndex = 0;
         window.setTimeout(runScan, timing.nextScan);
@@ -137,8 +134,7 @@
       advanceRung(0);
     }
 
-    renderStatic(demoStates[1]);
-    delete demo.dataset.motion;
+    renderScan(demoStates[0]);
     window.setTimeout(runScan, timing.firstScan);
   }
 
