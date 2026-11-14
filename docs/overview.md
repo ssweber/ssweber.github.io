@@ -14,14 +14,14 @@ Ladder leaves CLICK as readable source, gets tested in Python, and comes back th
     <p>Every save regenerates the ladder as pyrung text. Your tests and notes stay put.</p>
   </li>
   <li class="round-trip__step">
-    <span class="round-trip__where">pyrung</span>
-    <strong>Test offline</strong>
-    <p>Run scans, write pytest cases, trace cause and effect. No hardware.</p>
+    <span class="round-trip__where">ClickNick · pyrung</span>
+    <strong>Simulate or test</strong>
+    <p>Run it in the Simulator and ask why. Or write pytest cases and trace cause and effect. No hardware.</p>
   </li>
   <li class="round-trip__step">
     <span class="round-trip__where">ClickNick → CLICK</span>
     <strong>Paste back</strong>
-    <p>Preview Changes shows the rung diff. Copy to Click puts the rungs you pick on the clipboard. Paste in CLICK, save.</p>
+    <p>Review Changes shows the rung diff. Copy to Click puts the rungs you pick on the clipboard. Paste in CLICK, save.</p>
   </li>
 </ol>
 
@@ -36,7 +36,7 @@ Ladder leaves CLICK as readable source, gets tested in Python, and comes back th
 
 ### The app
 
-Nickname autocomplete, program checks, an offline Console, and your ladder (as Python) after every save, beside CLICK Programming Software. Windows.
+A Simulator for your saved program, with a Console that answers why and how. Nickname autocomplete, program checks, and your ladder (as Python) after every save, beside CLICK Programming Software. Windows.
 
 [ClickNick →](https://pyrung.com/clicknick/)
 </div>

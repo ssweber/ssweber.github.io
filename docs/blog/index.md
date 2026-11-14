@@ -4,6 +4,14 @@ Design notes, practical CLICK work, and the engineering history behind pyrung.co
 
 <div class="article-list" markdown>
 <article class="article-item" markdown>
+<div class="article-meta"><time datetime="2026-11-14">November 14, 2026</time><span class="article-tag">ClickNick</span></div>
+
+## [Does Click Have a Simulator? Now It Does](click-plc-simulator.md)
+
+ClickNick runs your saved CLICK program with no PLC attached, and lets you ask why an output is off. The engine underneath is checked against a real Click, one case at a time.
+</article>
+
+<article class="article-item" markdown>
 <div class="article-meta"><time datetime="2026-04-26">April 26, 2026</time><span class="article-tag">Analysis</span></div>
 
 ## [Gradual Typing for Ladder Logic](gradual-typing-for-ladder-logic.md)

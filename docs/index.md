@@ -2,6 +2,8 @@
 
 pyrung turns a Python `with` block into a ladder rung: same rungs, same scan order, same timers as the CLICK PLC, with git, pytest, and a debugger around them.
 
+**New:** [ClickNick](https://pyrung.com/clicknick/) runs your saved CLICK program in a Simulator, with no PLC attached. [Does Click Have a Simulator? Now It Does →](blog/click-plc-simulator.md)
+
 <section class="pl-demo" data-pl-demo data-state="start" data-motor-state="on" role="group" aria-labelledby="pl-demo-title">
   <h2 id="pl-demo-title" class="pl-demo__title">Same logic, two views</h2>
   <div class="pl-demo__views">
@@ -62,11 +64,39 @@ pyrung turns a Python `with` block into a ladder rung: same rungs, same scan ord
 
 Condition on the rung, instruction in the body. Same scan order as the PLC, so what passes in pytest is what runs in CLICK.
 
+<div class="visitor-paths" markdown>
+<div class="visitor-path visitor-path--primary" markdown>
+## Draw your ladder in CLICK?
+
+[ClickNick](https://pyrung.com/clicknick/) sits beside CLICK Programming Software and runs your saved program in a Simulator, with no PLC attached. Work the switches, step scan by scan, and ask `why` an output is off. Windows.
+
+`uv tool install clicknick`
+
+[ClickNick](https://pyrung.com/clicknick/){ .md-button .md-button--primary }
+</div>
+<div class="visitor-path" markdown>
+## Rather write it in Python?
+
+`pip install pyrung`, then the [Quickstart](https://pyrung.com/pyrung/getting-started/quickstart/). Existing CLICK project? ClickNick generates the pyrung source from your `.ckp`.
+
+[pyrung docs](https://pyrung.com/pyrung/){ .md-button }
+</div>
+</div>
+
 ## Why
 
-CLICK PLCs ship with no simulator, no version control beyond copies of a `.ckp`, and no way to test a program short of downloading it to a real PLC. You draw the ladder in CLICK Programming Software, download it to hardware, and hope. The Structured Text crowd has options. The ladder crowd doesn't. pyrung is that option: write and test the logic in Python first, then move the same rungs into CLICK.
+CLICK PLCs ship with no simulator, no version control beyond copies of a `.ckp`, and no way to test a program short of downloading it to a real PLC. You draw the ladder in CLICK Programming Software, download it to hardware, and hope. The Structured Text crowd has options. The ladder crowd doesn't.
+
+pyrung is that option. It is an engine that runs ladder the way a CLICK scans it, and you can reach it two ways: ClickNick simulates the program you saved in CLICK, and pyrung on its own lets you write and test the same rungs in Python first.
+
+A simulator is only as good as its engine, so pyrung is checked against a real CLICK, one case at a time. [Does Click Have a Simulator? Now It Does](blog/click-plc-simulator.md) tells how, and the [conformance page](https://pyrung.com/pyrung/guides/conformance/) has the current count.
+
+!!! warning "A simulator, not a substitute for testing"
+    The conformance results come from one CPU, and yours may differ in ways the suite doesn't reach. Test on the real machine, with proper safeguards, before anything interacts with people. pyrung and ClickNick are independent projects, not affiliated with or endorsed by AutomationDirect.
 
 ## Who it's for
+
+**CLICK programmers** who want to see a program run before it is on a machine. Keep drawing ladder in CLICK. ClickNick simulates what you saved and shows the rung-by-rung difference before you paste anything back.
 
 **Controls engineers** who want to test CLICK logic without hardware. Write with plain tag names, map them to X, Y, C, and DS addresses when you're ready, and let the validator tell you what CLICK's memory banks will and won't accept before you find out at the PLC.
 
@@ -74,23 +104,8 @@ CLICK PLCs ship with no simulator, no version control beyond copies of a `.ckp`,
 
 **Makers and P1AM-200 users** who want a real scan cycle without writing the plumbing. The same program you tested on your laptop generates a CircuitPython scan loop with timers, counters, Modbus TCP, and SD-backed retentive state.
 
-<div class="visitor-paths" markdown>
-<div class="visitor-path visitor-path--primary" markdown>
-## Get started
-
-`pip install pyrung`, then the [Quickstart](https://pyrung.com/pyrung/getting-started/quickstart/). Existing CLICK project? [ClickNick](https://pyrung.com/clicknick/) generates the pyrung source from your `.ckp`.
-
-[pyrung docs](https://pyrung.com/pyrung/){ .md-button .md-button--primary }
-</div>
-<div class="visitor-path" markdown>
 ## Under the hood
 
 [laddercodec](https://pyrung.com/laddercodec/) is the compatibility layer for CLICK ladder data, enabling reliable round-tripping between CLICK and the pyrung/ClickNick toolchain. [pyclickplc](https://pyrung.com/pyclickplc/) talks Modbus TCP to a CLICK PLC.
 
 [How the pieces fit](overview.md){ .md-button } [Blog](blog/index.md){ .md-button }
-</div>
-</div>
-
-!!! tip "Rather keep drawing ladder in CLICK?"
-
-    [**ClickNick**](https://pyrung.com/clicknick/) adds nickname autocomplete, program checks, offline runs, and your ladder (as Python) after every save. Built on pyrung.
