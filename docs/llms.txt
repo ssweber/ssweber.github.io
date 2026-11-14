@@ -4,7 +4,8 @@
 
 - [Overview](https://pyrung.com/overview/): How the projects fit together, the CLICK workflow, and important boundaries.
 - [Blog](https://pyrung.com/blog/): Ladder design, practical CLICK work, and engineering notes.
-- [ClickNick](https://pyrung.com/clicknick/): The CLICK-facing workbench for autocomplete, checks, offline testing, workspaces, and reviewed ladder changes.
+- [ClickNick](https://pyrung.com/clicknick/): The CLICK-facing workbench: a Simulator that runs your saved CLICK program with no PLC attached, plus autocomplete, checks, workspaces, and reviewed ladder changes.
+- [Does Click Have a Simulator? Now It Does](https://pyrung.com/blog/click-plc-simulator/): The ClickNick Simulator, and how pyrung is checked against a real CLICK, case by case.
 - [pyrung](https://pyrung.com/pyrung/): Python ladder source, execution, testing, analysis, verification, and hardware targets.
 - [laddercodec](https://pyrung.com/laddercodec/): CLICK ladder clipboard and program format codec.
 - [pyclickplc](https://pyrung.com/pyclickplc/): CLICK-compatible Modbus TCP and address, nickname, and Data View tooling.

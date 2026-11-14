@@ -20,6 +20,7 @@ nav:
   - pyrung docs: https://pyrung.com/pyrung/
   - Blog:
       - Blog: blog/index.md
+      - Does Click Have a Simulator? Now It Does: blog/click-plc-simulator.md
       - Gradual Typing for Ladder Logic: blog/gradual-typing-for-ladder-logic.md
       - The Complexity Was Never in the Logic: blog/complexity-was-never-in-the-logic.md
       - The Zen of Ladder: blog/zen-of-ladder.md
