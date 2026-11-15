@@ -25,9 +25,14 @@ pyrung 0.16.0, ClickNick 0.24.0).
 ## Shared rules
 
 - **Branches.** Ordinary feature and refactor branches go into an always-releasable `main`. There is no
-  long-lived `dev` trunk in any repo. Sam squash-merges; a session stops at "CI green, ready to merge". A
-  session may push its feature branches and open PRs into `main` without asking (Sam, 2026-11-15). It never
-  pushes `main`, approves or merges a PR, deletes a remote branch or tag, or publishes a release.
+  long-lived `dev` trunk in any repo. Work does not wait on Sam: a session pushes its branch, opens the PR
+  and squash-merges it itself once CI is green on the last commit and a fresh reviewer has passed that commit.
+  A PR whose roadmap label says it needs Sam's judgment, CLICK software or a real PLC waits until that part
+  is done. `main` changes only through PRs; no session pushes to it.
+- **Releases are Sam's gate.** Nothing is tagged, released or published until Sam says so in that session, or
+  does it himself. Publishing the GitHub release is what sends a package to PyPI and, once each repo's docs
+  workflow is moved (see "Before new work starts"), what deploys its docs site. Every PR carries its own
+  CHANGELOG line, so `main` can be released at any commit.
 - **Builds.** BOB arcs stay in every repo as the way a multi-branch job is run. Only pyrung keeps the merge
   train, which now lands on `main`. In laddercodec and ClickNick the queue and trains go and CI is the gate,
   but the hook stays: it gives agent test runs a timeout and a memory cap and keeps reviewer agents
@@ -57,6 +62,9 @@ pyrung 0.16.0, ClickNick 0.24.0).
 3. Cruft sweep in every repo: stale memories, branches, worktrees, closed arcs and old plans, so the roadmaps
    are the only live statement of intent. One hold: laddercodec's validation reports and ledgers stay until the
    classifier dry-run list has been sorted with them.
+4. Before a session merges its own PRs in a repo: that repo's docs workflow deploys on a published release,
+   not on a push to `main` (the build still runs on PRs), so the public docs keep describing the released
+   version. `main` has "require status checks to pass" turned on, so a red PR cannot be merged.
 
 ## Cross-repo work
 
@@ -203,9 +211,11 @@ queue.
 
 ## Only Sam can do these
 
-- Tell each session once, directly, that it may push branches and open PRs from now on; a session does not
-  take that from the planner or from another session. pyrung's scratchpad commit (addcdc4) is on one disk
-  until its branch is pushed.
+- Tell each session once, directly, that it may push branches, open PRs and merge its own PRs into `main`
+  under the shared rules; a session does not take that from the planner or from another session. pyrung's
+  scratchpad commit (addcdc4) is on one disk until its branch is pushed.
+- Turn on "require status checks to pass" for `main` in each repo.
+- Publish each release (the tag is the gate).
 - Enable Windows Sandbox and reboot; run the CLICK installer by hand once inside it to record its answers.
 - Tell the laddercodec session to archive `feat/productivity-codec` as a tag.
 - Create the GitHub repo for the `bob` plugin and push it, then say when each repo may switch over (a moment
