@@ -158,6 +158,15 @@ so the planned "verdict kernel" is the replayer plus `assert` and not a module o
   that stops parsing is reported and not silently lost: raise on a bad row with its line number; keep
   nickname and comment as written; accept true and 1 for Retentive; do not fail the read on a repeated
   nickname; report which columns were present. pyrung's tag map reads through the same function.
+- **Helpers from ClickNick's inventory are on pyclickplc's `main`, unreleased (2026-11-15):**
+  `iter_address_slots()`, `validate_click_name` (in `pyclickplc.validation`), and `read_plc_name` /
+  `write_plc_name` (in `pyclickplc.project`). ClickNick adopts them after pyclickplc's next release, which is
+  Sam's call. Three things change for ClickNick when it does:
+  - `read_plc_name` raises `OSError` or `ValueError` where ClickNick's copy returned None, so
+    `_current_plc_name` and `_simulation_key` catch those and fall back to None.
+  - `MAX_CLICK_NAME_LENGTH` is now `CLICK_NAME_MAX_LENGTH`; it and `CLICK_NAME_PATTERN` are imported from
+    `pyclickplc.validation`, not from the top level.
+  - `iter_address_slots` replaces ClickNick's own copy. The titles of unassigned I/O slots stay in ClickNick.
 - **laddercodec owns the CLICK ladder format and its field rules.** It stays dependency-free at runtime and
   keeps a small private copy of the bank facts. A parity test in laddercodec, with pyclickplc as a dev-only
   dependency, keeps the copy honest.
