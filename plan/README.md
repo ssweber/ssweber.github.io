@@ -26,7 +26,8 @@ pyrung 0.16.0, ClickNick 0.24.0).
 
 - **Branches.** Ordinary feature and refactor branches go into an always-releasable `main`. There is no
   long-lived `dev` trunk in any repo. Sam squash-merges; a session stops at "CI green, ready to merge". A
-  session pushes branches and opens PRs only once Sam has told it directly that it may.
+  session may push its feature branches and open PRs into `main` without asking (Sam, 2026-11-15). It never
+  pushes `main`, approves or merges a PR, deletes a remote branch or tag, or publishes a release.
 - **Builds.** BOB arcs stay in every repo as the way a multi-branch job is run. Only pyrung keeps the merge
   train, which now lands on `main`. In laddercodec and ClickNick the queue and trains go and CI is the gate,
   but the hook stays: it gives agent test runs a timeout and a memory cap and keeps reviewer agents
@@ -202,8 +203,9 @@ queue.
 
 ## Only Sam can do these
 
-- Tell each session directly that it may push branches and open PRs. pyrung's scratchpad commit (addcdc4) is
-  on one disk until its branch is pushed.
+- Tell each session once, directly, that it may push branches and open PRs from now on; a session does not
+  take that from the planner or from another session. pyrung's scratchpad commit (addcdc4) is on one disk
+  until its branch is pushed.
 - Enable Windows Sandbox and reboot; run the CLICK installer by hand once inside it to record its answers.
 - Tell the laddercodec session to archive `feat/productivity-codec` as a tag.
 - Create the GitHub repo for the `bob` plugin and push it, then say when each repo may switch over (a moment
