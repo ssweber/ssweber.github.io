@@ -82,6 +82,10 @@ pyrung 0.16.0, ClickNick 0.24.0).
 
    `if: always()` is needed: without it the job is skipped when a test fails, and a skipped required check
    counts as passing.
+7. In the same PR, `ci.yml` stops running on a push to `main`: its triggers become `pull_request` into `main`
+   and `workflow_dispatch`. Since a PR must be up to date to merge, the merged tree is the tree its PR already
+   tested, so the run after the merge repeated it (about 85 runner-minutes each time in pyrung). One cost: the
+   dependency cache is no longer refreshed from `main`, so a new PR starts with a cold cache.
 
 ### Docs deploy: one rule for all four repos
 
