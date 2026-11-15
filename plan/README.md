@@ -65,9 +65,23 @@ pyrung 0.16.0, ClickNick 0.24.0).
 4. Before a session merges its own PRs in a repo, the docs site follows the release, by the one rule below, so
    the public docs keep describing the released version.
 5. Done 2026-11-15: `main` in all four repos requires its CI jobs and the docs build to pass, on a branch that
-   is up to date, so a red or stale PR cannot be merged. The required names contain the Python version
-   (`build (ubuntu-latest, 3.11)` and so on). A repo that changes its test matrix tells Sam, who edits the
-   ruleset; until then every PR there waits on a check that never runs.
+   is up to date, so a red or stale PR cannot be merged. The required names still contain the Python version
+   (`build (ubuntu-latest, 3.11)` and so on), so until item 6 is done, a repo does not change its test matrix.
+6. Each repo adds one job named `ci` at the end of `ci.yml`, which passes only when every job of the test
+   matrix passed. When all four have it on `main`, Sam swaps each ruleset to require two fixed names, `ci` and
+   the docs `build`, and a matrix change no longer needs a ruleset edit.
+
+   ```yaml
+     ci:
+       if: always()
+       needs: [build]
+       runs-on: ubuntu-latest
+       steps:
+         - run: test "${{ needs.build.result }}" = "success"
+   ```
+
+   `if: always()` is needed: without it the job is skipped when a test fails, and a skipped required check
+   counts as passing.
 
 ### Docs deploy: one rule for all four repos
 
@@ -241,6 +255,7 @@ queue.
   under the shared rules; a session does not take that from the planner or from another session. pyrung's
   scratchpad commit (addcdc4) is on one disk until its branch is pushed.
 - Publish each release (the tag is the gate).
+- Swap the four rulesets to the fixed check names once every repo has the `ci` job on `main`.
 - Enable Windows Sandbox and reboot; run the CLICK installer by hand once inside it to record its answers.
 - Tell the laddercodec session to archive `feat/productivity-codec` as a tag.
 - Create the GitHub repo for the `bob` plugin and push it, then say when each repo may switch over (a moment
