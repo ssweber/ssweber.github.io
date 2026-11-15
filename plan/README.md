@@ -62,9 +62,32 @@ pyrung 0.16.0, ClickNick 0.24.0).
 3. Cruft sweep in every repo: stale memories, branches, worktrees, closed arcs and old plans, so the roadmaps
    are the only live statement of intent. One hold: laddercodec's validation reports and ledgers stay until the
    classifier dry-run list has been sorted with them.
-4. Before a session merges its own PRs in a repo: that repo's docs workflow deploys on a published release,
-   not on a push to `main` (the build still runs on PRs), so the public docs keep describing the released
-   version. `main` has "require status checks to pass" turned on, so a red PR cannot be merged.
+4. Before a session merges its own PRs in a repo, two things are in place. `main` has "require status checks
+   to pass" turned on, so a red PR cannot be merged. And the docs site follows the release, by the one rule
+   below, so the public docs keep describing the released version.
+
+### Docs deploy: one rule for all four repos
+
+A docs site is deployed in one way only: `docs.yml` is started by hand or by the release, on `main`, and
+builds the release's tag.
+
+- **`docs.yml` triggers:** `pull_request` into `main`, which builds and checks and never deploys; and
+  `workflow_dispatch` with an optional `ref` input. No `push` trigger and no `release` trigger.
+- **What it builds:** on a dispatch it checks out `ref`. An empty `ref` means the latest release's tag
+  (`gh release view`). The workflow file is always `main`'s copy, so a broken deploy is repaired on `main` and
+  run again without a new release.
+- **Who starts it:** `publish.yml` runs on a published release. Its last job, after the PyPI upload and
+  anything the docs read from the release (ClickNick's trust report), runs
+  `gh workflow run docs.yml --ref main -f ref=<tag>`. It needs `actions: write` and is skipped for a
+  pre-release.
+- **Details that have bitten:** `concurrency: pages` sits on the deploy job, not on the workflow, or a queued
+  PR build can displace a waiting deploy. The cache-busting suffix comes from the commit that was built
+  (`git rev-parse`), not from `GITHUB_SHA`. `gh release create --target` needs a full sha.
+- **Settings:** the `github-pages` environment allows `main` only. No tag rule is needed.
+- **Proof after the change merges:** one run with an empty `ref` redeploys the current release's docs. It is a
+  deploy, so it is run on Sam's word.
+- **A docs fix between releases** is a run by Sam with `ref` set to a commit on `main`. No session starts a
+  deploy with a `ref` that is not a release tag.
 
 ## Cross-repo work
 
