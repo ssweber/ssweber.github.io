@@ -30,7 +30,8 @@ pyrung 0.16.0, ClickNick 0.24.0).
 - **Builds.** BOB arcs stay in every repo as the way a multi-branch job is run. Only pyrung keeps the merge
   train, which now lands on `main`. In laddercodec and ClickNick the queue and trains go and CI is the gate,
   but the hook stays: it gives agent test runs a timeout and a memory cap and keeps reviewer agents
-  read-only. ClickNick's CI runs its tests on its Windows runner, not only lint.
+  read-only. ClickNick's CI runs its tests on its Windows runner, not only lint. The BOB skill, the agent
+  files, the hook and the queue have one source (item 7); no repo edits its own copy.
 - **A branch that needs an unreleased sibling** (a ClickNick branch that needs a new pyrung, say) is tested
   locally against the sibling checkout and merges after the sibling's release.
 - **Arc folders stay out of git.** They are working state (ledgers, reviews, logs). When an arc closes, its open
@@ -168,6 +169,28 @@ pyrung removes its exhaustive search, the `Proven` verdict, lock files, the `pyr
 The search was the only soundness check the facts had. Its replacement is part of the deletion: the facts are
 checked against real runs over the corpus and the conformance programs.
 
+### 7. One source for the agent tooling (all four)
+
+Until 2026-11-15 the BOB skill, the three agent files, the hook and the merge queue were copied into each
+repo, and four sessions were fixing the copies separately. They now have one source: a Claude Code plugin in
+its own repo, `bob`, built by the planner's agent from laddercodec's `chore/agentguard` branch and pyrung's
+queue.
+
+- **Two layers.** The guard is common: the hook, its fail-closed shim, the bounded test runner, the worktree
+  helpers, the skill and the agent files. The queue (stages, presets, trains) is an add-on that only pyrung
+  turns on.
+- **Each repo keeps two files:** `.claude/bob/config.toml` and `.claude/bob/profile.md`. Everything else under
+  `devtools/mergeq`, `devtools/agentguard`, `.claude/skills/bob` and `.claude/agents/bob-*` is deleted when
+  the repo adopts the plugin.
+- **Until the plugin is ready,** no session changes the tooling. pyrung's two-commit queue fix
+  (`chore/mergeq-main`) goes in, because its queue does not work without it. laddercodec's
+  `chore/agentguard` stays unmerged, ClickNick's queue trim is dropped, and pyclickplc's PR #19 stays
+  unmerged and is closed once pyclickplc has adopted the plugin.
+- **Adoption** is one small PR per repo. The hook fails closed, so every open session in a repo reloads its
+  plugins when that repo switches over.
+- **Tooling faults** found after that are fixed in the plugin repo, once. Its `scratchpad/roadmap.md` holds
+  the open ones.
+
 ## Order by repo
 
 | Repo | Order |
@@ -183,6 +206,8 @@ checked against real runs over the corpus and the conformance programs.
   on one disk until its branch is pushed.
 - Enable Windows Sandbox and reboot; run the CLICK installer by hand once inside it to record its answers.
 - Tell the laddercodec session to archive `feat/productivity-codec` as a tag.
+- Create the GitHub repo for the `bob` plugin and push it, then say when each repo may switch over (a moment
+  when its sessions are idle).
 - Three checks in CLICK, or leave them for the runner: leading zeros and surrounding spaces in an address;
   importing a bare space as a Text initial value; whether CLICK strips spaces from nicknames and comments.
 
