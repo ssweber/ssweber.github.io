@@ -62,9 +62,12 @@ pyrung 0.16.0, ClickNick 0.24.0).
 3. Cruft sweep in every repo: stale memories, branches, worktrees, closed arcs and old plans, so the roadmaps
    are the only live statement of intent. One hold: laddercodec's validation reports and ledgers stay until the
    classifier dry-run list has been sorted with them.
-4. Before a session merges its own PRs in a repo, two things are in place. `main` has "require status checks
-   to pass" turned on, so a red PR cannot be merged. And the docs site follows the release, by the one rule
-   below, so the public docs keep describing the released version.
+4. Before a session merges its own PRs in a repo, the docs site follows the release, by the one rule below, so
+   the public docs keep describing the released version.
+5. Done 2026-11-15: `main` in all four repos requires its CI jobs and the docs build to pass, on a branch that
+   is up to date, so a red or stale PR cannot be merged. The required names contain the Python version
+   (`build (ubuntu-latest, 3.11)` and so on). A repo that changes its test matrix tells Sam, who edits the
+   ruleset; until then every PR there waits on a check that never runs.
 
 ### Docs deploy: one rule for all four repos
 
@@ -237,7 +240,6 @@ queue.
 - Tell each session once, directly, that it may push branches, open PRs and merge its own PRs into `main`
   under the shared rules; a session does not take that from the planner or from another session. pyrung's
   scratchpad commit (addcdc4) is on one disk until its branch is pushed.
-- Turn on "require status checks to pass" for `main` in each repo.
 - Publish each release (the tag is the gate).
 - Enable Windows Sandbox and reboot; run the CLICK installer by hand once inside it to record its answers.
 - Tell the laddercodec session to archive `feat/productivity-codec` as a tag.
