@@ -62,30 +62,22 @@ pyrung 0.16.0, ClickNick 0.24.0).
 3. Cruft sweep in every repo: stale memories, branches, worktrees, closed arcs and old plans, so the roadmaps
    are the only live statement of intent. One hold: laddercodec's validation reports and ledgers stay until the
    classifier dry-run list has been sorted with them.
-4. Before a session merges its own PRs in a repo, the docs site follows the release, by the one rule below, so
-   the public docs keep describing the released version.
-5. Done 2026-11-15: `main` in all four repos requires its CI jobs and the docs build to pass, on a branch that
-   is up to date, so a red or stale PR cannot be merged. The required names still contain the Python version
-   (`build (ubuntu-latest, 3.11)` and so on), so until item 6 is done, a repo does not change its test matrix.
-6. Each repo adds one job named `ci` at the end of `ci.yml`, which passes only when every job of the test
-   matrix passed. When all four have it on `main`, Sam swaps each ruleset to require two fixed names, `ci` and
-   the docs `build`, and a matrix change no longer needs a ruleset edit.
 
-   ```yaml
-     ci:
-       if: always()
-       needs: [build]
-       runs-on: ubuntu-latest
-       steps:
-         - run: test "${{ needs.build.result }}" = "success"
-   ```
+### How `main` is protected (in place in all four repos since 2026-11-15)
 
-   `if: always()` is needed: without it the job is skipped when a test fails, and a skipped required check
-   counts as passing.
-7. In the same PR, `ci.yml` stops running on a push to `main`: its triggers become `pull_request` into `main`
-   and `workflow_dispatch`. Since a PR must be up to date to merge, the merged tree is the tree its PR already
-   tested, so the run after the merge repeated it (about 85 runner-minutes each time in pyrung). One cost: the
-   dependency cache is no longer refreshed from `main`, so a new PR starts with a cold cache.
+- **Ruleset on `main`:** no deletion, no force push, changes only through a pull request, and two required
+  checks on a branch that is up to date: `ci` and the docs `build`.
+- **`ci` is one job at the end of `ci.yml`** that passes only when every test job passed. A repo that adds a
+  test job adds it to `ci`'s `needs` and to its test. `if: always()` stays: without it the job is skipped when
+  a test fails, and a skipped required check counts as passing. A repo may change its Python versions without
+  a ruleset edit.
+- **CI runs on pull requests and by hand,** not again on a push to `main`: a PR must be up to date to merge,
+  so the merged tree is the tree its PR already tested. One cost: a new PR starts with a cold dependency cache.
+- **Merged branches are deleted on GitHub automatically.** Check a PR's state before pushing to its branch
+  again: a push to a merged branch re-creates it.
+- **pyrung, still to land:** its CI trims to the full suite on Python 3.11 and 3.14, with only the tests of
+  its bytecode-reading modules on 3.12 and 3.13. Its local gate keeps its own `test` stage: Sam wants a
+  failure found before the push.
 
 ### Docs deploy: one rule for all four repos
 
@@ -105,8 +97,9 @@ builds the release's tag.
   PR build can displace a waiting deploy. The cache-busting suffix comes from the commit that was built
   (`git rev-parse`), not from `GITHUB_SHA`. `gh release create --target` needs a full sha.
 - **Settings:** the `github-pages` environment allows `main` only. No tag rule is needed.
-- **Proof after the change merges:** one run with an empty `ref` redeploys the current release's docs. It is a
-  deploy, so it is run on Sam's word.
+- **Proof still owed in each repo:** every `docs.yml` follows this rule on `main`, but no deploy has run
+  through it. One run with an empty `ref` redeploys the current release's docs. It is a deploy, so it is run
+  on Sam's word.
 - **A docs fix between releases** is a run by Sam with `ref` set to a commit on `main`. No session starts a
   deploy with a `ref` that is not a release tag.
 
@@ -244,13 +237,11 @@ queue.
 - **Each repo keeps two files:** `.claude/bob/config.toml` and `.claude/bob/profile.md`. Everything else under
   `devtools/mergeq`, `devtools/agentguard`, `.claude/skills/bob` and `.claude/agents/bob-*` is deleted when
   the repo adopts the plugin.
-- **Until the plugin is ready,** no session changes the tooling. pyrung's two-commit queue fix
-  (`chore/mergeq-main`) goes in, because its queue does not work without it. laddercodec's
-  `chore/agentguard` stays unmerged, ClickNick's queue trim is dropped, and pyclickplc's PR #19 stays
-  unmerged and is closed once pyclickplc has adopted the plugin.
-- **Adoption** is one small PR per repo. The hook fails closed, so every open session in a repo reloads its
-  plugins when that repo switches over.
-- **Tooling faults** found after that are fixed in the plugin repo, once. Its `scratchpad/roadmap.md` holds
+- **All four repos have adopted it** (2026-11-15), and their own copies are deleted. An install is pinned to
+  the plugin commit it was made from; picking up a later commit is `claude plugin marketplace update bob`,
+  `claude plugin update bob@bob` in each repo, and a restart of its sessions. That path has not been run yet.
+- **Tooling faults** are reported to the planner and fixed in the plugin repo, once. No repo patches its own
+  config around one. Its `scratchpad/roadmap.md` holds
   the open ones.
 
 ## Order by repo
@@ -268,11 +259,10 @@ queue.
   under the shared rules; a session does not take that from the planner or from another session. pyrung's
   scratchpad commit (addcdc4) is on one disk until its branch is pushed.
 - Publish each release (the tag is the gate).
-- Swap the four rulesets to the fixed check names once every repo has the `ci` job on `main`.
+- Say when each repo runs its docs-deploy proof.
+- Edit a ruleset, if a repo ever renames its `ci` job or its docs `build` job.
 - Enable Windows Sandbox and reboot; run the CLICK installer by hand once inside it to record its answers.
 - Tell the laddercodec session to archive `feat/productivity-codec` as a tag.
-- Create the GitHub repo for the `bob` plugin and push it, then say when each repo may switch over (a moment
-  when its sessions are idle).
 - Three checks in CLICK, or leave them for the runner: leading zeros and surrounding spaces in an address;
   importing a bare space as a Text initial value; whether CLICK strips spaces from nicknames and comments.
 
