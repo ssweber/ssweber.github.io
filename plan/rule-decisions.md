@@ -25,7 +25,13 @@ Then the rule, proposed by the planner and not yet confirmed by Sam:
 3. The editor accepts it and there is no reading: nobody refuses it.
 4. Anything the rule does not settle goes to Sam, one row at a time.
 
-laddercodec has to decode whatever a real project holds, so it refuses only what the editor refuses.
+Corrected on 2026-11-16 by the laddercodec session: decoding does not depend on these checks (a refused
+instruction decodes as a raw instruction and keeps its bytes), so that is not a reason for the rule. And
+laddercodec also refuses what breaks the encoding or crashes CLICK on a paste, which no dialog sees; those
+refusals stay whatever the editor says.
+
+The samples are thin. Several rows were tried with a handful of values (A1, A2 and A4 with four or fewer
+banks; the SD rows with SD1 and SD29 to SD32 only), and no rule should be written from them alone.
 
 ## A. pyrung refuses, laddercodec accepts
 
@@ -39,7 +45,7 @@ the rule.
 | A3 | RAND with equal bounds: `RAND(5,5)` | `CLK_RAND_EQUAL_BOUNDS` | not needed | Refuses (OBJ-1001). `RAND(10,1)`, bounds the wrong way round, is accepted | laddercodec gains the rule |
 | A4 | SUM over a TXT range | `CLK_MATH_SUM_BANK_NOT_AVAILABLE` | not needed | Refuses (OBJ-1002), as it does SUM over CT | laddercodec gains the rule |
 | A5 | Copy into a read-only SD: `SD1` | `CLK_BANK_NOT_WRITABLE` | not needed | Refuses SD1 (OBJ-004); accepts SD29, a writable SD | laddercodec gains: a read-only SD is not a copy destination |
-| A6 | Coil on SC162; laddercodec's writable SC list has SC162 to SC171 and SC303 to SC326 | `CLK_BANK_NOT_WRITABLE` | | Accepts an Out on SC162, SC171, SC303 and SC326 | laddercodec is right. pyrung's ladder-writable SC list gains them unless a PLC reading says otherwise; whether pyclickplc's list means the same thing is for the pyclickplc session |
+| A6 | Coil on SC162. laddercodec's writable SC list is SC50, 51, 53, 55, 60, 61, 65 to 67, 75, 76, 120, 121, 162, 165, 168, 171, 303 to 306 and 323 to 326; pyrung's and pyclickplc's stop at SC121 | `CLK_BANK_NOT_WRITABLE` | | Accepts an Out on SC162, SC171, SC303 and SC326, all of them in laddercodec's list. Nothing in a gap was tried: SC163 and SC310 should be refused | laddercodec's list looks right; try the gaps before pyrung takes it. Whether pyclickplc's list means the same thing is for the pyclickplc session |
 | A7 | Block copy DS to SD | `CLK_COPY_BANK_INCOMPATIBLE` | | Refuses into SD1 (OBJ-004) and into SD29, whose range reaches read-only SD30 (OBJ-018); accepts into SD31..SD32 | Both change: the rule is that every address in the destination range is writable. pyrung stops refusing the pair; laddercodec gains the range check |
 | A8 | Block copy TXT to TXT | `CLK_COPY_BANK_INCOMPATIBLE` | | Accepts `TXT1..TXT2` into `TXT11` | Waits on the PLC reading. With none, pyrung's list gains the pair |
 | A9 | Math result into SD, decimal | `CLK_MATH_DEST_BANK` | | Refuses SD1 (OBJ-003); accepts SD29 | Both change: a writable SD can be a Math result. pyrung allows it; laddercodec refuses a read-only one |
