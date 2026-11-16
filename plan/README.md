@@ -247,6 +247,7 @@ from a real PLC. Jobs waiting for it:
 - what CLICK turns constants into (laddercodec's canonical constants);
 - pyclickplc's open questions: spaces around an address, tabs, data-dump punctuation, section-name case in
   `Project.ini`;
+- what is left of `rule-decisions.md`: the Receive dialog (B7) and the rung shapes of section D;
 - the three small checks under "Only Sam can do these".
 
 ### 5. Test corpus (pyrung first; later all four)
@@ -301,8 +302,7 @@ queue.
 
 - Publish each release (the tag is the gate). Waiting now: a laddercodec release, which carries the
   undecoded marker to pyrung and ClickNick.
-- Fill the "Editor" column of `rule-decisions.md` with CLICK open (23 rows), confirm its deciding rule,
-  then decide the rows the rule does not settle. Row D1 is
+- Confirm the deciding rule in `rule-decisions.md`, then decide the rows it does not settle. Row D1 is
   already one: whether pyrung's importer keeps accepting rungs that CLICK's syntax check refuses.
 - Say when each repo runs its docs-deploy proof.
 - Edit a ruleset, if a repo ever renames its `ci` job or its docs `build` job.
