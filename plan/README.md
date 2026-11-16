@@ -203,10 +203,13 @@ Order (Sam, 2026-11-16: validation moves onto laddercodec first, as soon as it c
    writer for `main.csv` plus `subroutines/`.
 6. **Import reads laddercodec's objects.** Last: the smallest clean saving and the hardest blocker (below).
 
-**Moves into laddercodec** (Sam, 2026-11-15: "yes probably"), once step 5 gives pyrung a laddercodec program
-to pass in: the program-structure rules (for-loop nesting depth, a oneshot or a return inside a loop, nested
-calls, the 8,000-step limit) and the step estimate, as a check on a whole program. Proposed by the planner,
-not yet ruled on: spelling a constant from a Python value rides the canonical-constants branch.
+**Moves into laddercodec** (Sam, 2026-11-16):
+
+- The program-structure rules (for-loop nesting depth, a oneshot or a return inside a loop, nested calls,
+  the 8,000-step limit) and the step estimate, as a check on a whole program. This comes once step 5 gives
+  pyrung a laddercodec program to pass in.
+- Spelling a constant from a Python value (hex, Real, text). It rides laddercodec's canonical-constants
+  branch.
 
 **Open, Sam to decide: rungs that CLICK's syntax check refuses.** pyrung's importer accepts bridges and pins
 that share contacts; it was written before anyone knew what the syntax check refuses. laddercodec refuses
