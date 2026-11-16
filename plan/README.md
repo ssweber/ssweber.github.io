@@ -166,26 +166,11 @@ acceptance is only the lack of one. What a pyrung user is told is both sets of r
 
 The two sets are different kinds of finding (Sam, 2026-11-15): laddercodec's are what CLICK's editor will
 not accept in a field; many of pyrung's corner cases are what a real PLC was seen to do in conformance
-testing. Proposed by the planner from that, not yet ruled on:
+testing.
 
-- laddercodec refuses exactly what the editor refuses and nothing more, because it has to decode whatever a
-  real project holds. A refusal that rests on PLC behaviour stays in pyrung, as a finding of its own kind
-  ("CLICK accepts this, and the PLC does X"), and is not a second copy of anything.
-- Each rule only pyrung has is sorted by the pyrung session: it names the conformance reading behind the
-  rule, or says there is none. With a reading, the rule stays in pyrung. Without one, it is either an
-  editor rule laddercodec lacks or a pair nobody added to a list, and the runner asks CLICK.
-
-Of the 34 field rules, 25 refuse the same thing in both. The rest, as probed:
-
-- Refused by one side only, per pair or bank: block copy, pack and unpack bank pairs; Math result banks;
-  Receive destination banks. pyrung's tables here are written as lists of what is allowed, so a refusal can
-  be a pair nobody added.
-- Only pyrung refuses: Word and non-Word operands in one math, RAND bound type, RAND equal bounds, SUM over
-  TXT, a copy into a read-only SD.
-- Only laddercodec refuses: about ten things, among them a negative timer preset, a counter preset over
-  32 bits, a shift on Y, a search result outside C. pyrung takes these on when its export builds
-  laddercodec's objects.
-- laddercodec's writable SC list has SC162 to SC171 and SC303 to SC326; pyrung's and pyclickplc's do not.
+Of the 34 field rules, 25 refuse the same thing in both. Every case where they differ is a row in
+[`rule-decisions.md`](rule-decisions.md), with the rule for deciding a row. Rows are decided there, one at
+a time, and nowhere else.
 
 Order:
 
@@ -256,8 +241,8 @@ from a real PLC. Jobs waiting for it:
 - what CLICK turns constants into (laddercodec's canonical constants);
 - pyclickplc's open questions: spaces around an address, tabs, data-dump punctuation, section-name case in
   `Project.ini`;
-- the field rules where pyrung and laddercodec disagree (item 2);
-- what the syntax check says about the rung shapes pyrung imports and laddercodec refuses (item 2);
+- the "Editor" column of `rule-decisions.md`: the field rules and rung shapes where pyrung and laddercodec
+  disagree;
 - the three small checks under "Only Sam can do these".
 
 ### 5. Test corpus (pyrung first; later all four)
@@ -312,7 +297,8 @@ queue.
 
 - Publish each release (the tag is the gate). Waiting now: a laddercodec release, which carries the
   undecoded marker to pyrung and ClickNick.
-- Decide whether pyrung's importer keeps accepting rungs that CLICK's syntax check refuses (item 2).
+- Confirm the deciding rule in `rule-decisions.md`, then decide the rows it does not settle. Row D1 is
+  already one: whether pyrung's importer keeps accepting rungs that CLICK's syntax check refuses.
 - Say when each repo runs its docs-deploy proof.
 - Edit a ruleset, if a repo ever renames its `ci` job or its docs `build` job.
 - Delete the remote `dev` branch in pyrung and in ClickNick.
