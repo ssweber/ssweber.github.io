@@ -96,7 +96,7 @@ builds laddercodec's objects. Listed so that nobody adds a second rule in pyrung
 
 | # | Case | pyrung | pyclickplc | CLICK | By the rule |
 |---|---|---|---|---|---|
-| E1 | RTC system nicknames (SD21, SD22, SD24, SD25, SD26) | `_RTC_Month`, `_RTC_Day`, ... | `_RTC_Month (1-12)`, `_RTC_Day (1-31)`, ... | Not an editor question. CLICK's installed `PLCType.ini` names them `_RTC_Month`, `_RTC_Day`, `_RTC_Hour`, `_RTC_Minute`, `_RTC_Second`, with no range in the name. A new project's database has no row for them | pyrung's names match CLICK's. The pyclickplc session agrees and has queued the change |
+| E1 | RTC system nicknames (SD21, SD22, SD24, SD25, SD26) | `_RTC_Month`, `_RTC_Day`, ... | `_RTC_Month (1-12)`, `_RTC_Day (1-31)`, ... | CLICK's installed `PLCType.ini` names them `_RTC_Month`, `_RTC_Day`, `_RTC_Hour`, `_RTC_Minute`, `_RTC_Second`, with no range in the name. A new project's database had no row for them, but CLICK does not always fill in system names until the Address Picker has been opened and used once (Sam, 2026-11-16) | Open: the runner opens and uses the Address Picker once, then reads what the project's database holds. pyclickplc holds its change until then |
 
 Closed: the instruction name `calc` came from a stale pyrung fixture that nothing reads; the pyrung session
 is deleting it.

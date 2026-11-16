@@ -92,9 +92,7 @@ builds the release's tag.
   PR build can displace a waiting deploy. The cache-busting suffix comes from the commit that was built
   (`git rev-parse`), not from `GITHUB_SHA`. `gh release create --target` needs a full sha.
 - **Settings:** the `github-pages` environment allows `main` only. No tag rule is needed.
-- **Proof still owed in each repo:** every `docs.yml` follows this rule on `main`, but no deploy has run
-  through it. One run with an empty `ref` redeploys the current release's docs. It is a deploy, so it is run
-  on Sam's word.
+- **Proved in each repo** (Sam, 2026-11-16): a deploy has run through this rule in all four.
 - **A docs fix between releases** is a run by Sam with `ref` set to a commit on `main`. No session starts a
   deploy with a `ref` that is not a release tag.
 
@@ -187,7 +185,10 @@ Order (Sam, 2026-11-16: validation moves onto laddercodec first, as soon as it c
    verdict is a row in `rule-decisions.md`. Until laddercodec has caught up (step 4), pyrung keeps its own
    check for each rule where it refuses and laddercodec does not (section A of the table).
 3. **The runner: whole grids, not samples.** For each dialog field, every bank and constant kind is tried,
-   and the answers are kept as test data in laddercodec. That is the one place CLICK's field rules are
+   and the answers are kept as test data in laddercodec. laddercodec writes the case lists, ClickNick's
+   runner runs them, and laddercodec commits cases and answers (Sam, 2026-11-16). The runner gains what that
+   needs: a long run that writes results as it goes and can start again part-way, and more dialogs as a grid
+   asks for them, Receive first. That is the one place CLICK's field rules are
    recorded; laddercodec's rules are tested against it, and pyrung reaches it through laddercodec. A paste
    followed by a copy back is a separate question from the dialog and gets its own runs.
 4. **laddercodec: catch up with the editor.** First, decoding stops depending on the checks: a stored
@@ -302,18 +303,18 @@ queue.
 
 | Repo | Order |
 |---|---|
-| pyrung | 1. Deletions release (record machinery, search, public surface), then the `Rung` to `rung` rename in tests as its own commit. 2. CLICK-match fixes from the 2026-11-10 readings and the watchdog stop. 3. Recording core. 4. One door. 5. float32 Reals, the per-PLC definitions table, the history API, calc into a pointer. `how()` work follows the recording core. Validation onto laddercodec (item 2, step 2) starts as soon as laddercodec has released the new error; where it sits against the items above is Sam's call. Export through laddercodec comes later. |
+| pyrung | 1. Deletions release (record machinery, search, public surface), then the `Rung` to `rung` rename in tests as its own commit. 2. CLICK-match fixes from the 2026-11-10 readings and the watchdog stop. 3. Recording core. 4. One door. 5. float32 Reals, the per-PLC definitions table, the history API, calc into a pointer. `how()` work follows the recording core. Validation onto laddercodec (item 2, step 2) comes straight after the `Rung` to `rung` rename and ahead of the CLICK-match fixes and the recording core (Sam, 2026-11-16); it needs laddercodec's release with the new error. Export through laddercodec comes later. |
 | laddercodec | Finish the field-rule restructure. The parity test against pyclickplc. Canonical constants as their own branch. For pyrung (item 2), first: the error that carries every refusal, a uniform field and a reason, and a release. Then decoding that does not depend on the checks, and rules tightened to the runner's grids. Later the tree-in, rows-out entry and the whole-program check. |
 | pyclickplc | The RTC nicknames. Otherwise only CLICK questions remain, for the runner. The pymodbus rewrite waits until something forces it; it does not involve pyrung. |
 | ClickNick | The runner's grids for item 2 (Math, Copy and Out first; then the other dialogs). Finish `ConnectionSession` as the owner of window and project state, then split `ClickNickApp`. Then the ClickNick side of recording. |
 
 ## Only Sam can do these
 
-- Publish each release (the tag is the gate). Waiting now: a laddercodec release, which carries the
-  undecoded marker to pyrung and ClickNick.
+- Publish each release (the tag is the gate). As of 2026-11-16: laddercodec's waits for the new error, so
+  one release carries it and the undecoded marker; pyclickplc's (#31) waits a little longer; pyrung's
+  deletions release is undecided, and this site's PR #22 merges with it.
 - Confirm the deciding rule in `rule-decisions.md`, then decide the rows it does not settle. Row D1 is
   already one: whether pyrung's importer keeps accepting rungs that CLICK's syntax check refuses.
-- Say when each repo runs its docs-deploy proof.
 - Edit a ruleset, if a repo ever renames its `ci` job or its docs `build` job.
 - Delete the remote `dev` branch in pyrung and in ClickNick.
 - Enable Windows Sandbox, only if the runner's desktop mode proves unworkable.
