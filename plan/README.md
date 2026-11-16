@@ -215,7 +215,9 @@ Order (Sam, 2026-11-16: validation moves onto laddercodec first, as soon as it c
 runner has asked (`rule-decisions.md` section D): the check refuses a bridge, pins that share contacts, a
 reset wire that also feeds an output, and a reset with nothing wired to it. pyrung's importer accepts all of
 them and keeps doing so, so that someone who draws such a rung is told that CLICK will not accept it as
-drawn. What they are told comes from laddercodec's `check()`, which is being built to report what the Syntax
+drawn. Such a rung can also sit in a saved project: CLICK saves a project that fails the Syntax Check and
+only blocks the write to the PLC (Sam, 2026-11-16), so an importer that refused it could not open that
+project. What they are told comes from laddercodec's `check()`, which is being built to report what the Syntax
 Check reports; pyrung relays those findings and holds no rule of its own for these shapes, so its bridge
 warning goes when the relay arrives. This waits for a laddercodec release with `check()`; the importer stays
 as it is until then.
