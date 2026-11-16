@@ -161,18 +161,30 @@ unconfirmed until the owning sessions have checked):
 | Validation and `capabilities.py` | about 4,600 | about 2,200: 34 of the 60 `CLK_` codes are field rules |
 
 **Where the two disagree, the refusal wins by default** (Sam, 2026-11-15; this replaces "laddercodec's rule
-wins"). Each library refuses things the other was never taught, so the working rule set is both sets of
-refusals together: a rule was added when something was found not to be allowed, so a refusal is a finding
-and an acceptance is only the lack of one. CLICK is asked, through the runner, when a refusal is doubted. Of
-the 34 field rules, 25 refuse the same thing in both. The rest, as probed:
+wins"). A rule was added when something was found not to be allowed, so a refusal is a finding and an
+acceptance is only the lack of one. What a pyrung user is told is both sets of refusals together.
+
+The two sets are different kinds of finding (Sam, 2026-11-15): laddercodec's are what CLICK's editor will
+not accept in a field; many of pyrung's corner cases are what a real PLC was seen to do in conformance
+testing. Proposed by the planner from that, not yet ruled on:
+
+- laddercodec refuses exactly what the editor refuses and nothing more, because it has to decode whatever a
+  real project holds. A refusal that rests on PLC behaviour stays in pyrung, as a finding of its own kind
+  ("CLICK accepts this, and the PLC does X"), and is not a second copy of anything.
+- Each rule only pyrung has is sorted by the pyrung session: it names the conformance reading behind the
+  rule, or says there is none. With a reading, the rule stays in pyrung. Without one, it is either an
+  editor rule laddercodec lacks or a pair nobody added to a list, and the runner asks CLICK.
+
+Of the 34 field rules, 25 refuse the same thing in both. The rest, as probed:
 
 - Refused by one side only, per pair or bank: block copy, pack and unpack bank pairs; Math result banks;
-  Receive destination banks. These tables are written as lists of what is allowed, so a refusal here can be
-  a pair nobody added. They are the first to ask CLICK about.
+  Receive destination banks. pyrung's tables here are written as lists of what is allowed, so a refusal can
+  be a pair nobody added.
 - Only pyrung refuses: Word and non-Word operands in one math, RAND bound type, RAND equal bounds, SUM over
   TXT, a copy into a read-only SD.
 - Only laddercodec refuses: about ten things, among them a negative timer preset, a counter preset over
-  32 bits, a shift on Y, a search result outside C.
+  32 bits, a shift on Y, a search result outside C. pyrung takes these on when its export builds
+  laddercodec's objects.
 - laddercodec's writable SC list has SC162 to SC171 and SC303 to SC326; pyrung's and pyclickplc's do not.
 
 Order:
