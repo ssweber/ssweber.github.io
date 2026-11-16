@@ -12,7 +12,9 @@ until the owning session has checked them. New disagreements found by pyrung's a
 Two columns are filled in before anyone decides anything:
 
 - **PLC reading** (the pyrung session): the conformance reading behind pyrung's rule, or "none".
-- **Editor** (the runner, or Sam at CLICK): whether CLICK's editor accepts the instruction as written.
+- **Editor** (Sam, with CLICK open, not from memory): whether CLICK's editor accepts the instruction as
+  typed. The runner cannot fill this column: it pastes rungs through the clipboard, which may skip the checks
+  the editor makes when an instruction is typed in. There are 23 rows to try: sections A, B, D and E.
 
 Then the rule, proposed by the planner and not yet confirmed by Sam:
 
