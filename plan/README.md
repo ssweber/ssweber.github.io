@@ -183,9 +183,15 @@ Order:
    tree and returns rows (its private `render` already does this); the rows in memory, with the number of
    CLICK rungs each source rung became; a writer for `main.csv` plus `subroutines/`.
 3. **Validation.** laddercodec gives the verdict for a field rule, by pyrung building the object. pyrung
-   keeps its code names, because `allow=` depends on them, and its advice text; its bank tables go. The
-   request to laddercodec is every field error of an instruction, not only the first, with uniform `.field`
-   names. A rule-description API is not built.
+   keeps its code names, because `allow=` depends on them, and its advice text; its bank tables go. A
+   rule-description API is not built. pyrung needs four things from laddercodec's errors instead (sent to
+   the laddercodec session on 2026-11-16):
+   - every field error of an instruction, not only the first;
+   - uniform `.field` names;
+   - a stable reason on the error, since one field can be refused for several reasons that pyrung reports
+     under different codes;
+   - an answer on whether an instruction can be built without the checks: pyrung's conformance probes
+     export, on purpose, things CLICK refuses.
 4. **Import reads laddercodec's objects.** Last: the smallest clean saving and the hardest blocker (below).
 
 **Moves into laddercodec** (Sam, 2026-11-15: "yes probably"), once step 2 gives pyrung a laddercodec program
