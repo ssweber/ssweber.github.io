@@ -15,7 +15,7 @@ Two columns are filled in before anyone decides anything:
 - **Editor**: whether CLICK's editor accepts the instruction as typed into its dialog. ClickNick's runner
   asks this through the dialogs themselves (`click_runner.py try`, cases in ClickNick's
   `devtools/editor_cases.json`); a paste could skip the dialog's checks. The answers below are from CLICK
-  v4.00 on 2026-11-15, each with controls. Still to ask: the Receive dialog (B7) and section D.
+  v4.00 on 2026-11-15, each with controls. Still to ask: the Receive dialog (B7).
 
 Then the rule. Sam agreed on 2026-11-16 to the direction it rests on (laddercodec holds the editor's rules,
 pyrung holds what a PLC does); the rows themselves are not yet signed off:
@@ -86,11 +86,17 @@ builds laddercodec's objects. Listed so that nobody adds a second rule in pyrung
 
 ## D. Rung shapes and reading
 
-| # | Case | pyrung | laddercodec | Editor or syntax check | Decision |
+CLICK's answers are from its Syntax Check, run by ClickNick's runner on pasted rungs (CLICK v4.00,
+2026-11-16). Two laddercodec cells were stale and are corrected here, as the ClickNick and laddercodec
+sessions both confirm.
+
+| # | Case | pyrung | laddercodec | Syntax Check | Decision |
 |---|---|---|---|---|---|
-| D1 | Bridges, pins that share contacts, a reset wire that also feeds an output (15 of 281 fixture files) | imports them, a bridge with a warning | refuses the rung | | Sam |
-| D2 | A rung holding only a comment, wires or NOPs; a NOP sharing a rung (11 files) | importer refuses | reads it | | |
-| D3 | A pin with nothing wired to it (3 files) | keeps the pin with an empty condition | drops the pin | | |
+| D1 | Bridges, pins that share contacts, a reset wire that also feeds an output | imports them, a bridge with a warning | encodes the rung as drawn; `check()` reports it | Refuses all of them. A bridge, with or without a reset: C0001. Pins sharing the reset's contact or fed from a tee, and a reset wire that also feeds an output: C000A, "All inputs of the box instruction must originate from the same branch." | Sam: what pyrung's importer does with a rung the Syntax Check refuses |
+| D2 | A rung holding only a comment, wires or NOPs; a NOP sharing a rung | importer refuses | reads it | No error. The check itself drops a NOP on its own row beside a coil, and wires a wires-only rung through column AF | CLICK accepts these, so pyrung's importer is the one out of step. For the import step |
+| D3 | A counter or timer reset with nothing wired to it | keeps the pin with an empty condition | keeps it as its `.reset()` row | Refuses: C0202, "Row N, Column AF : Missing line connection." | With D1 |
+
+laddercodec is building `check()` to agree with these answers.
 
 Closed: the instruction name `calc` came from a stale pyrung fixture that nothing reads; the pyrung session
 is deleting it.
