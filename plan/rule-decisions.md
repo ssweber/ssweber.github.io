@@ -46,11 +46,11 @@ its field is in laddercodec's tests and both libraries match it.
 | A3 | RAND with equal bounds: `RAND(5,5)` | `CLK_RAND_EQUAL_BOUNDS` | not needed | Refuses (OBJ-1001). `RAND(10,1)`, bounds the wrong way round, is accepted | laddercodec gains the rule |
 | A4 | SUM over a TXT range | `CLK_MATH_SUM_BANK_NOT_AVAILABLE` | not needed | Refuses (OBJ-1002), as it does SUM over CT | laddercodec gains the rule |
 | A5 | Copy into a read-only SD: `SD1` | `CLK_BANK_NOT_WRITABLE` | not needed | Refuses SD1 (OBJ-004); accepts SD29, a writable SD | laddercodec gains: a read-only SD is not a copy destination |
-| A6 | Coil on SC162. laddercodec's writable SC list is SC50, 51, 53, 55, 60, 61, 65 to 67, 75, 76, 120, 121, 162, 165, 168, 171, 303 to 306 and 323 to 326; pyrung's and pyclickplc's stop at SC121 | `CLK_BANK_NOT_WRITABLE` | | Accepts an Out on SC162, SC171, SC303 and SC326, all of them in laddercodec's list. Nothing in a gap was tried: SC163 and SC310 should be refused | laddercodec's list looks right; try the gaps before pyrung takes it. pyclickplc's `WRITABLE_SC` is a different fact (writable in Data View) and does not change |
+| A6 | Coil on SC162. laddercodec's writable SC list is SC50, 51, 53, 55, 60, 61, 65 to 67, 75, 76, 120, 121, 162, 165, 168, 171, 303 to 306 and 323 to 326; pyrung's and pyclickplc's stop at SC121 | `CLK_BANK_NOT_WRITABLE` | None. pyrung's list was copied from pyclickplc and stops at SC121 | Accepts an Out on SC162, SC171, SC303 and SC326, all of them in laddercodec's list. Nothing in a gap was tried: SC163 and SC310 should be refused | laddercodec's list looks right, and nothing backs pyrung's shorter one. Waits only on the gap points; then pyrung's list goes with its validation tables. pyclickplc's `WRITABLE_SC` is a different fact (writable in Data View) and does not change |
 | A7 | Block copy DS to SD | `CLK_COPY_BANK_INCOMPATIBLE` | | Refuses into SD1 (OBJ-004) and into SD29, whose range reaches read-only SD30 (OBJ-018); accepts into SD31..SD32 | Both change: the rule is that every address in the destination range is writable. pyrung stops refusing the pair; laddercodec gains the range check |
-| A8 | Block copy TXT to TXT | `CLK_COPY_BANK_INCOMPATIBLE` | | Accepts `TXT1..TXT2` into `TXT11` | Waits on the PLC reading. With none, pyrung's list gains the pair |
+| A8 | Block copy TXT to TXT | `CLK_COPY_BANK_INCOMPATIBLE` | None | Accepts `TXT1..TXT2` into `TXT11` | Nobody refuses it. pyrung's list was missing the pair; it goes with the tables. A paste and copy back is still worth one run |
 | A9 | Math result into SD, decimal | `CLK_MATH_DEST_BANK` | | Refuses SD1 (OBJ-003); accepts SD29 | Both change: a writable SD can be a Math result. pyrung allows it; laddercodec refuses a read-only one |
-| A10 | Math result into YD, hex | `CLK_MATH_DEST_BANK` | | Accepts YD0 and YD1 | Waits on the PLC reading. With none, pyrung's list gains YD |
+| A10 | Math result into YD, hex | `CLK_MATH_DEST_BANK` | None | Accepts YD0 and YD1 | Nobody refuses it. pyrung's check was too wide; it goes with the tables. A paste and copy back is still worth one run |
 
 ## B. laddercodec refuses, pyrung's tables allow
 
@@ -63,7 +63,7 @@ its field is in laddercodec's tests and both libraries match it.
 | B5 | Unpack bits DS, DD or DF to Y | `Unpack` | Refuses all three (OBJ-024); DH1 to Y is accepted, and every word bank tried unpacks to C | laddercodec is right; pyrung's list loses the pairs |
 | B6 | Math result into DH in decimal mode | `Math` | Refuses (OBJ-004); DH as a hex result is accepted | laddercodec is right; the same fact as A1 |
 | B7 | Receive destination CTD, TD or SD | `Receive dest` | not asked yet | |
-| B8 | pyrung's coil-target table lists X, T and CT | `Coil.operand` | Refuses an Out on X001, T1 and CT1 (OBJ-004); accepts Y001, C1 and SC50 | laddercodec is right; pyrung's table loses the three. The pyrung session says whether its writability check already refused them |
+| B8 | pyrung's coil-target table lists X, T and CT | `Coil.operand` | Refuses an Out on X001, T1 and CT1 (OBJ-004); accepts Y001, C1 and SC50 | laddercodec is right. pyrung's writability check already refuses a coil on X, T and CT, so the three table entries are dead weight and no program gets through. Closed; the table goes in the validation move |
 
 ## C. laddercodec refuses, pyrung has no rule
 
@@ -91,13 +91,15 @@ builds laddercodec's objects. Listed so that nobody adds a second rule in pyrung
 | D1 | Bridges, pins that share contacts, a reset wire that also feeds an output (15 of 281 fixture files) | imports them, a bridge with a warning | refuses the rung | | Sam |
 | D2 | A rung holding only a comment, wires or NOPs; a NOP sharing a rung (11 files) | importer refuses | reads it | | |
 | D3 | A pin with nothing wired to it (3 files) | keeps the pin with an empty condition | drops the pin | | |
-| D4 | The instruction name `calc` in one pyrung fixture (`ladder_realistic_output/main.csv`) | passes it through | refuses the name | not a CLICK question: the pyrung session says whether the fixture is stale | |
 
 ## E. Names
 
 | # | Case | pyrung | pyclickplc | CLICK | By the rule |
 |---|---|---|---|---|---|
 | E1 | RTC system nicknames (SD21, SD22, SD24, SD25, SD26) | `_RTC_Month`, `_RTC_Day`, ... | `_RTC_Month (1-12)`, `_RTC_Day (1-31)`, ... | Not an editor question. CLICK's installed `PLCType.ini` names them `_RTC_Month`, `_RTC_Day`, `_RTC_Hour`, `_RTC_Minute`, `_RTC_Second`, with no range in the name. A new project's database has no row for them | pyrung's names match CLICK's. The pyclickplc session agrees and has queued the change |
+
+Closed: the instruction name `calc` came from a stale pyrung fixture that nothing reads; the pyrung session
+is deleting it.
 
 ## Not yet probed
 
