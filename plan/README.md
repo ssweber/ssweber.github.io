@@ -211,11 +211,14 @@ Order (Sam, 2026-11-16: validation moves onto laddercodec first, as soon as it c
 - Spelling a constant from a Python value (hex, Real, text). It rides laddercodec's canonical-constants
   branch.
 
-**Open, Sam to decide: rungs that CLICK's Syntax Check refuses.** The runner has asked (`rule-decisions.md`
-section D): the check refuses a bridge, pins that share contacts, a reset wire that also feeds an output,
-and a reset with nothing wired to it. pyrung's importer accepts all of them; it was written before anyone
-knew. laddercodec encodes them as drawn and is building `check()` to report what the Syntax Check reports.
-What is left to decide is what pyrung's importer does with such a rung.
+**Decided (Sam, 2026-11-16): pyrung imports a rung that CLICK's Syntax Check refuses, and says so.** The
+runner has asked (`rule-decisions.md` section D): the check refuses a bridge, pins that share contacts, a
+reset wire that also feeds an output, and a reset with nothing wired to it. pyrung's importer accepts all of
+them and keeps doing so, so that someone who draws such a rung is told that CLICK will not accept it as
+drawn. What they are told comes from laddercodec's `check()`, which is being built to report what the Syntax
+Check reports; pyrung relays those findings and holds no rule of its own for these shapes, so its bridge
+warning goes when the relay arrives. This waits for a laddercodec release with `check()`; the importer stays
+as it is until then.
 
 **Small, any time (pyrung):** derive from pyclickplc the bank-name lists, the bit-bank set (written three
 times), the timer and counter pairs, the value limits and the system nicknames (about 190 lines). The
@@ -317,8 +320,9 @@ queue.
   one release carries it and the undecoded marker; pyclickplc's (#31) waits a little longer; pyrung's
   deletions release is undecided; this site's blog post already describes pyrung without `prove` and lock
   files (#22).
-- Confirm the deciding rule in `rule-decisions.md`, then decide the rows it does not settle. Row D1 is
-  already one: whether pyrung's importer keeps accepting rungs that CLICK's syntax check refuses.
+- Confirm the deciding rule in `rule-decisions.md`, then decide the rows it does not settle. Rows D1 and D3
+  were the first, decided 2026-11-16: pyrung's importer keeps accepting rungs that CLICK's Syntax Check
+  refuses and reports them.
 - Edit a ruleset, if a repo ever renames its `ci` job or its docs `build` job.
 - Delete the remote `dev` branch in pyrung and in ClickNick.
 - Enable Windows Sandbox, only if the runner's desktop mode proves unworkable.

@@ -92,9 +92,9 @@ sessions both confirm.
 
 | # | Case | pyrung | laddercodec | Syntax Check | Decision |
 |---|---|---|---|---|---|
-| D1 | Bridges, pins that share contacts, a reset wire that also feeds an output | imports them, a bridge with a warning | encodes the rung as drawn; `check()` reports it | Refuses all of them. A bridge, with or without a reset: C0001. Pins sharing the reset's contact or fed from a tee, and a reset wire that also feeds an output: C000A, "All inputs of the box instruction must originate from the same branch." | Sam: what pyrung's importer does with a rung the Syntax Check refuses |
+| D1 | Bridges, pins that share contacts, a reset wire that also feeds an output | imports them, a bridge with a warning | encodes the rung as drawn; `check()` reports it | Refuses all of them. A bridge, with or without a reset: C0001. Pins sharing the reset's contact or fed from a tee, and a reset wire that also feeds an output: C000A, "All inputs of the box instruction must originate from the same branch." | Decided (Sam, 2026-11-16): pyrung keeps importing them and reports each as a finding relayed from laddercodec's `check()`, so that whoever drew the rung is told CLICK will not accept it as drawn. pyrung holds no rule of its own for these shapes; its bridge warning goes when the relay arrives |
 | D2 | A rung holding only a comment, wires or NOPs; a NOP sharing a rung | importer refuses | reads it | No error. The check itself drops a NOP on its own row beside a coil, and wires a wires-only rung through column AF | CLICK accepts these, so pyrung's importer is the one out of step. For the import step |
-| D3 | A counter or timer reset with nothing wired to it | keeps the pin with an empty condition | keeps it as its `.reset()` row | Refuses: C0202, "Row N, Column AF : Missing line connection." | With D1 |
+| D3 | A counter or timer reset with nothing wired to it | keeps the pin with an empty condition | keeps it as its `.reset()` row | Refuses: C0202, "Row N, Column AF : Missing line connection." | As D1: imported, and reported from `check()` |
 
 laddercodec is building `check()` to agree with these answers.
 
