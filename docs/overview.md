@@ -45,7 +45,7 @@ A Simulator for your saved program, with a Console that answers why and how. Nic
 
 ### The engine
 
-A Python DSL that reads like ladder and scans like a CLICK, with pytest, a VS Code debugger, cause/effect tracing, and exhaustive checks. Also generates CircuitPython for the P1AM-200.
+A Python DSL that reads like ladder and scans like a CLICK, with pytest, a VS Code debugger, and cause/effect tracing. Also generates CircuitPython for the P1AM-200.
 
 [pyrung docs →](https://pyrung.com/pyrung/)
 </div>
