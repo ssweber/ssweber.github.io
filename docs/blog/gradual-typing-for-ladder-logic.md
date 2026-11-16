@@ -1,5 +1,7 @@
 # Gradual Typing for Ladder Logic
 
+*Updated November 2026: this post first described an exhaustive `prove` check and behavior lock files. pyrung no longer has either, so those two sections are gone.*
+
 If you build custom machines, you know the logic is never the hard part. A state machine, some interlocks, a handful of fault timers. You can sketch the whole control scheme on a napkin.
 
 You've commissioned a machine and had it surprise you. Everything works at the bench, then something happens in the field because the logic did exactly what was written, just not what was meant. A flipped comparison, a missing contact, a path nobody tested because there wasn't time.
@@ -26,20 +28,6 @@ ContactorFb: Bool = Field(
 The test harness reads the annotations and automatically, on time, patches those inputs while running the simulation. I certainly am annoyed trying to commission when my feedback faults are set tight - I'm fast, but not 5ms fast on those clicks! The harness now does it for me, so tests describe the scenario I care about rather than twenty lines of input toggling to fake the physics.
 
 Adding `min=`, `max=`, or `choices=` isn't just for the engineer in the VS Code extension's Data View. pyrung also checks those bounds every scan automatically.
-
-## Checking every state
-
-Now that the harness knows every feedback coupling on the machine, why don't we also use it to check that each device fault reaches an alarm?
-
-```python
-prove(logic, Or(~FillEnable, FlowSensor, AlarmExtent != 0))
-```
-
-That says: when the fill is running, either the flow sensor is responding or the alarm caught it. If that holds across every reachable combination of inputs and internal state, the result is `Proven`. If there's a gap, a path where the sensor dies and no alarm fires, the verifier finds it and hands back a step-by-step trace showing which inputs, which sequence, and which scan is where the rule breaks. If timing is important, I force each feedback off and run with real scan timing. Structural gaps and timing gaps both surface before the first wire is pulled. And those same `choices=` and `min=`/`max=` annotations prune the state space so verification stays tractable instead of exploding.
-
-## Locking the behavior
-
-Verification tells me the logic is right today, but I also want to know it's still right after someone (me) refactors the sequence or reorders the interlocks. pyrung can snapshot the reachable behavior into a lock file that gets committed and diffed on every change, the same idea as a package lock file but for machine behavior. `pyrung lock MODULE` - by default it locks all 'terminals': tags that get written but never read (like outputs), but you can add anything you want.
 
 ## Debugging backward
 

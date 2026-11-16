@@ -16,7 +16,7 @@ ClickNick runs your saved CLICK program with no PLC attached, and lets you ask w
 
 ## [Gradual Typing for Ladder Logic](gradual-typing-for-ladder-logic.md)
 
-Physical annotations, exhaustive checks, behavior locks, causal debugging, and reviewable ways for coding agents to work with a running ladder program.
+Physical annotations, causal debugging, and reviewable ways for coding agents to work with a running ladder program.
 </article>
 
 <article class="article-item" markdown>
