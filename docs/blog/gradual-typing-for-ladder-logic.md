@@ -1,6 +1,6 @@
 # Gradual Typing for Ladder Logic
 
-*Updated November 2026: this post first described an exhaustive `prove` check and behavior lock files. pyrung no longer has either, so those two sections are gone.*
+*Update, November 2026: this post used to have two more sections, on an exhaustive `prove` check and on behavior lock files. Both were interesting to build, and I've since taken both out of pyrung. The search was hard to get right, it didn't hold up on real programs the way it did on a fill station, and I found I wasn't reaching for it. The parts I use every day are the ones below.*
 
 If you build custom machines, you know the logic is never the hard part. A state machine, some interlocks, a handful of fault timers. You can sketch the whole control scheme on a napkin.
 
