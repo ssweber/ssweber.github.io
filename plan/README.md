@@ -172,29 +172,37 @@ Of the 34 field rules, 25 refuse the same thing in both. Every case where they d
 [`rule-decisions.md`](rule-decisions.md), with the rule for deciding a row. Rows are decided there, one at
 a time, and nowhere else.
 
-Order:
+Order (Sam, 2026-11-16: validation moves onto laddercodec first, as soon as it can):
 
-1. **Agreement test (pyrung; laddercodec as a dev-only dependency).** Every pyrung export passes through
-   `read_csv`, and each field rule is tried against both libraries. The known disagreements are listed in the
-   test and leave the list as each is settled.
-2. **Export through laddercodec (runtime dependency).** pyrung builds laddercodec's instruction objects and
-   hands over the circuit; laddercodec lays it out and writes it, and its field checks apply to every export.
-   pyrung's layout and token assembly go. laddercodec needs to offer: an entry that takes a series-parallel
-   tree and returns rows (its private `render` already does this); the rows in memory, with the number of
-   CLICK rungs each source rung became; a writer for `main.csv` plus `subroutines/`.
-3. **Validation.** laddercodec gives the verdict for a field rule, by pyrung building the object. pyrung
-   keeps its code names, because `allow=` depends on them, and its advice text; its bank tables go. A
-   rule-description API is not built. pyrung needs four things from laddercodec's errors instead (sent to
-   the laddercodec session on 2026-11-16):
-   - every field error of an instruction, not only the first;
-   - uniform `.field` names;
-   - a stable reason on the error, since one field can be refused for several reasons that pyrung reports
-     under different codes;
-   - an answer on whether an instruction can be built without the checks: pyrung's conformance probes
-     export, on purpose, things CLICK refuses.
-4. **Import reads laddercodec's objects.** Last: the smallest clean saving and the hardest blocker (below).
+1. **laddercodec: the error pyrung reads.** Agreed with the laddercodec session: one `FieldError` that
+   carries every refusal of the instruction in `.errors`; `.field` always `Class.attr`, with a pair refusal
+   naming both fields; `.reason` from a small fixed set (bank, pointer, kind, range, not writable, ...) and
+   `.click_id` where CLICK has an error id. Messages stay free text and are not API. No public way to build
+   an instruction without its checks: pyrung's probes that export what CLICK refuses use `raw(...)`. A
+   rule-description API is not built. This needs a laddercodec release.
+2. **pyrung: validation on laddercodec** (laddercodec becomes a runtime dependency here). For a field rule,
+   pyrung builds the instruction's laddercodec object and turns each refusal into a finding. It keeps its
+   code names, because `allow=` depends on them, and its advice text. Its bank tables and the checks that
+   read them go. Its existing validation tests are the agreement test: each passes as before, or its changed
+   verdict is a row in `rule-decisions.md`. Until laddercodec has caught up (step 4), pyrung keeps its own
+   check for each rule where it refuses and laddercodec does not (section A of the table).
+3. **The runner: whole grids, not samples.** For each dialog field, every bank and constant kind is tried,
+   and the answers are kept as test data in laddercodec. That is the one place CLICK's field rules are
+   recorded; laddercodec's rules are tested against it, and pyrung reaches it through laddercodec. A paste
+   followed by a copy back is a separate question from the dialog and gets its own runs.
+4. **laddercodec: catch up with the editor.** First, decoding stops depending on the checks: a stored
+   instruction that a rule refuses still decodes to its object, with a finding, where today it would become a
+   raw instruction that pyrung runs as a no-op. Then laddercodec's rules are tightened to the grids, and
+   pyrung drops the checks it kept in step 2. laddercodec's refusals are the editor's rules plus what breaks
+   the encoding or crashes CLICK on a paste; a rule that rests on what a PLC does stays in pyrung.
+5. **Export through laddercodec.** pyrung builds laddercodec's instruction objects and hands over the
+   circuit; laddercodec lays it out and writes it. pyrung's layout and token assembly go. laddercodec needs
+   to offer: an entry that takes a series-parallel tree and returns rows (its private `render` does this from
+   a network and a tree); the rows in memory, with the number of CLICK rungs each source rung became; a
+   writer for `main.csv` plus `subroutines/`.
+6. **Import reads laddercodec's objects.** Last: the smallest clean saving and the hardest blocker (below).
 
-**Moves into laddercodec** (Sam, 2026-11-15: "yes probably"), once step 2 gives pyrung a laddercodec program
+**Moves into laddercodec** (Sam, 2026-11-15: "yes probably"), once step 5 gives pyrung a laddercodec program
 to pass in: the program-structure rules (for-loop nesting depth, a oneshot or a return inside a loop, nested
 calls, the 8,000-step limit) and the step estimate, as a check on a whole program. Proposed by the planner,
 not yet ruled on: spelling a constant from a Python value rides the canonical-constants branch.
@@ -293,10 +301,10 @@ queue.
 
 | Repo | Order |
 |---|---|
-| pyrung | 1. Deletions release (record machinery, search, public surface), then the `Rung` to `rung` rename in tests as its own commit. 2. CLICK-match fixes from the 2026-11-10 readings and the watchdog stop. 3. Recording core. 4. One door. 5. float32 Reals, the per-PLC definitions table, the history API, calc into a pointer. `how()` work follows the recording core. The agreement test of item 2 fits in at any point; export through laddercodec follows it when laddercodec offers the tree entry. |
-| laddercodec | Finish the field-rule restructure. The parity test against pyclickplc. Canonical constants as their own branch. For pyrung (item 2): the tree-in, rows-out entry; every field error of an instruction; later the whole-program check. |
+| pyrung | 1. Deletions release (record machinery, search, public surface), then the `Rung` to `rung` rename in tests as its own commit. 2. CLICK-match fixes from the 2026-11-10 readings and the watchdog stop. 3. Recording core. 4. One door. 5. float32 Reals, the per-PLC definitions table, the history API, calc into a pointer. `how()` work follows the recording core. Validation onto laddercodec (item 2, step 2) starts as soon as laddercodec has released the new error; where it sits against the items above is Sam's call. Export through laddercodec comes later. |
+| laddercodec | Finish the field-rule restructure. The parity test against pyclickplc. Canonical constants as their own branch. For pyrung (item 2), first: the error that carries every refusal, a uniform field and a reason, and a release. Then decoding that does not depend on the checks, and rules tightened to the runner's grids. Later the tree-in, rows-out entry and the whole-program check. |
 | pyclickplc | Only CLICK questions remain, for the runner. The pymodbus rewrite waits until something forces it; it does not involve pyrung. |
-| ClickNick | Move onto pyclickplc 0.7. The runner's first jobs. Finish `ConnectionSession` as the owner of window and project state, then split `ClickNickApp`. Then the ClickNick side of recording. |
+| ClickNick | The runner's grids for item 2 (Math, Copy and Out first; then the other dialogs). Finish `ConnectionSession` as the owner of window and project state, then split `ClickNickApp`. Then the ClickNick side of recording. |
 
 ## Only Sam can do these
 

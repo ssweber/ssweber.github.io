@@ -17,7 +17,8 @@ Two columns are filled in before anyone decides anything:
   `devtools/editor_cases.json`); a paste could skip the dialog's checks. The answers below are from CLICK
   v4.00 on 2026-11-15, each with controls. Still to ask: the Receive dialog (B7) and section D.
 
-Then the rule, proposed by the planner and not yet confirmed by Sam:
+Then the rule. Sam agreed on 2026-11-16 to the direction it rests on (laddercodec holds the editor's rules,
+pyrung holds what a PLC does); the rows themselves are not yet signed off:
 
 1. The editor refuses it: laddercodec refuses it, and pyrung's own copy of the rule goes.
 2. The editor accepts it and a PLC reading shows the PLC doing something a user would not expect: laddercodec
@@ -35,8 +36,8 @@ banks; the SD rows with SD1 and SD29 to SD32 only), and no rule should be writte
 
 ## A. pyrung refuses, laddercodec accepts
 
-"By the rule" in the last column is what the proposed rule gives. It becomes the decision when Sam confirms
-the rule.
+"By the rule" in the last column is what the rule gives. A row leaves this file when the runner's grid for
+its field is in laddercodec's tests and both libraries match it.
 
 | # | Case | pyrung's code | PLC reading | Editor | By the rule |
 |---|---|---|---|---|---|
