@@ -46,7 +46,7 @@ its field is in laddercodec's tests and both libraries match it.
 | A3 | RAND with equal bounds: `RAND(5,5)` | `CLK_RAND_EQUAL_BOUNDS` | not needed | Refuses (OBJ-1001). `RAND(10,1)`, bounds the wrong way round, is accepted | laddercodec gains the rule |
 | A4 | SUM over a TXT range | `CLK_MATH_SUM_BANK_NOT_AVAILABLE` | not needed | Refuses (OBJ-1002), as it does SUM over CT | laddercodec gains the rule |
 | A5 | Copy into a read-only SD: `SD1` | `CLK_BANK_NOT_WRITABLE` | not needed | Refuses SD1 (OBJ-004); accepts SD29, a writable SD | laddercodec gains: a read-only SD is not a copy destination |
-| A6 | Coil on SC162. laddercodec's writable SC list is SC50, 51, 53, 55, 60, 61, 65 to 67, 75, 76, 120, 121, 162, 165, 168, 171, 303 to 306 and 323 to 326; pyrung's and pyclickplc's stop at SC121 | `CLK_BANK_NOT_WRITABLE` | None. pyrung's list was copied from pyclickplc and stops at SC121 | Accepts an Out on SC162, SC171, SC303 and SC326, all of them in laddercodec's list. Nothing in a gap was tried: SC163 and SC310 should be refused | laddercodec's list looks right, and nothing backs pyrung's shorter one. Waits only on the gap points; then pyrung's list goes with its validation tables. pyclickplc's `WRITABLE_SC` is a different fact (writable in Data View) and does not change |
+| A6 | Coil on SC162. laddercodec's writable SC list is SC50, 51, 53, 55, 60, 61, 65 to 67, 75, 76, 120, 121, 162, 165, 168, 171, 303 to 306 and 323 to 326; pyrung's and pyclickplc's stop at SC121 | `CLK_BANK_NOT_WRITABLE` | None. pyrung's list was copied from pyclickplc and stops at SC121 | Accepts an Out on SC162, SC171, SC303 and SC326, all of them in laddercodec's list. Refuses all 15 points tried outside the list (OBJ-003): SC49, 52, 54, 57, 63, 70, 100, 140, 163, 166, 169, 200, 310, 327 and 1000 | Closed: laddercodec's list matches the editor at every point tried, and nothing backs pyrung's shorter one. pyrung's list goes with its validation tables. pyclickplc's `WRITABLE_SC` is a different fact (writable in Data View) and does not change |
 | A7 | Block copy DS to SD | `CLK_COPY_BANK_INCOMPATIBLE` | | Refuses into SD1 (OBJ-004) and into SD29, whose range reaches read-only SD30 (OBJ-018); accepts into SD31..SD32 | Both change: the rule is that every address in the destination range is writable. pyrung stops refusing the pair; laddercodec gains the range check |
 | A8 | Block copy TXT to TXT | `CLK_COPY_BANK_INCOMPATIBLE` | None | Accepts `TXT1..TXT2` into `TXT11` | Nobody refuses it. pyrung's list was missing the pair; it goes with the tables. A paste and copy back is still worth one run |
 | A9 | Math result into SD, decimal | `CLK_MATH_DEST_BANK` | | Refuses SD1 (OBJ-003); accepts SD29 | Both change: a writable SD can be a Math result. pyrung allows it; laddercodec refuses a read-only one |
@@ -92,14 +92,36 @@ builds laddercodec's objects. Listed so that nobody adds a second rule in pyrung
 | D2 | A rung holding only a comment, wires or NOPs; a NOP sharing a rung (11 files) | importer refuses | reads it | | |
 | D3 | A pin with nothing wired to it (3 files) | keeps the pin with an empty condition | drops the pin | | |
 
+Closed: the instruction name `calc` came from a stale pyrung fixture that nothing reads; the pyrung session
+is deleting it.
+
 ## E. Names
 
 | # | Case | pyrung | pyclickplc | CLICK | By the rule |
 |---|---|---|---|---|---|
-| E1 | RTC system nicknames (SD21, SD22, SD24, SD25, SD26) | `_RTC_Month`, `_RTC_Day`, ... | `_RTC_Month (1-12)`, `_RTC_Day (1-31)`, ... | CLICK's installed `PLCType.ini` names them `_RTC_Month`, `_RTC_Day`, `_RTC_Hour`, `_RTC_Minute`, `_RTC_Second`, with no range in the name. A new project's database had no row for them, but CLICK does not always fill in system names until the Address Picker has been opened and used once (Sam, 2026-11-16) | Open: the runner opens and uses the Address Picker once, then reads what the project's database holds. pyclickplc holds its change until then |
+| E1 | RTC system nicknames (SD19 to SD26) | `_RTC_Month`, `_RTC_Day`, ... | `_RTC_Month (1-12)`, `_RTC_Day (1-31)`, ... | A new project's database holds three system rows. Closing the Address Picker with OK writes every SC and SD row with its nickname (135 SC, 222 SD). SD19 to SD26 are then `_RTC_Year(4 digits)`, `_RTC_Year(2 digits)`, `_RTC_Month`, `_RTC_Day`, `_RTC_Day_of_The_Week`, `_RTC_Hour`, `_RTC_Minute`, `_RTC_Second`, the same as the installed `PLCType.ini` | Closed: pyrung's names are CLICK's, and pyclickplc changes to them. Two of CLICK's own names contain parentheses, which CLICK refuses in a nickname a user types, so a system name is not held to the user's rule |
 
-Closed: the instruction name `calc` came from a stale pyrung fixture that nothing reads; the pyrung session
-is deleting it.
+## F. Constants
+
+What CLICK stores for a constant, from 95 cases saved and decoded by ClickNick's runner (CLICK v4.00). These
+are for laddercodec's canonical-constants branch, which also takes over spelling a constant from a Python
+value. The per-case comparison is in the runner's results file; laddercodec keeps the cases as test data.
+
+| # | Case | laddercodec today | CLICK |
+|---|---|---|---|
+| F1 | `005` in a hex formula | refuses | accepts, stores `5h`. A constant without `h` in a hex formula is taken as hex: `1e3` is stored `1E3h` |
+| F2 | A Real as typed (`1.50`, `1e3`, `.5`) | writes it as typed | stores its own printed form: `1.5`, `1000.0`, `0.5`. `1.5E+10` is kept as typed |
+| F3 | `EH` as a Copy source | reads it as hex 14 | stores the Real 0.0 |
+| F4 | `$1` copied into TXT | refuses | accepts, stores `$01` |
+
+Also seen, with no difference recorded against laddercodec yet:
+
+- A decimal formula refuses a leading zero (`005`, `-0`), a hex constant (`0ffh`, `$41`) and a decimal comma
+  (`1,5`). `+5` and `-5` are accepted alone and refused in `DS2 + c`.
+- A decimal formula refuses `3000000000` and accepts `6000000000`. Unexplained.
+- A hex formula stores `0ffh`, `0FFh` and `ffh` all as `FFh`, accepts `ffffh`, and refuses `0FFFEh` and
+  `1Eh`. `+5` is stored `+ 5h`, the sign as an operator of its own.
+- A Copy source is stored in CLICK's form: `005` as `5`, `0ffh` as `0FFh`, `1.50` as `1.5`.
 
 ## Not yet probed
 

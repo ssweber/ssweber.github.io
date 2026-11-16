@@ -228,8 +228,8 @@ uses.
 - **The field-rule restructure** goes to plain shared functions. Verdicts stay identical; message wording
   may change. All five instruction families now refuse through the shared checks. Still building: `.field`
   explicit at every raise, because pyrung needs to know which field was refused.
-- **Canonical constants** (`005`, `+5`, `0ffh`) are their own branch after the restructure, once CLICK has
-  been asked what it turns them into. Addresses are already canonical.
+- **Canonical constants** (`005`, `+5`, `0ffh`) are their own branch. CLICK has been asked what it turns
+  them into: 95 cases, summarised in `rule-decisions.md` section F. Addresses are already canonical.
 - **CLICK's own error ids** such as "(OBJ-023)" stay in messages, since that is what CLICK shows the user.
 - The pyrung-specific sections of laddercodec's `csv-format.md` move to pyrung.
 - **An undecodable rung no longer fails the whole program, and it fails loudly.** laddercodec replaces the
@@ -257,7 +257,6 @@ It leans on the clipboard and ClickNick's window code, not on pixel positions. I
 from a real PLC. Jobs waiting for it:
 
 - what CLICK writes on Open, New and Save As;
-- what CLICK turns constants into (laddercodec's canonical constants);
 - pyclickplc's open questions: spaces around an address, tabs, data-dump punctuation, section-name case in
   `Project.ini`;
 - what is left of `rule-decisions.md`: the Receive dialog (B7) and the rung shapes of section D;
@@ -315,7 +314,8 @@ queue.
 
 - Publish each release (the tag is the gate). As of 2026-11-16: laddercodec's waits for the new error, so
   one release carries it and the undecoded marker; pyclickplc's (#31) waits a little longer; pyrung's
-  deletions release is undecided, and this site's PR #22 merges with it.
+  deletions release is undecided; this site's blog post already describes pyrung without `prove` and lock
+  files (#22).
 - Confirm the deciding rule in `rule-decisions.md`, then decide the rows it does not settle. Row D1 is
   already one: whether pyrung's importer keeps accepting rungs that CLICK's syntax check refuses.
 - Edit a ruleset, if a repo ever renames its `ci` job or its docs `build` job.
