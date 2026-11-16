@@ -162,11 +162,13 @@ unconfirmed until the owning sessions have checked):
 
 **Where the two disagree, the refusal wins by default** (Sam, 2026-11-15; this replaces "laddercodec's rule
 wins"). Each library refuses things the other was never taught, so the working rule set is both sets of
-refusals together. CLICK is asked, through the runner, when a refusal is doubted. Of the 34 field rules, 25
-refuse the same thing in both. The rest, as probed:
+refusals together: a rule was added when something was found not to be allowed, so a refusal is a finding
+and an acceptance is only the lack of one. CLICK is asked, through the runner, when a refusal is doubted. Of
+the 34 field rules, 25 refuse the same thing in both. The rest, as probed:
 
 - Refused by one side only, per pair or bank: block copy, pack and unpack bank pairs; Math result banks;
-  Receive destination banks.
+  Receive destination banks. These tables are written as lists of what is allowed, so a refusal here can be
+  a pair nobody added. They are the first to ask CLICK about.
 - Only pyrung refuses: Word and non-Word operands in one math, RAND bound type, RAND equal bounds, SUM over
   TXT, a copy into a read-only SD.
 - Only laddercodec refuses: about ten things, among them a negative timer preset, a counter preset over
