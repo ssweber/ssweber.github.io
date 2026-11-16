@@ -142,8 +142,8 @@ The goal is one source of truth for each CLICK fact. Fewer lines is a bonus, not
   onto them; pyrung is on 0.7.0.
 - **laddercodec owns the CLICK ladder format, its field rules and its layout.** It stays dependency-free at
   runtime and keeps a small private copy of the bank facts. A parity test in laddercodec, with pyclickplc as
-  a dev-only dependency, keeps the copy honest; it should cover the writable SC and SD points too (see the
-  disagreements below).
+  a dev-only dependency, keeps the copy honest. It does not compare writable SC points: pyclickplc's
+  `WRITABLE_SC` means "writable in Data View", and the ladder-writable list is laddercodec's own.
 - **pyrung keeps what only it can know:** the tag map and every check that depends on it (contiguity, two
   tags on one address, pointer reach, text windows); turning Python expressions into CLICK forms; the rules
   for Python that has no CLICK form; the advice in its messages; the importer's naming and emitting; the
@@ -213,10 +213,11 @@ them: 15 of 281 fixture files. A runner job comes first: paste those fixtures an
 check says about each.
 
 **Small, any time (pyrung):** derive from pyclickplc the bank-name lists, the bit-bank set (written three
-times), the timer and counter pairs, the value limits, the system nicknames and the writable SC and SD sets
-(about 190 lines). `COMPARE_COMPATIBILITY` and `COMPARE_CONSTANT_COMPATIBILITY` have no users outside their
-own test. Two things to settle: pyrung's RTC nicknames differ from pyclickplc's (`_RTC_Month` against
-`_RTC_Month (1-12)`), and pyrung builds XD and YD blocks under two conventions.
+times), the timer and counter pairs, the value limits and the system nicknames (about 190 lines). The
+ladder-writable SC and SD sets are not derived from pyclickplc; they go when validation moves. `COMPARE_COMPATIBILITY` and `COMPARE_CONSTANT_COMPATIBILITY` have no users outside their
+own test. pyrung builds XD and YD blocks under two conventions, which is still to settle. pyclickplc is
+changing its RTC nicknames to CLICK's own (`_RTC_Month`, with no range in the name), which pyrung already
+uses.
 
 #### In laddercodec
 
@@ -303,7 +304,7 @@ queue.
 |---|---|
 | pyrung | 1. Deletions release (record machinery, search, public surface), then the `Rung` to `rung` rename in tests as its own commit. 2. CLICK-match fixes from the 2026-11-10 readings and the watchdog stop. 3. Recording core. 4. One door. 5. float32 Reals, the per-PLC definitions table, the history API, calc into a pointer. `how()` work follows the recording core. Validation onto laddercodec (item 2, step 2) starts as soon as laddercodec has released the new error; where it sits against the items above is Sam's call. Export through laddercodec comes later. |
 | laddercodec | Finish the field-rule restructure. The parity test against pyclickplc. Canonical constants as their own branch. For pyrung (item 2), first: the error that carries every refusal, a uniform field and a reason, and a release. Then decoding that does not depend on the checks, and rules tightened to the runner's grids. Later the tree-in, rows-out entry and the whole-program check. |
-| pyclickplc | Only CLICK questions remain, for the runner. The pymodbus rewrite waits until something forces it; it does not involve pyrung. |
+| pyclickplc | The RTC nicknames. Otherwise only CLICK questions remain, for the runner. The pymodbus rewrite waits until something forces it; it does not involve pyrung. |
 | ClickNick | The runner's grids for item 2 (Math, Copy and Out first; then the other dialogs). Finish `ConnectionSession` as the owner of window and project state, then split `ClickNickApp`. Then the ClickNick side of recording. |
 
 ## Only Sam can do these

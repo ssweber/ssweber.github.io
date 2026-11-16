@@ -46,7 +46,7 @@ its field is in laddercodec's tests and both libraries match it.
 | A3 | RAND with equal bounds: `RAND(5,5)` | `CLK_RAND_EQUAL_BOUNDS` | not needed | Refuses (OBJ-1001). `RAND(10,1)`, bounds the wrong way round, is accepted | laddercodec gains the rule |
 | A4 | SUM over a TXT range | `CLK_MATH_SUM_BANK_NOT_AVAILABLE` | not needed | Refuses (OBJ-1002), as it does SUM over CT | laddercodec gains the rule |
 | A5 | Copy into a read-only SD: `SD1` | `CLK_BANK_NOT_WRITABLE` | not needed | Refuses SD1 (OBJ-004); accepts SD29, a writable SD | laddercodec gains: a read-only SD is not a copy destination |
-| A6 | Coil on SC162. laddercodec's writable SC list is SC50, 51, 53, 55, 60, 61, 65 to 67, 75, 76, 120, 121, 162, 165, 168, 171, 303 to 306 and 323 to 326; pyrung's and pyclickplc's stop at SC121 | `CLK_BANK_NOT_WRITABLE` | | Accepts an Out on SC162, SC171, SC303 and SC326, all of them in laddercodec's list. Nothing in a gap was tried: SC163 and SC310 should be refused | laddercodec's list looks right; try the gaps before pyrung takes it. Whether pyclickplc's list means the same thing is for the pyclickplc session |
+| A6 | Coil on SC162. laddercodec's writable SC list is SC50, 51, 53, 55, 60, 61, 65 to 67, 75, 76, 120, 121, 162, 165, 168, 171, 303 to 306 and 323 to 326; pyrung's and pyclickplc's stop at SC121 | `CLK_BANK_NOT_WRITABLE` | | Accepts an Out on SC162, SC171, SC303 and SC326, all of them in laddercodec's list. Nothing in a gap was tried: SC163 and SC310 should be refused | laddercodec's list looks right; try the gaps before pyrung takes it. pyclickplc's `WRITABLE_SC` is a different fact (writable in Data View) and does not change |
 | A7 | Block copy DS to SD | `CLK_COPY_BANK_INCOMPATIBLE` | | Refuses into SD1 (OBJ-004) and into SD29, whose range reaches read-only SD30 (OBJ-018); accepts into SD31..SD32 | Both change: the rule is that every address in the destination range is writable. pyrung stops refusing the pair; laddercodec gains the range check |
 | A8 | Block copy TXT to TXT | `CLK_COPY_BANK_INCOMPATIBLE` | | Accepts `TXT1..TXT2` into `TXT11` | Waits on the PLC reading. With none, pyrung's list gains the pair |
 | A9 | Math result into SD, decimal | `CLK_MATH_DEST_BANK` | | Refuses SD1 (OBJ-003); accepts SD29 | Both change: a writable SD can be a Math result. pyrung allows it; laddercodec refuses a read-only one |
@@ -67,7 +67,8 @@ its field is in laddercodec's tests and both libraries match it.
 
 ## C. laddercodec refuses, pyrung has no rule
 
-Decided by the "refusal wins" default: laddercodec's refusal stands, and pyrung reports it once its export
+Decided by the "refusal wins" default, and Sam told the ClickNick session on 2026-11-16 that these "all
+seem correct": laddercodec's refusal stands, and pyrung reports it once its export
 builds laddercodec's objects. Listed so that nobody adds a second rule in pyrung.
 
 | # | Case |
@@ -96,7 +97,7 @@ builds laddercodec's objects. Listed so that nobody adds a second rule in pyrung
 
 | # | Case | pyrung | pyclickplc | CLICK | By the rule |
 |---|---|---|---|---|---|
-| E1 | RTC system nicknames (SD21, SD22, SD24, SD25, SD26) | `_RTC_Month`, `_RTC_Day`, ... | `_RTC_Month (1-12)`, `_RTC_Day (1-31)`, ... | Not an editor question. CLICK's installed `PLCType.ini` names them `_RTC_Month`, `_RTC_Day`, `_RTC_Hour`, `_RTC_Minute`, `_RTC_Second`, with no range in the name. A new project's database has no row for them | pyrung's names match CLICK's; pyclickplc's differ. For the pyclickplc session to check and change |
+| E1 | RTC system nicknames (SD21, SD22, SD24, SD25, SD26) | `_RTC_Month`, `_RTC_Day`, ... | `_RTC_Month (1-12)`, `_RTC_Day (1-31)`, ... | Not an editor question. CLICK's installed `PLCType.ini` names them `_RTC_Month`, `_RTC_Day`, `_RTC_Hour`, `_RTC_Minute`, `_RTC_Second`, with no range in the name. A new project's database has no row for them | pyrung's names match CLICK's. The pyclickplc session agrees and has queued the change |
 
 ## Not yet probed
 
