@@ -46,7 +46,7 @@ result. What is left of every row here is pyrung's half. The pyrung session does
 
 | # | Case | pyrung's code | PLC reading | Editor | By the rule |
 |---|---|---|---|---|---|
-| A1 | Word (DH) and non-Word operands in one math: `DH1 + DS1` | `CLK_MATH_MODE_MIXED` | not needed | Rejects it in both modes (OBJ-1002). A decimal formula rejects DH1 alone, and a hex formula rejects DS1 alone. So "mixed" is a special case | The laddercodec session adds two rules. A decimal formula takes no DH, and a hex formula takes no decimal register |
+| A1 | Word (DH) and non-Word operands in one math: `DH1 + DS1` | `CLK_MATH_MODE_MIXED` | not needed | Rejects it in both modes (OBJ-1002). A decimal formula rejects DH1 alone, and a hex formula rejects DS1 alone. So "mixed" is a special case | The laddercodec session adds two rules. A decimal formula cannot contain a DH register, and a hex formula cannot contain a decimal register |
 | A2 | A RAND bound that is not a whole number or is a DF or DH | `CLK_RAND_BOUND_TYPE` | not needed | Rejects all three (`1.5` OBJ-1001, DF1 and DH1 OBJ-1002). It accepts a DS bound in either place | The laddercodec session adds the rule |
 | A3 | RAND with equal bounds: `RAND(5,5)` | `CLK_RAND_EQUAL_BOUNDS` | not needed | Rejects it (OBJ-1001). It accepts `RAND(10,1)`, which has the bounds the wrong way round | The laddercodec session adds the rule |
 | A4 | SUM over a TXT range | `CLK_MATH_SUM_BANK_NOT_AVAILABLE` | not needed | Rejects it (OBJ-1002). It rejects SUM over CT too | The laddercodec session adds the rule |
@@ -61,11 +61,11 @@ result. What is left of every row here is pyrung's half. The pyrung session does
 
 | # | Case | laddercodec's field | Editor | By the rule |
 |---|---|---|---|---|
-| B1 | Block copy DS to YD | `BlockCopy` | Rejects it (OBJ-004) | CLICK rejects this pair, so laddercodec is right. The pyrung session removes the pair from its table. |
-| B2 | Block copy TXT to DF | `BlockCopy` | Rejects it (OBJ-024) | CLICK rejects this pair, so laddercodec is right. The pyrung session removes the pair from its table. |
-| B3 | Pack bits X to DS | `Pack` | Rejects it (OBJ-024). X and Y pack into DH and not into DS. C packs into every word bank tried. It also rejects X001..X016 into DD or DF. That may be about width, but the agent did not separate the two | CLICK rejects this pair, so laddercodec is right. The pyrung session removes the pair from its table. |
-| B4 | Pack words DH to DF | `Pack` | Rejects it (OBJ-024). It accepts DH1..DH2 into DD1 | CLICK rejects this pair, so laddercodec is right. The pyrung session removes the pair from its table. |
-| B5 | Unpack bits DS, DD or DF to Y | `Unpack` | Rejects all three (OBJ-024). It accepts DH1 to Y. Every word bank tried unpacks to C | CLICK rejects these pairs, so laddercodec is right. The pyrung session removes the pairs from its table. |
+| B1 | Block copy DS to YD | `BlockCopy` | Rejects it (OBJ-004) | CLICK rejects this pair, so laddercodec is right. The pyrung session removes the pair from its table |
+| B2 | Block copy TXT to DF | `BlockCopy` | Rejects it (OBJ-024) | CLICK rejects this pair, so laddercodec is right. The pyrung session removes the pair from its table |
+| B3 | Pack bits X to DS | `Pack` | Rejects it (OBJ-024). X and Y pack into DH and not into DS. C packs into every word bank tried. It also rejects X001..X016 into DD or DF. That may be about width, but the agent did not separate the two | CLICK rejects this pair, so laddercodec is right. The pyrung session removes the pair from its table |
+| B4 | Pack words DH to DF | `Pack` | Rejects it (OBJ-024). It accepts DH1..DH2 into DD1 | CLICK rejects this pair, so laddercodec is right. The pyrung session removes the pair from its table |
+| B5 | Unpack bits DS, DD or DF to Y | `Unpack` | Rejects all three (OBJ-024). It accepts DH1 to Y. Every word bank tried unpacks to C | CLICK rejects these pairs, so laddercodec is right. The pyrung session removes the pairs from its table |
 | B6 | Math result into DH in decimal mode | `Math` | Rejects it (OBJ-004). It accepts DH as a hex result | CLICK rejects it, so laddercodec is right. This is the same fact as A1 |
 | B7 | Receive destination CTD, TD or SD | `Receive dest` | Rejects TD1, SD1 and CTD1 with FC03 (OBJ-004) | CLICK rejects them, so laddercodec is right. The pyrung session removes them from its table |
 | B8 | pyrung's coil-target table lists X, T and CT | `Coil.operand` | Rejects an Out on X001, T1 and CT1 (OBJ-004). It accepts Y001, C1 and SC50 | CLICK rejects these, so laddercodec is right. pyrung's writability check already rejects a coil on X, T and CT. The three table entries do nothing, and no program gets through. Closed. The pyrung session removes the table in the validation move |
