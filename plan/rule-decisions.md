@@ -15,7 +15,7 @@ Two columns are filled in before anyone decides anything:
 - **Editor**: whether CLICK's editor accepts the instruction as typed into its dialog. ClickNick's runner
   asks this through the dialogs themselves (`click_runner.py try`, cases in ClickNick's
   `devtools/editor_cases.json`); a paste could skip the dialog's checks. The answers below are from CLICK
-  v4.00 on 2026-11-15, each with controls. Still to ask: the Receive dialog (B7).
+  v4.00 on 2026-11-15, each with controls.
 
 Then the rule. Sam agreed on 2026-11-16 to the direction it rests on (laddercodec holds the editor's rules,
 pyrung holds what a PLC does); the rows themselves are not yet signed off:
@@ -26,8 +26,8 @@ pyrung holds what a PLC does); the rows themselves are not yet signed off:
 3. The editor accepts it and there is no reading: nobody refuses it.
 4. Anything the rule does not settle goes to Sam, one row at a time.
 
-Corrected on 2026-11-16 by the laddercodec session: decoding does not depend on these checks (a refused
-instruction decodes as a raw instruction and keeps its bytes), so that is not a reason for the rule. And
+Decoding does not depend on these checks (a stored value that a rule refuses decodes as its instruction,
+with a warning), so that is not a reason for the rule. And
 laddercodec also refuses what breaks the encoding or crashes CLICK on a paste, which no dialog sees; those
 refusals stay whatever the editor says.
 
@@ -38,6 +38,10 @@ banks; the SD rows with SD1 and SD29 to SD32 only), and no rule should be writte
 
 "By the rule" in the last column is what the rule gives. A row leaves this file when the runner's grid for
 its field is in laddercodec's tests and both libraries match it.
+
+As of 2026-11-17 laddercodec's half is done on its `main` (checked by the laddercodec session): it refuses
+A1 to A5, A7 and A9 with CLICK's ids, and accepts A6 and a writable SD as a Math result. What is left of
+every row here is pyrung's half, which comes with its validation move (`README.md` item 2, step 2).
 
 | # | Case | pyrung's code | PLC reading | Editor | By the rule |
 |---|---|---|---|---|---|
@@ -62,7 +66,7 @@ its field is in laddercodec's tests and both libraries match it.
 | B4 | Pack words DH to DF | `Pack` | Refuses (OBJ-024); DH1..DH2 into DD1 is accepted | laddercodec is right; pyrung's list loses the pair |
 | B5 | Unpack bits DS, DD or DF to Y | `Unpack` | Refuses all three (OBJ-024); DH1 to Y is accepted, and every word bank tried unpacks to C | laddercodec is right; pyrung's list loses the pairs |
 | B6 | Math result into DH in decimal mode | `Math` | Refuses (OBJ-004); DH as a hex result is accepted | laddercodec is right; the same fact as A1 |
-| B7 | Receive destination CTD, TD or SD | `Receive dest` | not asked yet | |
+| B7 | Receive destination CTD, TD or SD | `Receive dest` | Refuses TD1, SD1 and CTD1 with FC03 (OBJ-004) | laddercodec is right; pyrung's list loses them |
 | B8 | pyrung's coil-target table lists X, T and CT | `Coil.operand` | Refuses an Out on X001, T1 and CT1 (OBJ-004); accepts Y001, C1 and SC50 | laddercodec is right. pyrung's writability check already refuses a coil on X, T and CT, so the three table entries are dead weight and no program gets through. Closed; the table goes in the validation move |
 
 ## C. laddercodec refuses, pyrung has no rule
@@ -96,22 +100,21 @@ sessions both confirm.
 | D2 | A rung holding only a comment, wires or NOPs; a NOP sharing a rung | importer refuses | reads it | No error. The check itself drops a NOP on its own row beside a coil, and wires a wires-only rung through column AF | CLICK accepts these, so pyrung's importer is the one out of step. For the import step |
 | D3 | A counter or timer reset with nothing wired to it | keeps the pin with an empty condition | keeps it as its `.reset()` row | Refuses: C0202, "Row N, Column AF : Missing line connection." | As D1: imported, and reported from `check()` |
 
-laddercodec is building `check()` to agree with these answers.
+laddercodec's `check()` gives C0001, C000A and C0202 as the Syntax Check does, on its `main`.
 
 Closed: the instruction name `calc` came from a stale pyrung fixture that nothing reads; the pyrung session
 is deleting it.
 
-## E. Names
-
-| # | Case | pyrung | pyclickplc | CLICK | By the rule |
-|---|---|---|---|---|---|
-| E1 | RTC system nicknames (SD19 to SD26) | `_RTC_Month`, `_RTC_Day`, ... | `_RTC_Month (1-12)`, `_RTC_Day (1-31)`, ... | A new project's database holds three system rows. Closing the Address Picker with OK writes every SC and SD row with its nickname (135 SC, 222 SD). SD19 to SD26 are then `_RTC_Year(4 digits)`, `_RTC_Year(2 digits)`, `_RTC_Month`, `_RTC_Day`, `_RTC_Day_of_The_Week`, `_RTC_Hour`, `_RTC_Minute`, `_RTC_Second`, the same as the installed `PLCType.ini` | Closed: pyrung's names are CLICK's, and pyclickplc changes to them. Two of CLICK's own names contain parentheses, which CLICK refuses in a nickname a user types, so a system name is not held to the user's rule |
-
 ## F. Constants
 
-What CLICK stores for a constant, from 95 cases saved and decoded by ClickNick's runner (CLICK v4.00). These
-are for laddercodec's canonical-constants branch, which also takes over spelling a constant from a Python
-value. The per-case comparison is in the runner's results file; laddercodec keeps the cases as test data.
+Section E (the RTC system nicknames) is closed and gone: pyclickplc 0.8.0 carries CLICK's names and pyrung
+reads them from its catalog.
+
+What CLICK stores for a constant, from 95 cases saved and decoded by ClickNick's runner (CLICK v4.00).
+laddercodec's encoder now writes constants as CLICK stores them, on its `main`; the rows below have not been
+checked against it one by one at this sitting, so they stay until the laddercodec session confirms each.
+Still to ask CLICK: a trailing zero, the digits of a Real in Math, and the largest Real in Math. The
+per-case comparison is in the runner's results file; laddercodec keeps the cases as test data.
 
 | # | Case | laddercodec today | CLICK |
 |---|---|---|---|
