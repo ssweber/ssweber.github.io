@@ -1,7 +1,8 @@
 # Rule decisions: where pyrung and laddercodec disagree
 
-This file lists every known case where the two libraries disagree about what CLICK allows. Each row is decided
-once. Then it leaves this file, and the owning repo's session puts the decision into code and tests.
+This file lists every known case where the two libraries disagree about what CLICK allows. Each row
+is decided once. The session that owns the repo puts the decision into code and tests, and then the
+row leaves this file.
 
 A research agent probed the rows on 2026-11-15 against `main` of both repos. They are unconfirmed until the
 owning session has checked them. When pyrung's agreement test (`README.md` item 2) finds a new disagreement,
@@ -26,13 +27,14 @@ rules, and pyrung holds what a PLC does. Sam has not yet signed off the rows the
 3. The editor accepts it, and there is no PLC reading. Then nobody rejects it.
 4. If the rule does not settle a case, it goes to Sam, one row at a time.
 
-Decoding does not depend on these checks. If a stored value breaks a rule, laddercodec still decodes it as its
-instruction and gives a warning. So decoding is not a reason for the rule. laddercodec also rejects anything
-that breaks the encoding or crashes CLICK on a paste. No dialog sees these. Those rejections stay whatever the
-editor says.
+Decoding does not depend on these checks. If a stored value breaks a rule, laddercodec still decodes
+it as its instruction and gives a warning. So decoding is not a reason to keep a rule. laddercodec
+also rejects anything that breaks the encoding or crashes CLICK on a paste. No dialog sees these
+cases, so laddercodec keeps those rejections whatever the editor says.
 
-The samples are thin. The agent tried several rows with only a handful of values. It tried A1, A2 and A4 with
-four or fewer banks, and the SD rows with SD1 and SD29 to SD32 only. Do not write a rule from them alone.
+The samples are thin. Several rows rest on only a handful of values. A1, A2 and A4 were tried with
+four or fewer banks, and the SD rows with SD1 and SD29 to SD32 only. Do not write a rule from them
+alone.
 
 ## A. pyrung refuses, laddercodec accepts
 
@@ -63,12 +65,12 @@ result. What is left of every row here is pyrung's half. The pyrung session does
 |---|---|---|---|---|
 | B1 | Block copy DS to YD | `BlockCopy` | Rejects it (OBJ-004) | CLICK rejects this pair, so laddercodec is right. The pyrung session removes the pair from its table |
 | B2 | Block copy TXT to DF | `BlockCopy` | Rejects it (OBJ-024) | CLICK rejects this pair, so laddercodec is right. The pyrung session removes the pair from its table |
-| B3 | Pack bits X to DS | `Pack` | Rejects it (OBJ-024). X and Y pack into DH and not into DS. C packs into every word bank tried. It also rejects X001..X016 into DD or DF. That may be about width, but the agent did not separate the two | CLICK rejects this pair, so laddercodec is right. The pyrung session removes the pair from its table |
+| B3 | Pack bits X to DS | `Pack` | Rejects it (OBJ-024). X and Y pack into DH and not into DS. C packs into every word bank tried. It also rejects X001..X016 into DD or DF. That may be about width. Nobody has tested width apart from the bank | CLICK rejects this pair, so laddercodec is right. The pyrung session removes the pair from its table |
 | B4 | Pack words DH to DF | `Pack` | Rejects it (OBJ-024). It accepts DH1..DH2 into DD1 | CLICK rejects this pair, so laddercodec is right. The pyrung session removes the pair from its table |
 | B5 | Unpack bits DS, DD or DF to Y | `Unpack` | Rejects all three (OBJ-024). It accepts DH1 to Y. Every word bank tried unpacks to C | CLICK rejects these pairs, so laddercodec is right. The pyrung session removes the pairs from its table |
 | B6 | Math result into DH in decimal mode | `Math` | Rejects it (OBJ-004). It accepts DH as a hex result | CLICK rejects it, so laddercodec is right. This is the same fact as A1 |
 | B7 | Receive destination CTD, TD or SD | `Receive dest` | Rejects TD1, SD1 and CTD1 with FC03 (OBJ-004) | CLICK rejects them, so laddercodec is right. The pyrung session removes them from its table |
-| B8 | pyrung's coil-target table lists X, T and CT | `Coil.operand` | Rejects an Out on X001, T1 and CT1 (OBJ-004). It accepts Y001, C1 and SC50 | CLICK rejects these, so laddercodec is right. pyrung's writability check already rejects a coil on X, T and CT. The three table entries do nothing, and no program gets through. Closed. The pyrung session removes the table in the validation move |
+| B8 | pyrung's coil-target table lists X, T and CT | `Coil.operand` | Rejects an Out on X001, T1 and CT1 (OBJ-004). It accepts Y001, C1 and SC50 | CLICK rejects these, so laddercodec is right. No program with a coil on X, T or CT gets past pyrung's writability check, so the three table entries do nothing. Closed. The pyrung session removes the table in the validation move |
 
 ## C. laddercodec refuses, pyrung has no rule
 
@@ -128,10 +130,11 @@ CLICK also did the following. Nobody has recorded a difference against laddercod
 
 - A decimal formula rejects a leading zero (`005`, `-0`), a hex constant (`0ffh`, `$41`) and a decimal comma
   (`1,5`). It accepts `+5` and `-5` alone, and rejects them in `DS2 + c`.
-- A decimal formula rejects `3000000000` and accepts `6000000000`. Nobody can explain this.
+- A decimal formula rejects `3000000000` and accepts `6000000000`. Nobody has explained this yet.
 - A hex formula stores `0ffh`, `0FFh` and `ffh` all as `FFh`. It accepts `ffffh` and rejects `0FFFEh` and
   `1Eh`. It stores `+5` as `+ 5h`, with the sign as an operator of its own.
-- A Copy source is stored in CLICK's form. It stores `005` as `5`, `0ffh` as `0FFh` and `1.50` as `1.5`.
+- CLICK stores a Copy source in its own form. It stores `005` as `5`, `0ffh` as `0FFh` and `1.50` as
+  `1.5`.
 
 ## Not yet probed
 
