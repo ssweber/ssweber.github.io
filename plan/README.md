@@ -10,9 +10,9 @@ Everything since those tags is on each repo's `main`, unreleased.
 ## How to use this file
 
 - **Sessions do not report to the planner.** A session works from its own roadmap and talks to Sam directly.
-  At the next planning sitting (a session in which the planner updates this file), the planner reads the four
-  roadmaps and the release notes and updates this file. Suppose a session finds that it cannot do a ruling
-  here as written, or that the ruling changes another repo's work. The session tells Sam.
+  At the next planning sitting (a working session between Sam and the planner), the planner reads the four
+  roadmaps and the release notes and updates this file. If a session finds that it cannot do a ruling here as
+  written, or that the ruling changes another repo's work, the session tells Sam.
 
 - Write each item in one place. If it crosses repos, it goes here. Otherwise it goes in the roadmap of the repo
   that owns it.
