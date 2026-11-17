@@ -67,8 +67,8 @@ its field is in laddercodec's tests and both libraries match it.
 
 ## C. laddercodec refuses, pyrung has no rule
 
-Decided by the "refusal wins" default, and Sam told the ClickNick session on 2026-11-16 that these "all
-seem correct": laddercodec's refusal stands, and pyrung reports it once its export
+Sam told the ClickNick session on 2026-11-16 that these "all seem correct". laddercodec's refusal
+stands, and pyrung reports it once its export
 builds laddercodec's objects. Listed so that nobody adds a second rule in pyrung.
 
 | # | Case |

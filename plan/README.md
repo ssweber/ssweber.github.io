@@ -158,9 +158,10 @@ unconfirmed until the owning sessions have checked):
 | Import, `click/codegen` | 7,719 | 1,300 to 2,000: CSV reading, token parsing, the grid-to-tree reduction. The earlier "7,500" was the size of the whole importer |
 | Validation and `capabilities.py` | about 4,600 | about 2,200: 34 of the 60 `CLK_` codes are field rules |
 
-**Where the two disagree, the refusal wins by default** (Sam, 2026-11-15; this replaces "laddercodec's rule
-wins"). A rule was added when something was found not to be allowed, so a refusal is a finding and an
-acceptance is only the lack of one. What a pyrung user is told is both sets of refusals together.
+**Where the two disagree, the case is logged and the fix goes into laddercodec** (Sam, 2026-11-17; this
+replaces "the refusal wins by default" of 2026-11-15). pyrung does not take on a refusal only because
+laddercodec has it. Each case is a row in [`rule-decisions.md`](rule-decisions.md). CLICK's own dialog settles
+a row that has no answer yet.
 
 The two sets are different kinds of finding (Sam, 2026-11-15): laddercodec's are what CLICK's editor will
 not accept in a field; many of pyrung's corner cases are what a real PLC was seen to do in conformance
