@@ -178,10 +178,13 @@ Order (Sam, 2026-11-16: validation moves onto laddercodec first, as soon as it c
    naming both fields; `.reason` from a small fixed set (bank, pointer, kind, range, not writable, ...) and
    `.click_id` where CLICK has an error id. Messages stay free text and are not API. No public way to build
    an instruction without its checks: pyrung's probes that export what CLICK refuses use `raw(...)`. A
-   rule-description API is not built. This needs a laddercodec release.
+   rule-description API is not built. laddercodec should consider a friendly name for each code, because
+   pyrung users will now see and type these codes in `allow=` (Sam, 2026-11-17). This needs a laddercodec
+   release.
 2. **pyrung: validation on laddercodec** (laddercodec becomes a runtime dependency here). For a field rule,
    pyrung builds the instruction's laddercodec object and turns each refusal into a finding. It keeps its
-   code names, because `allow=` depends on them, and its advice text. Its bank tables and the checks that
+   advice text. It reports laddercodec's codes in place of its own `CLK_` names for these rules, and `allow=`
+   takes laddercodec's codes (Sam, 2026-11-17). Its bank tables and the checks that
    read them go. Its existing validation tests are the agreement test: each passes as before, or its changed
    verdict is a row in `rule-decisions.md`. Until laddercodec has caught up (step 4), pyrung keeps its own
    check for each rule where it refuses and laddercodec does not (section A of the table).
