@@ -125,10 +125,10 @@ Order:
    raw transcript, a recording carries its scan time, and the pytest plugin collects recordings. Three things
    were not confirmed on `main` at this sitting: the tolerance on Reals, the error on an unknown tag, and a
    headless `replay`.
-3. **One door in pyrung.** Every action that changes state becomes a console command, so everything a user
-   does can be recorded. The pyrung session deletes the old structured requests for those actions (force,
-   patch, set mode and the rest) and does not wrap them. Reads stay as requests. pyrung, ClickNick and the
-   VS Code extension release together.
+3. **Console commands for every change, in pyrung.** Every action that changes state becomes a console
+   command, so everything a user does can be recorded. The pyrung session deletes the old structured
+   requests for those actions (force, patch, set mode and the rest) and does not wrap them. Reads stay as
+   requests. pyrung, ClickNick and the VS Code extension release together.
 4. **ClickNick.** The panels send text. Recordings run on every CLICK save, off the Tk thread and only in a
    permanent workspace. Right-clicking offers "Assert this". Starting a recording prompts the workspace setup,
    so recordings land in a workspace that persists.
@@ -384,16 +384,15 @@ queue.
 
 | Repo | Order |
 |---|---|
-| pyrung | 1. Finish the recording branches now in build (`record`, pytest collection). 2. The public-surface pass, then the `Rung` to `rung` rename in tests as its own commit. The deletions release follows on Sam's tag. 3. Validation onto laddercodec (item 2, step 2) on its open branch, up to the joint release. 4. CLICK-match fixes from the 2026-11-10 readings. For now there is no watchdog stop (Sam, 2026-11-17). There may be a warning on a heavy For loop. 5. One door. 6. float32 Reals, the per-PLC definitions table, the history API, calc into a pointer. The `how()` work follows the recording core. Export through laddercodec comes after the joint release. |
+| pyrung | 1. Finish the recording branches now in build (`record`, pytest collection). 2. The public-surface pass, then the `Rung` to `rung` rename in tests as its own commit. The deletions release follows on Sam's tag. 3. Validation onto laddercodec (item 2, step 2) on its open branch, up to the joint release. 4. CLICK-match fixes from the 2026-11-10 readings. For now there is no watchdog stop (Sam, 2026-11-17). There may be a warning on a heavy For loop. 5. Console commands for every change (item 1, step 3). 6. float32 Reals, the per-PLC definitions table, the history API, calc into a pointer. The `how()` work follows the recording core. Export through laddercodec comes after the joint release. |
 | laddercodec | 1. Finish the breaking API changes (item 2, "In laddercodec"). 2. The joint release, on Sam's tag. 3. The parity test against pyclickplc. 4. After the joint release: the tree-in, rows-out entry and the whole-program check. Two pieces of work go on alongside these steps and are not steps of their own. Take pyrung's reports from adopting the API, before the joint release. Tighten the rules to each grid as the runner returns it. |
-| pyclickplc | 1. Merge #49 (`ClickServer` answers as a real CLICK does). 2. Release 0.9.0 on Sam's tag. The pyrung session updates five tests when pyrung moves to it. Apart from these, the pyclickplc session has only CLICK questions left. It works through them with the ClickNick session. |
+| pyclickplc | 0.9.0 went out on 2026-11-17. The pyrung session updates five tests when pyrung moves to it. The pyclickplc session has only CLICK questions left. It works through them with the ClickNick session. |
 | ClickNick | 1. A release now, on Sam's tag. 2. Then the runner, ahead of recording (Sam, 2026-11-17): Fill mode; the Timer, Counter, Shift, For and Drum dialogs; the full grids. 3. Named pyrung imports, with pyrung's deletions release, and laddercodec's new names, with the joint release. 4. Then the ClickNick side of recording. |
 
 ## Only Sam can do these
 
 - Publish each release (the tag is the gate). As of 2026-11-17:
   - ClickNick: ready now.
-  - pyclickplc 0.9.0: once #49 has merged.
   - pyrung's deletions release: after the public-surface pass and the `Rung` rename.
   - laddercodec and pyrung together: when the joint release closes (item 2).
 - Review laddercodec's list of code names from a user's view. The joint release waits on it.
