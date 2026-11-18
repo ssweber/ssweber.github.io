@@ -12,7 +12,8 @@ Everything since those tags is on each repo's `main`, unreleased.
 - **Sessions check in with the planner after each big finish** (Sam, 2026-11-18). A big finish is a roadmap
   step done, a result that changes another repo's work, or a blocker. The planner answers with the next step,
   taken from this file and from Sam's rulings, and keeps this file current. A session still talks to Sam
-  directly. Only Sam gives the go for a tag, a release, a live CLICK or PLC run, or a rule decision.
+  directly. Only Sam gives the go for a tag, a release, a run that writes to the PLC, or a rule decision.
+  He has preapproved the runs of ClickNick's runner (see "Only Sam can do these").
 - **Before a CLICK question goes to Sam, the session checks three things** (Sam, 2026-11-18). Is it already
   answered in one of the four repos? Can ClickNick's runner answer it today? Could the runner answer it
   with an extension? Only what is left goes to Sam, with a line on why the runner cannot do it.
@@ -302,7 +303,8 @@ blocks under two conventions, and the choice between them is still to settle.
   values, such as `ContactKind`. ClickNick reads laddercodec too, so its move onto the new names belongs to
   the joint release. The ClickNick session lists what must change in its roadmap item 9.
 - **The code names are final** (Sam, 2026-11-18). The list is `docs/guides/codes.md`, which is generated
-  from the code and holds 93 codes. pyrung's `allow=` uses these names.
+  from the code and holds 93 codes. pyrung's `allow=` uses these names. Sam approved a 94th on 2026-11-18,
+  `duplicate-subroutine-name`. It is on a branch that is in review.
 - **The parity test against pyclickplc** is in review. It found no disagreement.
 - **Canonical constants:** the encoder writes CLICK's form. Two questions for CLICK remain, and the runner
   has cases queued for both: the digits of a Real in Math, and the largest Real in Math.
@@ -422,10 +424,13 @@ queue.
   the 20 `Literal` aliases and `UndecodedStop`.
 - Decide what a declared `min`, `max` or `choices` means on a tag that the ladder writes (pyrung, deferred).
 - At the PLC: wiring, power cycles, and distinct live X inputs for laddercodec's runs B and C.
-- Give the ClickNick session the go for each live CLICK or PLC run. Running on 2026-11-18: laddercodec's
-  Compare and Search case lists and the dialog dumps. Queued for one go: the typed nickname, comment and
-  Text initial value; laddercodec's pastes for a coil below a timer that has a reset pin and for a NOP
-  beside outputs that meet only at the rail; and eight values for a Real in Math.
+- Give the go for a run that writes to the PLC or that needs a person at the PLC. That includes pyrung's
+  hardware round. Sam preapproved every run of ClickNick's runner on 2026-11-18, until he writes
+  "StopRuns". Those runs are on a CLICK that the runner starts, and they write nothing to the PLC. Running
+  or queued on 2026-11-18: laddercodec's Compare and Search case lists; the dialog dumps; the typed
+  nickname, comment and Text initial value; laddercodec's pastes for a coil beside a timer that has a
+  reset pin and for a NOP beside outputs that meet only at the rail; ten values for a Real in Math; and
+  two pairs of subroutine names that differ only in the case of a non-ASCII letter.
 - Approve the name of each new public parameter or function in laddercodec, as with the other public names.
 - Confirm the deciding rule in `rule-decisions.md`, then decide the rows that it does not settle. Sam decided
   rows D1 and D3 first, on 2026-11-16. pyrung's importer keeps accepting rungs that CLICK's Syntax Check
