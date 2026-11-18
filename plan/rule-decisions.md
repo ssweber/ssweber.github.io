@@ -136,8 +136,20 @@ CLICK also did the following. Nobody has recorded a difference against laddercod
 - CLICK stores a Copy source in its own form. It stores `005` as `5`, `0ffh` as `0FFh` and `1.50` as
   `1.5`.
 
-## Not yet probed
+## Not yet compared
 
-- Whether laddercodec's "no coil" check covers pyrung's "contacts before a NOP" rule.
-- Whether laddercodec enforces the 32-row limit that pyrung's export checks.
-- Whether the two libraries split a wide rung into the same CLICK rungs.
+The laddercodec session answered its half of these on 2026-11-18. The pyrung session compares each with
+pyrung's rule when export moves to laddercodec.
+
+- **Contacts before a NOP.** laddercodec's `check()` reports `contact-feeds-only-nop` (C0003) for a contact
+  that feeds a NOP and no other box. `lay_out` draws the rung and does not refuse it. Nobody has compared
+  this with pyrung's "contacts before a NOP" rule.
+- **A wide rung.** laddercodec never splits a rung on width. Past 31 condition columns it refuses the rung
+  with `layout-too-wide`. If pyrung wraps a wide rung, the two disagree.
+- **The 32-row limit.** laddercodec refuses more than 32 rows in `lay_out` and in `encode()`. The
+  laddercodec session found no such check in the CSV reader.
+
+## Not yet asked
+
+No dialog has been asked about Fill, Shift, Timer, Counter, Drum or Send. Each needs a runner dialog first.
+The laddercodec session's triage of 2026-11-17 lists the cases to ask. That session writes the case lists.
