@@ -65,7 +65,7 @@ result. What is left of every row here is pyrung's half. The pyrung session does
 |---|---|---|---|---|
 | B1 | Block copy DS to YD | `BlockCopy` | Rejects it (OBJ-004) | CLICK rejects this pair, so laddercodec is right. The pyrung session removes the pair from its table |
 | B2 | Block copy TXT to DF | `BlockCopy` | Rejects it (OBJ-024) | CLICK rejects this pair, so laddercodec is right. The pyrung session removes the pair from its table |
-| B3 | Pack bits X to DS | `Pack` | Rejects it (OBJ-024). X and Y pack into DH and not into DS. C packs into every word bank tried. It also rejects X001..X016 into DD or DF. That may be about width. Nobody has tested width apart from the bank | CLICK rejects this pair, so laddercodec is right. The pyrung session removes the pair from its table |
+| B3 | Pack bits X, Y, T, CT or SC to DS | `Pack` | Rejects it (OBJ-024). X and Y pack into DH and not into DS. T, CT and SC also pack only into DH, at 16 bits (row N5). C packs into every word bank tried. It also rejects X001..X016 into DD or DF. That may be about width. Nobody has tested width apart from the bank | CLICK rejects this pair, so laddercodec is right. The pyrung session removes the pair from its table |
 | B4 | Pack words DH to DF | `Pack` | Rejects it (OBJ-024). It accepts DH1..DH2 into DD1 | CLICK rejects this pair, so laddercodec is right. The pyrung session removes the pair from its table |
 | B5 | Unpack bits DS, DD or DF to Y | `Unpack` | Rejects all three (OBJ-024). It accepts DH1 to Y. Every word bank tried unpacks to C | CLICK rejects these pairs, so laddercodec is right. The pyrung session removes the pairs from its table |
 | B6 | Math result into DH in decimal mode | `Math` | Rejects it (OBJ-004). It accepts DH as a hex result | CLICK rejects it, so laddercodec is right. This is the same fact as A1 |
@@ -137,18 +137,20 @@ CLICK also did the following. Nobody has recorded a difference against laddercod
 
 pyrung's validation branch swept 2,521 sample instructions against laddercodec `87a1e0c` on 2026-11-18 and
 found these. The pyrung session reported them. N1 and N2 fall under rule 1, and the pyrung session decided
-them. For N3 to N7 the laddercodec session owns the CLICK question. It checks the answers on file first, and
-it puts what is left into ClickNick's case lists. None of them waits on Sam.
+them. The laddercodec session settled N3 to N6 the same day from CLICK answers already on disk. They are in
+laddercodec's `tests/fixtures/editor_grids/*.answers.json` and in ClickNick's `buildbot/jobs/lc-diff-click/`.
+laddercodec is right in all six, and pyrung takes them into its validation branch. N7 is with ClickNick's
+runner. None of them waits on Sam.
 
 | # | Case | laddercodec | pyrung | State |
 |---|---|---|---|---|
 | N1 | A plain copy from TXT into a number register: TXT into DS, DD, DH, YD, TD, CTD or SD, and a Block copy from TXT into DS, DD or DH | Refuses it (`copy-txt-needs-convert`) | Accepted it | Decided by the pyrung session, 2026-11-18. CLICK's dialog asks for Copy Character Value or Copy ASCII Code Value, so laddercodec is right. pyrung's export will write the `to_value` that pyrung runs. The branch is building |
 | N2 | A plain copy from DF into TXT | Refuses it (`copy-txt-needs-convert`) | Accepted it | Decided the same way as N1. pyrung's export will write the `to_text()` that pyrung runs |
-| N3 | `copy(TXT1, DF, to_value or to_ascii)` | Refuses it (`copy-converter-bank`), on the ground that CLICK saves a plain copy here | Accepted it | Open. The laddercodec session asks CLICK |
-| N4 | A pack of 32 bits into DS or DH, or an unpack of DS or DH into 32 bits | Refuses it (`pack-too-many`) | Accepted it | Open. The laddercodec session asks CLICK |
-| N5 | `pack_bits` from T, CT or SC into DS | Refuses it. Row B3 covers only X and Y | Accepted it | Open. The laddercodec session asks CLICK |
-| N6 | A Fill into two or more YD | Accepts it | Refused it | Open. The laddercodec session asks CLICK |
-| N7 | A termination code on a constant source that is copied into TXT | Refuses it (`option-not-offered`) | Warned | Open. The laddercodec session asks CLICK |
+| N3 | `copy(TXT1, DF, to_value or to_ascii)` | Refuses it (`copy-converter-bank`), on the ground that CLICK saves a plain copy here | Accepted it | Decided: laddercodec is right. CLICK offers no converter for TXT into DF, and it saves a plain copy |
+| N4 | A pack of 32 bits into DS or DH, or an unpack of DS or DH into 32 bits | Refuses it (`pack-too-many`) | Accepted it | Decided: laddercodec is right. CLICK rejects a pack of more than 16 bits into DS or DH (OBJ-027). It accepts 32 bits into DD or DF and rejects more than 32 (OBJ-041). It rejects an unpack of DS or DH into 32 bits (OBJ-032) and an unpack of DD into 33 bits (OBJ-039) |
+| N5 | `pack_bits` from T, CT or SC into DS | Refuses it | Accepted it | Decided: laddercodec is right. CLICK rejects a pack from T, CT or SC into DS, DD or DF (OBJ-024). It accepts only DH, at 16 bits. Row B3 now names these banks too |
+| N6 | A Fill into two or more YD | Accepts it | Refused it | Decided: laddercodec is right. CLICK accepts a Fill of 5 into every range from YD0..YD1 to YD1..YD8. It rejects YD0..YD9 (OBJ-003) |
+| N7 | A termination code on a constant source that is copied into TXT | Refuses it (`option-not-offered`) | Warned | Open. CLICK's dialog does offer Termination Code here, but nobody knows what CLICK saves when the box is ticked. The question is with ClickNick's runner |
 
 One more disagreement is not a row. For a doubled quote in a Copy text constant, `"A""B"`, laddercodec keeps
 refusing it until a PLC shows what CLICK stores. That follows Sam's ruling for Search. The pyrung session adds
