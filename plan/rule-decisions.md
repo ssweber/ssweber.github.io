@@ -118,8 +118,10 @@ v4.00), and laddercodec keeps the saves as test data. The laddercodec session ch
 here against its `main` on 2026-11-18, and they are gone. laddercodec writes a Real and `$1` the way CLICK
 stores them. It refuses `005` in a hex formula and `EH` as a Copy source on purpose (Sam, 2026-11-16). CLICK
 reads each as a value that the user may not mean, and the message names what CLICK would store. CLICK saves
-`1.50` copied into TXT1 as `1.5`, and laddercodec does the same. Still to ask CLICK: the digits of a Real in
-Math, and the largest Real in Math. The runner has cases queued for both.
+`1.50` copied into TXT1 as `1.5`, and laddercodec does the same. CLICK answered the digits of a Real in
+Math on 2026-11-18. Typed without an `E`, a real keeps 6 digits after the point. Typed with an `E`, it keeps
+7 significant digits. laddercodec refuses a real that CLICK would save as another value, and the refusal
+names the saved text. laddercodec's roadmap lists the small cases that are still open.
 
 CLICK also did the following. Nobody has recorded a difference against laddercodec for any of it yet.
 
