@@ -311,15 +311,14 @@ blocks under two conventions, and the choice between them is still to settle.
 
 ### 3. pyrung's public surface (pyrung, ClickNick)
 
-`pyrung`, `pyrung.click` and `pyrung.circuitpy` are public. Everything under `pyrung.core` and `pyrung.dap` is
-internal. The pyrung session moves the few names that users need to the top level and adds one public module
-for validation. The ClickNick session moves ClickNick onto named imports and adds a test that fails when one
-of them disappears. The pyrung session started on 2026-11-18 with an inventory of what users and ClickNick
-import from the internal packages.
+`pyrung`, `pyrung.click`, `pyrung.circuitpy`, `pyrung.validation` and `pyrung.live` are public. Everything
+under `pyrung.core` and `pyrung.dap` is internal. pyrung's half is on its `main` (#94). Every name that
+ClickNick uses has a public home, and the old internal paths still import. The ClickNick session moves
+ClickNick onto the public names with pyrung's deletions release, and adds a test that fails when one of them
+disappears. Its roadmap item 8 holds the list.
 
-Sam decided on 2026-11-17 that this pass and the `Rung` to `rung` rename are pyrung's next work. The
-recording branches that came before them are merged. The deletions release follows the pass and the rename,
-on its own and ahead of the joint release. Both land before the validation branch opens.
+Sam decided on 2026-11-17 that the `Rung` to `rung` rename follows the pass. The deletions release follows
+the rename, on its own and ahead of the joint release. The rename lands before the validation branch opens.
 
 ### 4. CLICK runner (ClickNick; used by laddercodec and pyrung)
 
@@ -396,8 +395,8 @@ queue.
 
 | Repo | Order |
 |---|---|
-| pyrung | 1. The public-surface pass, then the `Rung` to `rung` rename in tests as its own commit. The deletions release follows on Sam's tag. 2. Validation onto laddercodec (item 2, step 2) on its open branch, up to the joint release. 3. CLICK-match fixes from the 2026-11-10 readings. For now there is no watchdog stop (Sam, 2026-11-17). There may be a warning on a heavy For loop. 4. Console commands for every change (item 1, step 3). 5. float32 Reals, the per-PLC definitions table, the history API, calc into a pointer. The `how()` work follows the recording core. Export through laddercodec comes after the joint release. |
-| laddercodec | 1. The case lists for the runner: Fill mode, then the Timer, Counter, Shift, For and Drum dialogs. 2. The joint release, on Sam's tag. 3. The parity test against pyclickplc. 4. After the joint release: the whole-program check. Two pieces of work go on alongside these steps and are not steps of their own. Take pyrung's reports from adopting the API, before the joint release. Tighten the rules to each grid as the runner returns it. |
+| pyrung | 1. The `Rung` to `rung` rename in tests as its own commit. The deletions release follows on Sam's tag. 2. Validation onto laddercodec (item 2, step 2) on its open branch, up to the joint release. 3. CLICK-match fixes from the 2026-11-10 readings. For now there is no watchdog stop (Sam, 2026-11-17). There may be a warning on a heavy For loop. 4. Console commands for every change (item 1, step 3). 5. float32 Reals, the per-PLC definitions table, the history API, calc into a pointer. The `how()` work follows the recording core. Export through laddercodec comes after the joint release. |
+| laddercodec | 1. The case lists for the runner. The Fill, Compare and Search lists are with the ClickNick session. The Timer, Counter, Shift, For and Drum lists follow, then Send. 2. The joint release, on Sam's tag. 3. The parity test against pyclickplc. 4. After the joint release: the whole-program check. Two pieces of work go on alongside these steps and are not steps of their own. Take pyrung's reports from adopting the API, before the joint release. Tighten the rules to each grid as the runner returns it. |
 | pyclickplc | 0.9.0 went out on 2026-11-17. The pyrung session updates five tests when pyrung moves to it. The pyclickplc session has only CLICK questions left. It works through them with the ClickNick session. |
 | ClickNick | 1. A release now, on Sam's tag. 2. Then the runner, ahead of recording (Sam, 2026-11-17): Fill mode; the Timer, Counter, Shift, For and Drum dialogs; the full grids. 3. Named pyrung imports, with pyrung's deletions release, and laddercodec's new names, with the joint release. 4. Then the ClickNick side of recording. |
 
@@ -405,19 +404,18 @@ queue.
 
 - Publish each release (the tag is the gate). As of 2026-11-17:
   - ClickNick: ready now.
-  - pyrung's deletions release: after the public-surface pass and the `Rung` rename.
+  - pyrung's deletions release: after the `Rung` rename.
   - laddercodec and pyrung together: when the joint release closes (item 2).
 - Review laddercodec's new public names before the joint release: `Series`, `Parallel`, `Box`, `Branch`,
   `Circuit`, `lay_out`, `LayoutError`, `Term`, `csv_rows`, `CSV_HEADER`, `write_bundle`, `read_bundle`,
   the 20 `Literal` aliases and `UndecodedStop`.
 - Decide what a declared `min`, `max` or `choices` means on a tag that the ladder writes (pyrung, deferred).
 - At the PLC: wiring, power cycles, and distinct live X inputs for laddercodec's runs B and C.
-- Give the ClickNick session the go for each live CLICK or PLC run. Queued on 2026-11-18: its CLICK queue
-  item 6 for pyclickplc, and pyrung's hardware round (`follow4_reads`, `modbus_raw`).
+- Give the ClickNick session the go for each live CLICK or PLC run. Queued on 2026-11-18: laddercodec's
+  Compare and Search case lists, and ClickNick's CLICK queue item 6 for pyclickplc.
 - Answer laddercodec's three questions. What form does the build without checks take? How does CLICK draw
   a coil below a timer that has a reset pin? Does a NOP beside outputs that meet only at the rail split
   the rung, or is the rung refused?
-- Decide whether ClickNick builds the runner dialogs before its prompt for the nickname redraw.
 - Confirm the deciding rule in `rule-decisions.md`, then decide the rows that it does not settle. Sam decided
   rows D1 and D3 first, on 2026-11-16. pyrung's importer keeps accepting rungs that CLICK's Syntax Check
   refuses, and it reports them.

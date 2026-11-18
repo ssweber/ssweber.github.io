@@ -146,8 +146,8 @@ pyrung's rule when export moves to laddercodec.
   this with pyrung's "contacts before a NOP" rule.
 - **A wide rung.** laddercodec never splits a rung on width. Past 31 condition columns it refuses the rung
   with `layout-too-wide`. If pyrung wraps a wide rung, the two disagree.
-- **The 32-row limit.** laddercodec refuses more than 32 rows in `lay_out` and in `encode()`. The
-  laddercodec session found no such check in the CSV reader.
+- **The 32-row limit.** laddercodec refuses a rung over 32 rows everywhere except when it decodes CLICK's
+  own bytes. pyrung's own height check undercounts a rung with tall boxes, and that is on pyrung's roadmap.
 
 ## Not yet asked
 
