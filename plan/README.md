@@ -258,7 +258,11 @@ Steps keep their numbers, because the roadmaps refer to them.
    - A raw instruction cannot take pins, so Email, Home, Position and Velocity cannot have their
      pins wired.
    - pyrung's conformance probes need a public way to build an instruction that the checks
-     refuse. Sam chooses its form.
+     refuse. Sam chose the form on 2026-11-18: `allow=` on `read_csv` and `read_bundle`. A
+     refusal whose code is listed is kept, and any other refusal raises. `encode()` and the CSV
+     writers write such an instruction from its fields. `unchecked=True` does not change. The
+     laddercodec session builds it after the parity test. Its brief also describes the later form
+     for one instruction, which pyrung's export needs in step 5.
 6. **Import reads laddercodec's objects.** This comes last. It is the smallest clean saving and the
    hardest blocker.
 
@@ -299,9 +303,9 @@ blocks under two conventions, and the choice between them is still to settle.
   the joint release. The ClickNick session lists what must change in its roadmap item 9.
 - **The code names are final** (Sam, 2026-11-18). The list is `docs/guides/codes.md`, which is generated
   from the code and holds 93 codes. pyrung's `allow=` uses these names.
-- **The parity test against pyclickplc** is not started.
-- **Canonical constants:** the encoder writes CLICK's form. Three questions for CLICK remain, to go through the
-  runner: a trailing zero, the digits of a Real in Math, and the largest Real in Math.
+- **The parity test against pyclickplc** is in review. It found no disagreement.
+- **Canonical constants:** the encoder writes CLICK's form. Two questions for CLICK remain, and the runner
+  has cases queued for both: the digits of a Real in Math, and the largest Real in Math.
 - **CLICK's own error ids** such as "(OBJ-023)" stay in messages, because CLICK shows them to the user.
 - The pyrung-specific sections of laddercodec's `csv-format.md` move to pyrung.
 - **An undecodable rung no longer fails the whole program, and it fails loudly.** laddercodec
@@ -347,9 +351,10 @@ Jobs waiting:
 
 - the dialog work in item 2, step 3, in its order;
 - what CLICK writes on New (Open and Save As have run);
-- pyclickplc's: the nickname export's encoding; `[PLCName]` in CLICK 3 and a second matching section in
-  CLICK 4; the case and placement of the hardware sections in CLICK 4;
-- laddercodec's: a trailing zero; Fill with text or a bare number (needs Fill mode); a character above
+- pyclickplc's: the nickname export's encoding. Its `Project.ini` questions get no run (the planner,
+  2026-11-18). The runs of 2026-11-16 settle the PLC name, and pyclickplc records the rest as untested
+  assumptions;
+- laddercodec's: Fill with text or a bare number (needs Fill mode); a character above
   U+FFFF into TXT; a pointer on both sides; the Real edge and digits in Math; and PLC runs B and C, which
   need distinct live X inputs (an input override, or Sam);
 - pyrung's: the Y gaps in slots 2 to 8, FC15 across an X gap, and reads past XD8/YD8. On 2026-11-17 the
@@ -421,8 +426,7 @@ queue.
   Compare and Search case lists and the dialog dumps. Queued for one go: the typed nickname, comment and
   Text initial value; laddercodec's pastes for a coil below a timer that has a reset pin and for a NOP
   beside outputs that meet only at the rail; and eight values for a Real in Math.
-- Choose the form of laddercodec's build without checks. The planner and the laddercodec session both
-  recommend a build that takes a list of codes to let through and raises for any other refusal.
+- Approve the name of each new public parameter or function in laddercodec, as with the other public names.
 - Confirm the deciding rule in `rule-decisions.md`, then decide the rows that it does not settle. Sam decided
   rows D1 and D3 first, on 2026-11-16. pyrung's importer keeps accepting rungs that CLICK's Syntax Check
   refuses, and it reports them.
