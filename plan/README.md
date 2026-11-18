@@ -355,6 +355,21 @@ Sam decided on 2026-11-17 that the `Rung` to `rung` rename follows the pass. The
 The deletions release also removes the public name `Rung` (Sam, 2026-11-18). A rung is then written only as
 `with rung(...)`. The release went out as v0.17.0 on 2026-11-18.
 
+**One path for findings** (Sam, 2026-11-18: "this is a real dual code paths that could be 1"). pyrung's own
+analysis findings carry a display, with the source line and a caret. Its CLICK findings carry flat text.
+The CLICK findings join the display. The planner set the order on 2026-11-18, in three parts:
+
+1. On pyrung's `main`: `ClickFinding` holds a display, as core's finding records do. A site that passes only
+   text gets a display with its location, its message and its hint. This needs nothing from laddercodec.
+2. On the validation branch: the one place that turns a laddercodec refusal into a finding builds a real
+   display. The caret sits on the argument that the refusal's `.field` names, and laddercodec's message is
+   the problem line. The remaining instruction families follow, so each converts once.
+3. After the joint release: real frames for pyrung's own hardware and portability checks.
+
+The joint release does not wait on part 3. Nothing new is asked of laddercodec for parts 1 and 2. A short
+caret label would be a new public name there, and it waits until real output shows a need. The two code
+namespaces stay as Sam ruled on 2026-11-17.
+
 ### 4. CLICK runner (ClickNick; used by laddercodec and pyrung)
 
 The runner drives the CLICK software unattended, so work that needs CLICK no longer needs Sam. It is
