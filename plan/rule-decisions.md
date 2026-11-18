@@ -133,6 +133,27 @@ CLICK also did the following. Nobody has recorded a difference against laddercod
 - CLICK stores a Copy source in its own form. It stores `005` as `5`, `0ffh` as `0FFh` and `1.50` as
   `1.5`.
 
+## N. Found by pyrung's validation branch
+
+pyrung's validation branch swept 2,521 sample instructions against laddercodec `87a1e0c` on 2026-11-18 and
+found these. The pyrung session reported them. N1 and N2 fall under rule 1, and the pyrung session decided
+them. For N3 to N7 the laddercodec session owns the CLICK question. It checks the answers on file first, and
+it puts what is left into ClickNick's case lists. None of them waits on Sam.
+
+| # | Case | laddercodec | pyrung | State |
+|---|---|---|---|---|
+| N1 | A plain copy from TXT into a number register: TXT into DS, DD, DH, YD, TD, CTD or SD, and a Block copy from TXT into DS, DD or DH | Refuses it (`copy-txt-needs-convert`) | Accepted it | Decided by the pyrung session, 2026-11-18. CLICK's dialog asks for Copy Character Value or Copy ASCII Code Value, so laddercodec is right. pyrung's export will write the `to_value` that pyrung runs. The branch is building |
+| N2 | A plain copy from DF into TXT | Refuses it (`copy-txt-needs-convert`) | Accepted it | Decided the same way as N1. pyrung's export will write the `to_text()` that pyrung runs |
+| N3 | `copy(TXT1, DF, to_value or to_ascii)` | Refuses it (`copy-converter-bank`), on the ground that CLICK saves a plain copy here | Accepted it | Open. The laddercodec session asks CLICK |
+| N4 | A pack of 32 bits into DS or DH, or an unpack of DS or DH into 32 bits | Refuses it (`pack-too-many`) | Accepted it | Open. The laddercodec session asks CLICK |
+| N5 | `pack_bits` from T, CT or SC into DS | Refuses it. Row B3 covers only X and Y | Accepted it | Open. The laddercodec session asks CLICK |
+| N6 | A Fill into two or more YD | Accepts it | Refused it | Open. The laddercodec session asks CLICK |
+| N7 | A termination code on a constant source that is copied into TXT | Refuses it (`option-not-offered`) | Warned | Open. The laddercodec session asks CLICK |
+
+One more disagreement is not a row. For a doubled quote in a Copy text constant, `"A""B"`, laddercodec keeps
+refusing it until a PLC shows what CLICK stores. That follows Sam's ruling for Search. The pyrung session adds
+it to the PLC cases that go through ClickNick's queue on Sam's go.
+
 ## Not yet compared
 
 The laddercodec session answered its half of these on 2026-11-18. The pyrung session compares each with
@@ -148,5 +169,6 @@ pyrung's rule when export moves to laddercodec.
 
 ## Not yet asked
 
-No dialog has been asked about Fill, Shift, Timer, Counter, Drum or Send. Each needs a runner dialog first.
-The laddercodec session's triage of 2026-11-17 lists the cases to ask. That session writes the case lists.
+As of 2026-11-18 the runner has dialogs for Fill, Shift, Timer, Counter, For, Drum and Send, and laddercodec's
+case lists for them are on its `main`. The full grids are running. Compare and Search have answered, and
+laddercodec follows them.
