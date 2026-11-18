@@ -114,17 +114,11 @@ Section E (the RTC system nicknames) is closed and gone. pyclickplc 0.8.0 contai
 reads them from its catalog.
 
 This section records what CLICK stores for a constant. ClickNick's runner saved and decoded 95 cases (CLICK
-v4.00). On its `main`, laddercodec's encoder now writes constants the way CLICK stores them. At this sitting
-nobody has checked the rows below against it one by one. They stay until the laddercodec session confirms
-each. Still to ask CLICK: a trailing zero, the digits of a Real in Math, and the largest Real in Math. The
-per-case comparison is in the runner's results file. laddercodec keeps the cases as test data.
-
-| # | Case | laddercodec today | CLICK |
-|---|---|---|---|
-| F1 | `005` in a hex formula | Rejects it | Accepts it and stores `5h`. It reads a constant without `h` in a hex formula as hex, so it stores `1e3` as `1E3h` |
-| F2 | A Real as typed (`1.50`, `1e3`, `.5`) | Writes it as typed | Stores its own printed form: `1.5`, `1000.0`, `0.5`. It stores `1.5E+10` as typed |
-| F3 | `EH` as a Copy source | Reads it as hex 14 | Stores the Real 0.0 |
-| F4 | `$1` copied into TXT | Rejects it | Accepts it and stores `$01` |
+v4.00), and laddercodec keeps the saves as test data. The laddercodec session checked the four rows that were
+here against its `main` on 2026-11-18, and they are gone. laddercodec writes a Real and `$1` the way CLICK
+stores them. It refuses `005` in a hex formula and `EH` as a Copy source on purpose (Sam, 2026-11-16). CLICK
+reads each as a value that the user may not mean, and the message names what CLICK would store. Still to ask
+CLICK: a trailing zero, the digits of a Real in Math, and the largest Real in Math.
 
 CLICK also did the following. Nobody has recorded a difference against laddercodec for any of it yet.
 

@@ -4,7 +4,7 @@ This is the coordination point for pyclickplc, laddercodec, pyrung and ClickNick
 crosses repos, written once, and the rules all four share. Work inside one repo lives in that repo's
 `scratchpad/roadmap.md`.
 
-Last updated 2026-11-18. Latest releases: pyclickplc 0.9.0, laddercodec 0.4.0, pyrung 0.16.0, ClickNick 0.24.1.
+Last updated 2026-11-18. Latest releases: pyclickplc 0.9.1, laddercodec 0.4.0, pyrung 0.16.0, ClickNick 0.24.1.
 Everything since those tags is on each repo's `main`, unreleased.
 
 ## How to use this file
@@ -13,6 +13,9 @@ Everything since those tags is on each repo's `main`, unreleased.
   step done, a result that changes another repo's work, or a blocker. The planner answers with the next step,
   taken from this file and from Sam's rulings, and keeps this file current. A session still talks to Sam
   directly. Only Sam gives the go for a tag, a release, a live CLICK or PLC run, or a rule decision.
+- **Before a CLICK question goes to Sam, the session checks three things** (Sam, 2026-11-18). Is it already
+  answered in one of the four repos? Can ClickNick's runner answer it today? Could the runner answer it
+  with an extension? Only what is left goes to Sam, with a line on why the runner cannot do it.
 
 - Write each item in one place. If it crosses repos, it goes here. Otherwise it goes in the roadmap of the repo
   that owns it.
@@ -319,6 +322,8 @@ disappears. Its roadmap item 8 holds the list.
 
 Sam decided on 2026-11-17 that the `Rung` to `rung` rename follows the pass. The deletions release follows
 the rename, on its own and ahead of the joint release. The rename lands before the validation branch opens.
+The deletions release also removes the public name `Rung` (Sam, 2026-11-18). A rung is then written only as
+`with rung(...)`.
 
 ### 4. CLICK runner (ClickNick; used by laddercodec and pyrung)
 
