@@ -4,7 +4,7 @@ This is the coordination point for pyclickplc, laddercodec, pyrung and ClickNick
 crosses repos, written once, and the rules all four share. Work inside one repo lives in that repo's
 `scratchpad/roadmap.md`.
 
-Last updated 2026-11-18. Latest releases: pyclickplc 0.9.1, laddercodec 0.4.0, pyrung 0.16.0, ClickNick 0.24.1.
+Last updated 2026-11-18. Latest releases: pyclickplc 0.10.0, laddercodec 0.4.0, pyrung 0.16.0, ClickNick 0.24.1.
 Everything since those tags is on each repo's `main`, unreleased.
 
 ## How to use this file
@@ -416,15 +416,14 @@ queue.
 |---|---|
 | pyrung | 1. Remove the public name `Rung`, and catch pyclickplc's `PlcDataReadError` at launch. The deletions release follows on Sam's tag. 2. Validation onto laddercodec (item 2, step 2) on its open branch, up to the joint release. 3. CLICK-match fixes from the 2026-11-10 readings. For now there is no watchdog stop (Sam, 2026-11-17). There may be a warning on a heavy For loop. 4. Console commands for every change (item 1, step 3). 5. float32 Reals, the per-PLC definitions table, the history API, calc into a pointer. The `how()` work follows the recording core. Export through laddercodec comes after the joint release. |
 | laddercodec | 1. The case lists for the runner. The Fill, Compare and Search lists are with the ClickNick session. The Timer, Counter, Shift, For and Drum lists follow, then Send. 2. The joint release, on Sam's tag. 3. The parity test against pyclickplc. 4. After the joint release: the whole-program check. Two pieces of work go on alongside these steps and are not steps of their own. Take pyrung's reports from adopting the API, before the joint release. Tighten the rules to each grid as the runner returns it. |
-| pyclickplc | 0.9.1 went out on 2026-11-18. 1. Fix the test for a CLICK 4 `Project.ini`. A new CLICK 4.00 project has no `[Sec21]`, and pyclickplc reads and writes such a file by CLICK 3's rules. ClickNick's Name PLC flow meets this. The fix goes out as 0.9.2 on Sam's tag. 2. One CLICK question is left, the encoding of a nickname export. It waits on a runner extension. |
+| pyclickplc | 0.10.0 went out on 2026-11-18. It reads and writes a new CLICK 4.00 project's `Project.ini` by CLICK 4's rules, and ClickNick has moved to it. One CLICK question is left, the encoding of a nickname export. It waits on a runner extension. |
 | ClickNick | 1. A release now, on Sam's tag. 2. Then the runner, ahead of recording (Sam, 2026-11-17): Fill mode; the Timer, Counter, Shift, For and Drum dialogs; the full grids. 3. Named pyrung imports, with pyrung's deletions release, and laddercodec's new names, with the joint release. 4. Then the ClickNick side of recording. |
 
 ## Only Sam can do these
 
 - Publish each release (the tag is the gate). As of 2026-11-17:
   - ClickNick: ready now.
-  - pyrung's deletions release: after the public name `Rung` is removed.
-  - pyclickplc 0.9.2: after the `Project.ini` fix.
+  - pyrung's deletions release, v0.17.0: its release PR (#97) is in CI. The tag follows the merge.
   - laddercodec and pyrung together: when the joint release closes (item 2).
 - Decide what a declared `min`, `max` or `choices` means on a tag that the ladder writes (pyrung, deferred).
 - At the PLC: wiring, power cycles, and distinct live X inputs for laddercodec's runs B and C.
