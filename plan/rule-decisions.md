@@ -64,7 +64,7 @@ result. What is left of every row here is pyrung's half. The pyrung session does
 | # | Case | laddercodec's field | Editor | By the rule |
 |---|---|---|---|---|
 | B1 | Block copy DS to YD | `BlockCopy` | Rejects it (OBJ-004) | CLICK rejects this pair, so laddercodec is right. The pyrung session removes the pair from its table |
-| B2 | Block copy TXT to DF | `BlockCopy` | Rejects it (OBJ-024) | CLICK rejects this pair, so laddercodec is right. The pyrung session removes the pair from its table |
+| B2 | Block copy TXT to DF | `BlockCopy` | Rejects it (OBJ-024) | CLICK rejects this pair, so laddercodec is right (`copy-bank-incompatible`). pyrung 0.17.0 still exports the form. On pyrung's validation branch the table is gone, and pyrung refuses it (2026-11-18) |
 | B3 | Pack bits X, Y, T, CT or SC to DS | `Pack` | Rejects it (OBJ-024). X and Y pack into DH and not into DS. T, CT and SC also pack only into DH, at 16 bits (row N5). C packs into every word bank tried. It also rejects X001..X016 into DD or DF. That may be about width. Nobody has tested width apart from the bank | CLICK rejects this pair, so laddercodec is right. The pyrung session removes the pair from its table |
 | B4 | Pack words DH to DF | `Pack` | Rejects it (OBJ-024). It accepts DH1..DH2 into DD1 | CLICK rejects this pair, so laddercodec is right. The pyrung session removes the pair from its table |
 | B5 | Unpack bits DS, DD or DF to Y | `Unpack` | Rejects all three (OBJ-024). It accepts DH1 to Y. Every word bank tried unpacks to C | CLICK rejects these pairs, so laddercodec is right. The pyrung session removes the pairs from its table |
@@ -151,6 +151,9 @@ runner. None of them waits on Sam.
 | N5 | `pack_bits` from T, CT or SC into DS | Refuses it | Accepted it | Decided: laddercodec is right. CLICK rejects a pack from T, CT or SC into DS, DD or DF (OBJ-024). It accepts only DH, at 16 bits. Row B3 now names these banks too |
 | N6 | A Fill into two or more YD | Accepts it | Refused it | Decided: laddercodec is right. CLICK accepts a Fill of 5 into every range from YD0..YD1 to YD1..YD8. It rejects YD0..YD9 (OBJ-003) |
 | N7 | A termination code on a constant source that is copied into TXT | Refuses it (`option-not-offered`) | Warned | Open. CLICK's dialog does offer Termination Code here, but nobody knows what CLICK saves when the box is ticked. The question is with ClickNick's runner |
+| N10 | A hex constant copied into DH or YD. pyrung's export writes `copy(14, dh[1])` as `copy(Eh,DH1)` | Refuses `Eh` and `1Eh` (`copy-hex-reads-as-real`), because CLICK reads `Eh` as the Real 0.0 | Exported it | Decided: laddercodec is right. The fix is in pyrung, whose export will write the decimal. A strict xfail, `test_a_copy_of_14_into_dh_exports`, holds the case until then |
+
+The numbers follow the pyrung session's ledger, which is why N8 and N9 are not here.
 
 One more disagreement is not a row. For a doubled quote in a Copy text constant, `"A""B"`, laddercodec keeps
 refusing it until a PLC shows what CLICK stores. That follows Sam's ruling for Search. The pyrung session adds
