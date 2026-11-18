@@ -305,6 +305,10 @@ blocks under two conventions, and the choice between them is still to settle.
 - **The code names are final** (Sam, 2026-11-18). The list is `docs/guides/codes.md`, which is generated
   from the code and holds 93 codes. pyrung's `allow=` uses these names. Sam approved a 94th on 2026-11-18,
   `duplicate-subroutine-name`. It is on a branch that is in review.
+- **The public names are reviewed** (Sam, 2026-11-18). He went through the 60 names added since 0.4.0.
+  Two change: `AfInstruction` becomes `Instruction`, and `AfToken` becomes `InstructionToken`. `Term` is
+  exported. The rest stay. The rename is one branch, after `allow=`. ClickNick uses the two old names in
+  one file and moves with the joint release.
 - **The parity test against pyclickplc** is in review. It found no disagreement.
 - **Canonical constants:** the encoder writes CLICK's form. Two questions for CLICK remain, and the runner
   has cases queued for both: the digits of a Real in Math, and the largest Real in Math.
@@ -419,9 +423,6 @@ queue.
   - pyrung's deletions release: after the public name `Rung` is removed.
   - pyclickplc 0.9.2: after the `Project.ini` fix.
   - laddercodec and pyrung together: when the joint release closes (item 2).
-- Review laddercodec's new public names before the joint release: `Series`, `Parallel`, `Box`, `Branch`,
-  `Circuit`, `lay_out`, `LayoutError`, `Term`, `csv_rows`, `CSV_HEADER`, `write_bundle`, `read_bundle`,
-  the 20 `Literal` aliases and `UndecodedStop`.
 - Decide what a declared `min`, `max` or `choices` means on a tag that the ladder writes (pyrung, deferred).
 - At the PLC: wiring, power cycles, and distinct live X inputs for laddercodec's runs B and C.
 - Give the go for a run that writes to the PLC or that needs a person at the PLC. That includes pyrung's
