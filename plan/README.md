@@ -9,10 +9,13 @@ Everything since those tags is on each repo's `main`, unreleased.
 
 ## How to use this file
 
-- **Sessions check in with the planner after each big finish** (Sam, 2026-11-18). A big finish is a roadmap
-  step done, a result that changes another repo's work, or a blocker. The planner answers with the next step,
-  taken from this file and from Sam's rulings, and keeps this file current. A session still talks to Sam
-  directly. Only Sam gives the go for a tag, a release, a run that writes to the PLC, or a rule decision.
+- **A session messages the planner only when it hits a stop** (Sam, 2026-11-18). A stop is one of four
+  things. The session is blocked. Its roadmap has nothing that it can start. The order between repos is
+  unclear. Two sessions cannot settle a disagreement. A merge, a review result or a run result is not a
+  stop. Sessions settle questions with each other directly. The planner answers a stop with the next step,
+  taken from this file and from Sam's rulings, and keeps this file current from the roadmaps. A session still
+  talks to Sam directly. Only Sam gives the go for a tag, a release, a run that writes to the PLC, or a rule
+  decision.
   He has preapproved the runs of ClickNick's runner (see "Only Sam can do these").
 - **Before a CLICK question goes to Sam, the session checks three things** (Sam, 2026-11-18). Is it already
   answered in one of the four repos? Can ClickNick's runner answer it today? Could the runner answer it
