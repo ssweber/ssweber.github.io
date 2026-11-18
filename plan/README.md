@@ -364,7 +364,10 @@ The CLICK findings join the display. The planner set the order on 2026-11-18, in
 2. On the validation branch: the one place that turns a laddercodec refusal into a finding builds a real
    display. The caret sits on the argument that the refusal's `.field` names, and laddercodec's message is
    the problem line. The remaining instruction families follow, so each converts once.
-3. After the joint release: real frames for pyrung's own hardware and portability checks.
+3. After the joint release: real frames for the checks that stay in pyrung. Those are the rules about
+   pyrung's own syntax, which laddercodec never sees, such as an expression outside Math. No site is
+   converted by hand if its rule is moving to laddercodec. Most of `hardware.py` is moving, family by
+   family, and so is part of `portability.py`. The pyrung session sorts which codes stay.
 
 The joint release does not wait on part 3. Nothing new is asked of laddercodec for parts 1 and 2. A short
 caret label would be a new public name there, and it waits until real output shows a need. The two code
