@@ -194,8 +194,9 @@ laddercodec and pyrung release together. laddercodec's API is provisional until 
 change on what pyrung finds while adopting it (Sam, 2026-11-17). laddercodec makes no separate
 release for the new `FieldError` (step 1). Sam settled the following on the same day:
 
-- **What closes it:** pyrung's validation (step 2) passes its agreement tests against laddercodec's `main`,
-  and Sam has reviewed laddercodec's list of code names from a user's view. Nothing else is waited for.
+- **What closes it:** pyrung's validation (step 2) passes its agreement tests against laddercodec's `main`.
+  Sam approved laddercodec's 93 code names on 2026-11-18, so that half is done. A code added later goes
+  back to him. Before the tag he also reviews the public names that laddercodec added for export.
 - **What goes in before it:** the rest of laddercodec's breaking changes (see "In laddercodec"), so the API
   breaks once. Export and import through laddercodec (steps 5 and 6) come after it, as additive releases.
 - **Where pyrung's work lives:** on a branch that builds against laddercodec's `main` and stays open until the
@@ -293,8 +294,8 @@ blocks under two conventions, and the choice between them is still to settle.
   in the rung grid where `wire_down` was. `main` also exports a `Literal` alias for each fixed set of field
   values, such as `ContactKind`. ClickNick reads laddercodec too, so its move onto the new names belongs to
   the joint release. The ClickNick session lists what must change in its roadmap item 9.
-- **The list of code names** for Sam's review is `docs/guides/codes.md`. It is generated from the code and
-  holds 93 codes, grouped by rule family.
+- **The code names are final** (Sam, 2026-11-18). The list is `docs/guides/codes.md`, which is generated
+  from the code and holds 93 codes. pyrung's `allow=` uses these names.
 - **The parity test against pyclickplc** is not started.
 - **Canonical constants:** the encoder writes CLICK's form. Three questions for CLICK remain, to go through the
   runner: a trailing zero, the digits of a Real in Math, and the largest Real in Math.
@@ -406,8 +407,9 @@ queue.
   - ClickNick: ready now.
   - pyrung's deletions release: after the public-surface pass and the `Rung` rename.
   - laddercodec and pyrung together: when the joint release closes (item 2).
-- Review laddercodec's list of code names from a user's view. The joint release waits on it. The list is
-  `docs/guides/codes.md` in laddercodec.
+- Review laddercodec's new public names before the joint release: `Series`, `Parallel`, `Box`, `Branch`,
+  `Circuit`, `lay_out`, `LayoutError`, `Term`, `csv_rows`, `CSV_HEADER`, `write_bundle`, `read_bundle`,
+  the 20 `Literal` aliases and `UndecodedStop`.
 - Decide what a declared `min`, `max` or `choices` means on a tag that the ladder writes (pyrung, deferred).
 - At the PLC: wiring, power cycles, and distinct live X inputs for laddercodec's runs B and C.
 - Give the ClickNick session the go for each live CLICK or PLC run. Queued on 2026-11-18: its CLICK queue
