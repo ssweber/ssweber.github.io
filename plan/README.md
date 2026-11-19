@@ -548,7 +548,10 @@ queue.
 - Decide whether the joint release still waits for every family, now that pyrung's validation lands on
   its `main` one family at a time.
 - Before laddercodec's release: its list of public names and the `.field` names that pyrung now reads,
-  the codes for OBJ-028 and OBJ-023, and `FieldError.span`.
+  the codes for OBJ-028 and OBJ-023, and `FieldError.span`. One more code is on that list. A range whose
+  two ends are the same address is `duplicate-address` in Shift and `range-not-ascending` in a coil, a
+  Search and a Copy. The laddercodec session recommends `duplicate-address` everywhere (OBJ-012), with
+  `range-not-ascending` kept for an end below the start (OBJ-009). pyrung's `allow=` takes these names.
 - Run `/reload-plugins` in a session after it has updated the `bob` plugin. laddercodec's session waits on
   this.
 - Decide what a declared `min`, `max` or `choices` means on a tag that the ladder writes (pyrung, deferred).
