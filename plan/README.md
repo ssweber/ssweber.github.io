@@ -4,7 +4,7 @@ This is the coordination point for pyclickplc, laddercodec, pyrung and ClickNick
 crosses repos, written once, and the rules all four share. Work inside one repo lives in that repo's
 `scratchpad/roadmap.md`.
 
-Last updated 2026-11-19. Latest releases: pyclickplc 0.10.0, laddercodec 0.4.0, pyrung 0.17.0, ClickNick 0.24.1.
+Last updated 2026-11-19. Latest releases: pyclickplc 0.10.0, laddercodec 0.4.0, pyrung 0.17.0, ClickNick 0.25.0.
 Everything since those tags is on each repo's `main`, unreleased.
 
 ## How to use this file
@@ -478,13 +478,13 @@ Jobs waiting:
 
 ### 6. Prover search removal (pyrung, this site)
 
-Done on pyrung's `main`, unreleased: the exhaustive search, the `Proven` verdict, lock files, the
+Done, and released in pyrung v0.17.0 on 2026-11-18: the exhaustive search, the `Proven` verdict, lock files, the
 `pyrung lock` command, the `prove` console verb and the `lock=` tag flag are gone. The static facts stay,
 because `how()` and validation use them. They are now checked against real runs. The facts that those runs
 refuted are held as strict expected failures on pyrung's roadmap. This site no longer describes `prove` or
 lock files.
 
-Left: the release. Until it goes out, this site describes a pyrung that is not on PyPI.
+Nothing is left.
 
 ### 7. One source for the agent tooling (all four)
 
@@ -522,12 +522,12 @@ queue.
 | pyrung | v0.17.0 went out on 2026-11-18. The queue is serial, at about 50 minutes a train. Order from 2026-11-19: 1. Two fixes to the compiled kernel, which gave wrong answers for some copy, pack, unpack and block copy forms, in v0.17.0 too. 2. The SUM range that exports the wrong end. 3. The shared operand validator (Sam, 2026-11-18). 4. The pin move after laddercodec's wording batch. 5. Validation onto laddercodec, family by family (item 2, step 2). Later: parse operands once, in the builder. Then: CLICK-match fixes from the 2026-11-10 readings. For now there is no watchdog stop (Sam, 2026-11-17). There may be a warning on a heavy For loop. 4. Console commands for every change (item 1, step 3). 5. float32 Reals, the per-PLC definitions table, the history API, calc into a pointer. The `how()` work follows the recording core. Export through laddercodec comes after the joint release. |
 | laddercodec | On `main` since 2026-11-18: the comment escapes, the public renames, one source for a Math real, CLICK's answers for the box grids, and the message parts for every family. 1. Plain errors for odd input, in review. 2. The batch of message wording. 3. The joint release, on Sam's tag. 4. After the joint release: the whole-program check and `FieldError.span`. Two pieces of work go on alongside these steps and are not steps of their own. Take pyrung's reports from adopting the API, before the joint release. Tighten the rules to each grid as the runner returns it. |
 | pyclickplc | 0.10.0 went out on 2026-11-18. It reads and writes a new CLICK 4.00 project's `Project.ini` by CLICK 4's rules, and ClickNick has moved to it. One CLICK question is left, the encoding of a nickname export. It waits on a runner extension. |
-| ClickNick | 1. A release now, on Sam's tag. 2. Then the runner, ahead of recording (Sam, 2026-11-17): Fill mode; the Timer, Counter, Shift, For and Drum dialogs; the full grids. 3. The move to pyrung 0.17.0 and its named imports, after the runner's `--resume` fix. laddercodec's new names follow with the joint release. 4. Then the ClickNick side of recording. |
+| ClickNick | v0.25.0 went out on 2026-11-18, on pyrung 0.17.0 and its public names. The runner now asks seven more instruction dialogs and exports nicknames. 1. The runner's waiting jobs (item 4), ahead of recording (Sam, 2026-11-17). 2. laddercodec's new names, with the joint release. 3. Then the ClickNick side of recording. |
 
 ## Only Sam can do these
 
-- Publish each release (the tag is the gate). As of 2026-11-18:
-  - ClickNick: ready now.
+- Publish each release (the tag is the gate). As of 2026-11-19:
+  - ClickNick: v0.25.0 is out, and nothing waits.
   - laddercodec and pyrung together: when the joint release closes (item 2). pyrung cannot publish before
     laddercodec does. Its compiled kernel fixes correct wrong answers that v0.17.0 gives, so they wait too.
 - Decide whether the joint release still waits for every family, now that pyrung's validation lands on
