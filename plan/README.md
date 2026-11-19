@@ -450,6 +450,14 @@ What it does now: paste and copy back; `try`, which asks the Math, Copy, Out, Re
 Search dialogs, writes results as it goes and resumes a long run; nickname CSV import; Read Data; System
 Configuration; the Address Picker.
 
+**CLICK drops a pasted operand whose address is not in the project** (found on 2026-11-19). The runner
+added only the addresses written in the rung's text before a paste. It missed the end that CLICK derives for
+a Copy of text and the tags in raw cells. The ClickNick session checked all 79 of the runner's paste runs,
+and six had missed an address. The laddercodec session marked each answer that rested on those six as held
+or changed. No row in `rule-decisions.md` changes. One earlier note was wrong, that CLICK's paste drops a
+Copy's end. CLICK keeps the end when its address is in the project. laddercodec is adding a public call that
+returns every address a payload uses, so that the runner can add them first. Sam picks its name.
+
 **Hardware rounds go through ClickNick too.** A job tool writes a project to the conformance PLC and reads the
 answers back. The other sessions queue their PLC questions with the ClickNick session. Sam is needed only for
 wiring, power cycles and anything else that takes a person at the PLC.
