@@ -361,17 +361,39 @@ The CLICK findings join the display. The planner set the order on 2026-11-18, in
 
 1. On pyrung's `main`: `ClickFinding` holds a display, as core's finding records do. A site that passes only
    text gets a display with its location, its message and its hint. This needs nothing from laddercodec.
-2. On the validation branch: the one place that turns a laddercodec refusal into a finding builds a real
-   display. The caret sits on the argument that the refusal's `.field` names, and laddercodec's message is
-   the problem line. The remaining instruction families follow, so each converts once.
+2. On the validation branch, in two stages. The one place that turns a laddercodec refusal into a finding
+   builds a real display.
+   - Stage 1, now: the frame, a caret on the argument that the refusal's `.field` names, no caret label, and
+     laddercodec's message as the problem line. This needs nothing new from laddercodec.
+   - Stage 2, when laddercodec's Copy example is on its `main`: the caret label is laddercodec's `short()`,
+     and the hint is its `detail()`, then pyrung's advice, then CLICK's id.
+
+   The remaining instruction families follow through the same place, so each converts once.
 3. After the joint release: real frames for the checks that stay in pyrung. Those are the rules about
    pyrung's own syntax, which laddercodec never sees, such as an expression outside Math. No site is
    converted by hand if its rule is moving to laddercodec. Most of `hardware.py` is moving, family by
-   family, and so is part of `portability.py`. The pyrung session sorts which codes stay.
+   family, and so is part of `portability.py`. The pyrung session's list of which codes stay is in
+   `pyrung-wt/buildbot/jobs/notes/clk-codes.md`: 31 move, 6 wait for a whole-program check, and 20 stay.
 
-The joint release does not wait on part 3. Nothing new is asked of laddercodec for parts 1 and 2. A short
-caret label would be a new public name there, and it waits until real output shows a need. The two code
-namespaces stay as Sam ruled on 2026-11-17.
+The joint release does not wait on part 3. The two code namespaces stay as Sam ruled on 2026-11-17.
+
+**A laddercodec refusal keeps its parts** (Sam approved the design on 2026-11-18). Today laddercodec writes
+a finished sentence and then edits it in 16 places by searching it. A refusal will keep three parts, and
+its message will be derived from them: the operand with its short rule, the explanation, and CLICK's id.
+
+- `str(err)` does not change. The tests that match on message text guard that.
+- The public names are `message(names=None)`, `short(names=None)` and `detail(names=None)`. `names` maps an
+  address to a name.
+- With names, an operand prints in the user's names and then in CLICK's form in parentheses. The parentheses
+  go when the two are the same. Examples: `Count (DS1)`, `Valve1..Valve2 (C1..C2)`, `DS[Ptr] (DS[DD1])`.
+- pyrung places its caret from the refusal's `.field`, so the field names become something pyrung reads.
+- The laddercodec session builds the core and the Copy family first, with care, as the example. It writes
+  a short recipe from that. Sonnet builders then convert the other families, one per branch (Sam's
+  suggestion). `math_formula` goes last, after the one source for a Math real's forms.
+- The joint release does not wait for the sweep. A refusal that is not converted yet still prints as it
+  does today.
+- Not covered: `Finding`, `LayoutError`, `DecodeError` and `EncodeError`. ClickNick shows these messages as
+  plain text and needs no change. It can pass its nickname map later.
 
 ### 4. CLICK runner (ClickNick; used by laddercodec and pyrung)
 
