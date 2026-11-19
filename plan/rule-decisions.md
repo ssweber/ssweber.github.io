@@ -164,14 +164,14 @@ runner. None of them waits on Sam.
 | N20 | `send(remote_start="SD1")` | Refuses it (`not-writable`) | Accepted it | Decided: laddercodec is right. CLICK refuses SD1 as the remote address of every Send tried (OBJ-004) |
 | N21 | A send or receive count over one request | Refuses it (`count-out-of-range`) | Accepted it | Decided: laddercodec is right. On FC16, CLICK accepts 123 DS and refuses 124 (OBJ-010). It accepts up to 61 of DD, DF or CTD |
 | N22 | `word_swap=True` where the function code offers no word swap, such as one DS on FC06 | Refuses it (`option-not-offered`) | Accepted it | Decided: laddercodec is right. The pyrung session reports that CLICK's dialog offers no word swap there. The planner did not check it |
-| N23 | A TCP address that is not four numbers from 0 to 255 | Refuses it (`invalid-modbus-target`) | Accepted it | Stands. CLICK has no recorded answer, because the runner has tried only well-formed addresses. The laddercodec session queued cases with the runner on 2026-11-19, for Send and Receive. Nothing waits on it |
+| N23 | A TCP address that is not four numbers from 0 to 255 | Refuses it (`invalid-modbus-target`) | Accepted it | Decided: laddercodec is right. The runner asked on 2026-11-19 (ClickNick's job `ip-field`). CLICK's field takes four numbers from 0 to 255 and lets nothing else be typed. It refuses a blank address, a blank part and a negative part (OBJ-005). It saves `01.2.3.4` as `1.2.3.4`, and laddercodec will do the same in a small branch. pyrung writes four numbers with no leading zeros |
 | N25 | A send or receive over addresses that are not consecutive | No rule. It has no list form | Exported a list that CLICK cannot load | Decided: pyrung refuses it, under its own `CLK_COPY_RANGE_NOT_CONSECUTIVE` |
 | N-b | A shift over one address, such as `c.select(2, 2)` | Refuses it (`duplicate-address`) | Accepted it | Decided: laddercodec is right. CLICK refuses a shift of C1..C1 (OBJ-012) |
 | N-d | A drum preset register outside DS, such as DD, TD, CTD or SD | Refuses it (`bank-not-allowed`) | Accepted it | Decided: laddercodec is right. CLICK refuses DD1, TD1, CTD1 and SD1 as a time drum preset (OBJ-004) and accepts DS1 |
 | N-e | A drum event that is not a bare bit, such as `~C5`, `rise(X3)` or `Or(X3, X4)` | Refuses it (`not-an-address`) | Exported `events=[~X003, C5]` | Decided: laddercodec is right. The Drum dialog takes only an address for an event, and it has no option for a normally closed or an edge contact |
 | N-f | A shift over scattered or mixed-bank addresses, such as `[C1, C5, C9]` or `[C1, Y2, C3]`, or over no addresses | No rule. It has no list form | Exported a list | Decided: pyrung refuses it, under `CLK_COPY_RANGE_NOT_CONSECUTIVE`, and `allow=` does not let it through. A block mapped to descending addresses still exports `shift(C3..C1)`, which CLICK accepts |
 | N-g | A drum output that is also the completion flag | Refuses it (`duplicate-address`) | Accepted it | Decided: laddercodec is right. CLICK refuses it on a time drum, "The set coil has already been used" (OBJ-014) |
-| R1 | A coil over one address, such as `out(c.select(2, 2))` | Refuses it (`range-not-ascending`) | Accepted it | Decided: laddercodec is right. CLICK's Out dialog refuses C1..C1 and Y001..Y001 (OBJ-012). The Set and Reset dialogs have no recorded answer for a range of one address, and the laddercodec session queued those cases with the runner on 2026-11-19 |
+| R1 | A coil over one address, such as `out(c.select(2, 2))` | Refuses it (`range-not-ascending`) | Accepted it | Decided: laddercodec is right. CLICK's Out dialog refuses C1..C1 and Y001..Y001 (OBJ-012). The runner asked Set and Reset on 2026-11-19 (ClickNick's job `coil-sc`), and they answer as Out does: C1..C1, Y001..Y001 and SC50..SC50 are refused (OBJ-012), and so is C2..C1 (OBJ-009) |
 | R2 | A coil over scattered, mixed-bank or descending addresses. This includes an `immediate()` range | No list form. It refuses a descending range | Exported a list for the range that is not immediate | Decided: pyrung refuses it, under `CLK_COPY_RANGE_NOT_CONSECUTIVE`. CLICK's Out dialog refuses C2..C1 (OBJ-009) |
 | R3 | `latch(SC162)` and `reset(SC162)` | Accepts them | Refused them | Decided: laddercodec is right. This is row A6 for Set and Reset. CLICK accepts both on SC162 and refuses both on SC163 (OBJ-003) |
 | R4 | An SC range with a read-only bit inside it, such as `out(SC50..SC60)` | Accepts it, in Out, Set and Reset | Refused it | Decided by rule 3: nobody refuses it. CLICK accepts SC50..SC60 in all three dialogs, and it refuses a read-only SC on its own. Nobody knows what a PLC then does to SC52. That needs a PLC run on Sam's go, and pyrung's simulation must match the answer |
@@ -189,9 +189,9 @@ The pyrung session reported the rows from T1 to R4 on 2026-11-19, from four fami
 as one train: timers and counters, Send and Receive, Shift and the drums, and the coils. Where laddercodec
 has no rule, pyrung refuses a range that CLICK has no way to write. The planner checked T1, N18, N20, N21,
 N-b, N-d, N-e, N-g, R1, R3 and R4 against the recorded answers. They are in laddercodec's
-`tests/fixtures/editor_grids/` and in ClickNick's `buildbot/jobs/coil-sc/out/`. Two gaps are named in the
-rows: a malformed TCP address, and a Set or Reset over one address. The runner has cases queued for both,
-and neither waits on Sam. Only R4's question for a PLC is his.
+`tests/fixtures/editor_grids/` and in ClickNick's `buildbot/jobs/coil-sc/out/`. Two rows had no
+recorded answer, N23 and R1, and the runner answered both the same day. Only R4's question for a PLC is
+Sam's.
 
 The same report renames codes with no change of verdict. A wrong bank is now `bank-not-allowed` in the
 timer, counter, send, receive and Out families. A timer preset that is too large is `constant-out-of-range`.
