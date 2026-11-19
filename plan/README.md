@@ -233,8 +233,11 @@ Steps keep their numbers, because the roadmaps refer to them.
    call `read_csv(..., unchecked=True)`, or `raw(...)` in Python. These are the public ways to do
    it.
 2. **pyrung: validation on laddercodec** (laddercodec becomes a runtime dependency here). The Copy
-   family is on pyrung's `main` (#102). The other families follow in this order: Send and Receive; Timer,
-   Counter, Shift, For and Drum; Coil and Contact; Search; and Math last. For a field rule, pyrung's
+   family is on pyrung's `main` (#102), and it is the example. The other families are built in parallel
+   from it, one builder per family in its own worktree (Sam, 2026-11-19). Each family reports what
+   laddercodec gets wrong straight to the laddercodec session. Only the landing is serial. Its default
+   order is Send and Receive; Timer, Counter, Shift, For and Drum; Coil and Contact; Search; then Math.
+   pyrung moves its laddercodec pin in batches. For a field rule, pyrung's
    validation builds the instruction's laddercodec object and
    turns each refusal into a finding. The finding uses the name above and carries pyrung's advice
    text. The pyrung session removes pyrung's bank tables and the checks that read them. pyrung's
@@ -519,7 +522,7 @@ queue.
 
 | Repo | Order |
 |---|---|
-| pyrung | v0.17.0 went out on 2026-11-18. The queue is serial, at about 50 minutes a train. Order from 2026-11-19: 1. Two fixes to the compiled kernel, which gave wrong answers for some copy, pack, unpack and block copy forms, in v0.17.0 too. 2. The SUM range that exports the wrong end. 3. The shared operand validator (Sam, 2026-11-18). 4. The pin move after laddercodec's wording batch. 5. Validation onto laddercodec, family by family (item 2, step 2). Later: parse operands once, in the builder. Then: CLICK-match fixes from the 2026-11-10 readings. For now there is no watchdog stop (Sam, 2026-11-17). There may be a warning on a heavy For loop. 4. Console commands for every change (item 1, step 3). 5. float32 Reals, the per-PLC definitions table, the history API, calc into a pointer. The `how()` work follows the recording core. Export through laddercodec comes after the joint release. |
+| pyrung | v0.17.0 went out on 2026-11-18. The queue is serial, at about 50 minutes a train. Order from 2026-11-19: 1. Two fixes to the compiled kernel, which gave wrong answers for some copy, pack, unpack and block copy forms, in v0.17.0 too. 2. The SUM range that exports the wrong end. 3. The shared operand validator (Sam, 2026-11-18). 4. The pin move after laddercodec's wording batch. 5. Validation onto laddercodec (item 2, step 2). The families are built in parallel from the Copy example, and building does not wait for steps 1 to 4. Later: parse operands once, in the builder. Then: CLICK-match fixes from the 2026-11-10 readings. For now there is no watchdog stop (Sam, 2026-11-17). There may be a warning on a heavy For loop. 4. Console commands for every change (item 1, step 3). 5. float32 Reals, the per-PLC definitions table, the history API, calc into a pointer. The `how()` work follows the recording core. Export through laddercodec comes after the joint release. |
 | laddercodec | On `main` since 2026-11-18: the comment escapes, the public renames, one source for a Math real, CLICK's answers for the box grids, and the message parts for every family. 1. Plain errors for odd input, in review. 2. The batch of message wording. 3. The joint release, on Sam's tag. 4. After the joint release: the whole-program check and `FieldError.span`. Two pieces of work go on alongside these steps and are not steps of their own. Take pyrung's reports from adopting the API, before the joint release. Tighten the rules to each grid as the runner returns it. |
 | pyclickplc | 0.10.0 went out on 2026-11-18. It reads and writes a new CLICK 4.00 project's `Project.ini` by CLICK 4's rules, and ClickNick has moved to it. One CLICK question is left, the encoding of a nickname export. It waits on a runner extension. |
 | ClickNick | v0.25.0 went out on 2026-11-18, on pyrung 0.17.0 and its public names. The runner now asks seven more instruction dialogs and exports nicknames. 1. The runner's waiting jobs (item 4), ahead of recording (Sam, 2026-11-17). 2. laddercodec's new names, with the joint release. 3. Then the ClickNick side of recording. |
