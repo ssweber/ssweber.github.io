@@ -153,12 +153,28 @@ runner. None of them waits on Sam.
 | N7 | A termination code on a constant source that is copied into TXT | Refuses it (`option-not-offered`) | Warned | Closed. The runner asked CLICK, and laddercodec follows the answer (#135, #138). pyrung takes it when the pin moves |
 | N10 | A hex constant copied into DH or YD. pyrung's export writes `copy(14, dh[1])` as `copy(Eh,DH1)` | Refuses `Eh` and `1Eh` (`copy-hex-reads-as-real`), because CLICK reads `Eh` as the Real 0.0 | Exported it | Decided: laddercodec is right. The fix is in pyrung, whose export will write the decimal. A strict xfail, `test_a_copy_of_14_into_dh_exports`, holds the case until then |
 | N11 | A search value that does not suit the table: TXT or text in a number table, a number in a TXT table, a decimal bank in a DH table, XD, YD or DH in a DS-type table, or a bit tag | Refuses it (`search-value-bank`, `bank-not-allowed`) | Accepted it | Decided: laddercodec is right. This is row C5, widened to every table kind. CLICK's Search dialog refuses these (OBJ-004) |
-| N12 | A quote in a search text constant, such as `sub"name` | Refuses it (`invalid-text-constant`) | Accepted it | Stands on Sam's ruling for Search: laddercodec refuses it until a PLC shows what CLICK stores |
+| N12 | A quote in a search text constant, such as `sub"name` | Refused it (`invalid-text-constant`), and accepts it since #156 | Accepted it | Closed on 2026-11-19. A PLC searched for `"A""B"` and matched the four characters as typed. laddercodec now accepts a quote in a Search value and counts it as typed, as in a Copy (#156). pyrung takes it when its pin moves |
 | N13 | A search constant out of range: 2147483648, or text of 129 characters | Refuses it (`constant-out-of-range`) | Accepted it | Decided: laddercodec is right. CLICK refuses 2147483648 (OBJ-005) and accepts -2147483648 |
 | N14 | A search of a table with one address, such as DS5..DS5 | Refuses it (`range-not-ascending`) | Accepted it | Decided: laddercodec is right. CLICK refuses it with "The same address cannot be used here" (OBJ-012) |
 | N15 | `>=`, `<`, `<=` or `>` on a TXT search | Refuses it (`text-order-compare`) | Accepted it | Decided: laddercodec is right. This is row C6, widened. CLICK's dialog closes these modes for a TXT table |
 | N16 | A search found flag outside C, or a result outside DS | Refuses it (`bank-not-allowed`) | Refused X, T, CT, SC and SD under its own code, and accepted Y | Decided: laddercodec is right. This is row C4. Only the code changes, except that a found flag on Y is now refused |
 | N17 | A For count that is not a whole number: `forloop(3.5)` or `forloop(5.0)` | Refuses it | Accepted and exported it, and ran 3.5 as 3 | Decided: laddercodec is right. CLICK's For dialog refuses `1.5` and `1.` (OBJ-005) |
+| T1 | A negative preset on an off-delay timer | Refuses it (`constant-out-of-range`) | Accepted it | Decided: laddercodec is right. This is row C1, widened. CLICK's Timer dialog refuses -1 on an off-delay timer in every unit (OBJ-005) |
+| N18 | A send or receive whose local bank does not pair with the bank of the remote start, such as `source=x[5], remote_start="DS1"`. For a receive of words, a local DS takes DS, TD or SD, DD takes DD or CTD, DF takes DF, TXT takes TXT, and DH takes DH, or XD or YD with a count of 1. For a receive of bits, a local Y or C takes X, Y, C, T, CT or SC. A local XD, TD, CTD or SD is refused | Refuses it (`bank-not-allowed`) | Accepted it | Decided: laddercodec is right. CLICK refuses these (OBJ-004). 227 swept forms change. The planner found the Send pairs in `send.answers.json`. For Receive it found only answers for a Modbus 984 remote address, and it has asked the laddercodec session what the pairs for a CLICK remote address rest on |
+| N20 | `send(remote_start="SD1")` | Refuses it (`not-writable`) | Accepted it | Decided: laddercodec is right. CLICK refuses SD1 as the remote address of every Send tried (OBJ-004) |
+| N21 | A send or receive count over one request | Refuses it (`count-out-of-range`) | Accepted it | Decided: laddercodec is right. On FC16, CLICK accepts 123 DS and refuses 124 (OBJ-010). It accepts up to 61 of DD, DF or CTD |
+| N22 | `word_swap=True` where the function code offers no word swap, such as one DS on FC06 | Refuses it (`option-not-offered`) | Accepted it | Decided: laddercodec is right. The pyrung session reports that CLICK's dialog offers no word swap there. The planner did not check it |
+| N23 | A TCP address that is not four numbers from 0 to 255 | Refuses it (`invalid-modbus-target`) | Accepted it | Stands. CLICK has no recorded answer, because the runner has tried only well-formed addresses. A runner case would settle it. Nothing waits on it |
+| N25 | A send or receive over addresses that are not consecutive | No rule. It has no list form | Exported a list that CLICK cannot load | Decided: pyrung refuses it, under its own `CLK_COPY_RANGE_NOT_CONSECUTIVE` |
+| N-b | A shift over one address, such as `c.select(2, 2)` | Refuses it (`duplicate-address`) | Accepted it | Decided: laddercodec is right. CLICK refuses a shift of C1..C1 (OBJ-012) |
+| N-d | A drum preset register outside DS, such as DD, TD, CTD or SD | Refuses it (`bank-not-allowed`) | Accepted it | Decided: laddercodec is right. CLICK refuses DD1, TD1, CTD1 and SD1 as a time drum preset (OBJ-004) and accepts DS1 |
+| N-e | A drum event that is not a bare bit, such as `~C5`, `rise(X3)` or `Or(X3, X4)` | Refuses it (`not-an-address`) | Exported `events=[~X003, C5]` | Decided: laddercodec is right. The Drum dialog takes only an address for an event, and it has no option for a normally closed or an edge contact |
+| N-f | A shift over scattered or mixed-bank addresses, such as `[C1, C5, C9]` or `[C1, Y2, C3]`, or over no addresses | No rule. It has no list form | Exported a list | Decided: pyrung refuses it, under `CLK_COPY_RANGE_NOT_CONSECUTIVE`, and `allow=` does not let it through. A block mapped to descending addresses still exports `shift(C3..C1)`, which CLICK accepts |
+| N-g | A drum output that is also the completion flag | Refuses it (`duplicate-address`) | Accepted it | Decided: laddercodec is right. CLICK refuses it on a time drum, "The set coil has already been used" (OBJ-014) |
+| R1 | A coil over one address, such as `out(c.select(2, 2))` | Refuses it (`range-not-ascending`) | Accepted it | Decided: laddercodec is right. CLICK's Out dialog refuses C1..C1 and Y001..Y001 (OBJ-012). The Set and Reset dialogs have no recorded answer for a range of one address |
+| R2 | A coil over scattered, mixed-bank or descending addresses. This includes an `immediate()` range | No list form. It refuses a descending range | Exported a list for the range that is not immediate | Decided: pyrung refuses it, under `CLK_COPY_RANGE_NOT_CONSECUTIVE`. CLICK's Out dialog refuses C2..C1 (OBJ-009) |
+| R3 | `latch(SC162)` and `reset(SC162)` | Accepts them | Refused them | Decided: laddercodec is right. This is row A6 for Set and Reset. CLICK accepts both on SC162 and refuses both on SC163 (OBJ-003) |
+| R4 | An SC range with a read-only bit inside it, such as `out(SC50..SC60)` | Accepts it, in Out, Set and Reset | Refused it | Decided by rule 3: nobody refuses it. CLICK accepts SC50..SC60 in all three dialogs, and it refuses a read-only SC on its own. Nobody knows what a PLC then does to SC52. That needs a PLC run on Sam's go, and pyrung's simulation must match the answer |
 
 The numbers follow the pyrung session's ledger, which is why N8 and N9 are not here.
 
@@ -166,8 +182,22 @@ The pyrung session reported N11 to N17 on 2026-11-19, from its proofs of the Sea
 every row laddercodec refuses a form that pyrung's `main` accepted. Of 591 Search forms swept, 317 change
 verdict, and every form that both versions export writes the same rows. The planner checked N13, N14, N15
 and N17 against the answers in laddercodec's `search.answers.json` and `for.answers.json`. All seven fall
-under rule 1 or under a ruling that Sam has already given, so none waits on him. pyrung takes them when the
-family scaffold lands.
+under rule 1 or under a ruling that Sam has already given, so none waits on him. pyrung took them with the
+family scaffold (#107).
+
+The pyrung session reported the rows from T1 to R4 on 2026-11-19, from four families that land on its `main`
+as one train: timers and counters, Send and Receive, Shift and the drums, and the coils. Where laddercodec
+has no rule, pyrung refuses a range that CLICK has no way to write. The planner checked T1, N18, N20, N21,
+N-b, N-d, N-e, N-g, R1, R3 and R4 against the recorded answers. They are in laddercodec's
+`tests/fixtures/editor_grids/` and in ClickNick's `buildbot/jobs/coil-sc/out/`. Three gaps are named in the
+rows: Receive with a CLICK remote address, a malformed TCP address, and a Set or Reset over one address.
+The runner can ask each of them, and none waits on Sam. Only R4's question for a PLC is his.
+
+The same report renames codes with no change of verdict. A wrong bank is now `bank-not-allowed` in the
+timer, counter, send, receive and Out families. A timer preset that is too large is `constant-out-of-range`.
+A timer's mismatched pair is `timer-pair-mismatch`. The pair check on debounce, flasher and timed keeps
+`CLK_TIMER_PAIR_MISMATCH`, and an unmapped Done bit keeps `CLK_BANK_UNRESOLVED`. A shift on Y is accepted
+(row C8), and a drum preset over 32767 is refused (row C3).
 
 One more disagreement is not a row: a quote in a text constant. The state on 2026-11-19:
 
@@ -177,15 +207,15 @@ One more disagreement is not a row: a quote in a text constant. The state on 202
 - **A quote among other characters in a Copy.** CLICK's Copy dialog accepts `"A"B"` and ends it at TXT3. It
   accepts `"A""B"` and ends it at TXT4. So CLICK does not read a doubled quote as one quote, and it keeps a
   quote as typed (ClickNick's `buildbot/jobs/lc-diff-click/RESULTS9-10.md`, case c10). Under rule 3
-  laddercodec is wrong to refuse it, and the laddercodec session has logged the fix. Until the fix lands,
-  pyrung refuses such a text at export, because its old form `"a""b"` did not load. The PLC confirmed it on
-  2026-11-19, on Sam's go: a Copy of `"A"B"` into TXT1 wrote A, quote, B, and a Copy of `"A""B"` wrote A,
-  quote, quote, B. The answers are in ClickNick's `buildbot/jobs/quotes-text/out/runtime.answers.json`.
-- **A quote among other characters in a Search value.** Sam's ruling stands, and laddercodec refuses it
-  until a PLC shows what it matches (row N12). The Search dialog gives no end address to count. The same
-  PLC run searched for `"A""B"` and matched the four characters as typed. A search for `"A"B"` gave no
-  answer, because CLICK dropped two of its operands on the paste (see the plan's item 4). Sam is deciding
-  this with the laddercodec session, and the ruling stands until he does.
+  laddercodec was wrong to refuse it. The PLC confirmed it on 2026-11-19, on Sam's go: a Copy of `"A"B"`
+  into TXT1 wrote A, quote, B, and a Copy of `"A""B"` wrote A, quote, quote, B. The answers are in
+  ClickNick's `buildbot/jobs/quotes-text/out/runtime.answers.json`. laddercodec accepts such a text since
+  2026-11-19, and pyrung writes it as typed since its #108.
+- **A quote among other characters in a Search value.** The Search dialog gives no end address to count,
+  so Sam ruled that laddercodec refuses it until a PLC shows what it matches (row N12). The same PLC run
+  searched for `"A""B"` and matched the four characters as typed. A search for `"A"B"` gave no answer,
+  because CLICK dropped two of its operands on the paste (see the plan's item 4). Sam took the decision up
+  with the laddercodec session, and laddercodec accepts a quote in a Search value since #156.
 - **A lone quote written as text.** This is open. `"""` saves no end in the Copy dialog. ClickNick's
   runner will run `"A"` and `"""` into TXT1 as a control.
 

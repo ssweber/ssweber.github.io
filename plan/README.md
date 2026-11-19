@@ -233,10 +233,12 @@ Steps keep their numbers, because the roadmaps refer to them.
    call `read_csv(..., unchecked=True)`, or `raw(...)` in Python. These are the public ways to do
    it.
 2. **pyrung: validation on laddercodec** (laddercodec becomes a runtime dependency here). The Copy
-   family is on pyrung's `main` (#102), and it is the example. The other families are built in parallel
-   from it, one builder per family in its own worktree (Sam, 2026-11-19). Each family reports what
-   laddercodec gets wrong straight to the laddercodec session. Only the landing is serial. Its default
-   order is Send and Receive; Timer, Counter, Shift, For and Drum; Coil and Contact; Search; then Math.
+   family is on pyrung's `main` (#102), and it is the example. Its adapter was then split into a shared
+   part and one declaration per family, with a written recipe, and For and Search proved the recipe
+   (#107). The other families are built in parallel from it, one builder per family in its own worktree
+   (Sam, 2026-11-19). Each family reports what laddercodec gets wrong straight to the laddercodec session.
+   Only the landing is serial. Timers and counters, Send and Receive, Shift and the drums, and the coils
+   land as one train. Contact and Math follow.
    pyrung moves its laddercodec pin in batches. For a field rule, pyrung's
    validation builds the instruction's laddercodec object and
    turns each refusal into a finding. The finding uses the name above and carries pyrung's advice
@@ -421,9 +423,9 @@ derived from them: the operand with its short rule, the explanation, and CLICK's
   go when the two are the same. Examples: `Count (DS1)`, `Valve1..Valve2 (C1..C2)`, `DS[Ptr] (DS[DD1])`.
 - pyrung places its caret from the refusal's `.field`, so the field names are something pyrung reads.
   Nobody has ruled them frozen. That is Sam's call, with the list of public names before the release.
-- Still to come in laddercodec is one batch of message wording. `short()` and `detail()` drop the
-  `Class.field` prefix, a bool prints as `True`, a text constant is quoted once, and a name that is its
-  own address prints once. pyrung then moves its pin, and a Copy finding matches the example above.
+- The batch of message wording is on laddercodec's `main` (#152), and pyrung's pin has it. `short()` and
+  `detail()` drop the `Class.field` prefix, a bool prints as `True`, a text constant is quoted once, and
+  a name that is its own address prints once.
 - Not covered: `Finding`, `LayoutError`, `DecodeError` and `EncodeError`. ClickNick shows these messages as
   plain text and needs no change. It can pass its nickname map later.
 
@@ -434,7 +436,7 @@ adds. Each builder would turn its arguments into checked operand objects once, a
 accept only those objects. The split is Sam's: pyrung's parse covers the shape of an operand (its kind, its
 type, a range against a tag, a count), which is most of the value for a small part of the work. laddercodec
 keeps every CLICK rule, which is the long tail. It starts after the shared validator and the kernel fixes
-are on `main`. Nothing more is decided.
+are on `main`, and both are there since 2026-11-19 (#105, #106). Nothing more is decided.
 
 ### 4. CLICK runner (ClickNick; used by laddercodec and pyrung)
 
@@ -455,8 +457,10 @@ added only the addresses written in the rung's text before a paste. It missed th
 a Copy of text and the tags in raw cells. The ClickNick session checked all 79 of the runner's paste runs,
 and six had missed an address. The laddercodec session marked each answer that rested on those six as held
 or changed. No row in `rule-decisions.md` changes. One earlier note was wrong, that CLICK's paste drops a
-Copy's end. CLICK keeps the end when its address is in the project. laddercodec is adding a public call that
-returns every address a payload uses, so that the runner can add them first. Sam picks its name.
+Copy's end. CLICK keeps the end when its address is in the project. laddercodec's `addresses()` now
+returns every address a payload uses, so that the runner can add them first (#155). One loss had another
+cause. CLICK reads an empty flag on the clipboard as clear, and laddercodec's `decode_program()` wrote a
+set flag as empty. It now writes a set flag as the clipboard does (#154).
 
 **Hardware rounds go through ClickNick too.** A job tool writes a project to the conformance PLC and reads the
 answers back. The other sessions queue their PLC questions with the ClickNick session. Sam is needed only for
@@ -530,8 +534,8 @@ queue.
 
 | Repo | Order |
 |---|---|
-| pyrung | v0.17.0 went out on 2026-11-18. The queue is serial, at about 50 minutes a train. Order from 2026-11-19: 1. Two fixes to the compiled kernel, which gave wrong answers for some copy, pack, unpack and block copy forms, in v0.17.0 too. 2. The SUM range that exports the wrong end. 3. The shared operand validator (Sam, 2026-11-18). 4. The pin move after laddercodec's wording batch. 5. Validation onto laddercodec (item 2, step 2). The families are built in parallel from the Copy example, and building does not wait for steps 1 to 4. Later: parse operands once, in the builder. Then: CLICK-match fixes from the 2026-11-10 readings. For now there is no watchdog stop (Sam, 2026-11-17). There may be a warning on a heavy For loop. 4. Console commands for every change (item 1, step 3). 5. float32 Reals, the per-PLC definitions table, the history API, calc into a pointer. The `how()` work follows the recording core. Export through laddercodec comes after the joint release. |
-| laddercodec | On `main` since 2026-11-18: the comment escapes, the public renames, one source for a Math real, CLICK's answers for the box grids, and the message parts for every family. 1. Plain errors for odd input, in review. 2. The batch of message wording. 3. The joint release, on Sam's tag. 4. After the joint release: the whole-program check and `FieldError.span`. Two pieces of work go on alongside these steps and are not steps of their own. Take pyrung's reports from adopting the API, before the joint release. Tighten the rules to each grid as the runner returns it. |
+| pyrung | v0.17.0 went out on 2026-11-18. The queue is serial, at about 50 minutes a train. On `main` since then, unreleased: two fixes to the compiled kernel, which gave wrong answers for some copy, pack, unpack and block copy forms, in v0.17.0 too, and the SUM range that exported the wrong end (#105); the shared operand validator (#106; Sam, 2026-11-18); the family scaffold, with For and Search (#107); and a quote kept as typed in a Copy text (#108). Its laddercodec pin is at 0dd14d3, which has the message wording. Next, validation onto laddercodec (item 2, step 2): 1. One train with four families: timers and counters, Send and Receive, Shift and the drums, and the coils. 2. Contact and Math. 3. The bank tables go, once, after the last family. Later: parse operands once, in the builder. Then: CLICK-match fixes from the 2026-11-10 readings. For now there is no watchdog stop (Sam, 2026-11-17). There may be a warning on a heavy For loop. 4. Console commands for every change (item 1, step 3). 5. float32 Reals, the per-PLC definitions table, the history API, calc into a pointer. The `how()` work follows the recording core. Export through laddercodec comes after the joint release. |
+| laddercodec | On `main` since 2026-11-18: the comment escapes, the public renames, one source for a Math real, CLICK's answers for the box grids, and the message parts for every family. Since 2026-11-19 also: plain errors for odd input (#150, #151), the message wording (#152), a quote kept as typed in a Copy text and in a Search value (#156), a decoded program written in the clipboard's form (#154), and `addresses()` (#155). 1. The joint release, on Sam's tag. 2. After the joint release: the whole-program check and `FieldError.span`. Two pieces of work go on alongside these steps and are not steps of their own. Take pyrung's reports from adopting the API, before the joint release. Tighten the rules to each grid as the runner returns it. |
 | pyclickplc | 0.10.0 went out on 2026-11-18. It reads and writes a new CLICK 4.00 project's `Project.ini` by CLICK 4's rules, and ClickNick has moved to it. One CLICK question is left, the encoding of a nickname export. It waits on a runner extension. |
 | ClickNick | v0.25.0 went out on 2026-11-18, on pyrung 0.17.0 and its public names. The runner now asks seven more instruction dialogs and exports nicknames. 1. The runner's waiting jobs (item 4), ahead of recording (Sam, 2026-11-17). 2. laddercodec's new names, with the joint release. 3. Then the ClickNick side of recording. |
 
@@ -550,8 +554,10 @@ queue.
 - Decide what a declared `min`, `max` or `choices` means on a tag that the ladder writes (pyrung, deferred).
 - At the PLC: wiring, power cycles, and distinct live X inputs for laddercodec's runs B and C.
 - Give the go for a run that writes to the PLC or that needs a person at the PLC. That includes pyrung's
-  hardware round. Sam preapproved every run of ClickNick's runner on 2026-11-18, until he writes
-  "StopRuns". Those runs are on a CLICK that the runner starts, and they write nothing to the PLC. Running
+  hardware round, and one new question: what a PLC does to a read-only bit inside an SC range that a coil
+  writes, such as SC52 under `out(SC50..SC60)` (row R4 in `rule-decisions.md`). Sam preapproved every run of
+  ClickNick's runner on 2026-11-18, until he writes "StopRuns". Those runs are on a CLICK that the runner
+  starts, and they write nothing to the PLC. Running
   or queued on 2026-11-18: the full dialog grids; the dialog dumps; and the typed nickname, comment and
   Text initial value. Answered that day: laddercodec's Compare and Search case lists; a coil beside a
   timer that has a reset pin; a NOP beside outputs that meet only at the rail; ten values for a Real in
