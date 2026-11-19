@@ -377,6 +377,32 @@ The CLICK findings join the display. The planner set the order on 2026-11-18, in
 
 The joint release does not wait on part 3. The two code namespaces stay as Sam ruled on 2026-11-17.
 
+**The final shape of a CLICK finding in pyrung** (Sam, 2026-11-18). Core findings, pyrung's own CLICK
+checks and the findings that come from laddercodec all end as the same display, and one renderer prints
+them:
+
+```
+[constant-into-bit] error
+ --> Main:R1
+  |
+  |  copy(5, Motor)
+  |          ^^^^^ C1 can't take 5
+  |
+  = hint: A number constant copies to DS, DD, DH, DF, YD, TD, CTD, SD or TXT.
+          Set or clear a bit with out(), latch() or reset(). CLICK's error is OBJ-024.
+```
+
+- The frame prints core's compact location. The long path stays on `ClickFinding.location` for callers.
+- The label has no subject, because the caret supplies it. So the operand under the caret prints as its
+  address alone. Any other operand in the label keeps its name, as in
+  `TD2 must be TD1 to match PumpDone (T1)`.
+- The hint is laddercodec's explanation, then pyrung's advice, then CLICK's id.
+- The frame helpers take any instruction and argument, so pyrung's own CLICK checks use them too.
+- The three code styles stay: `RUNG_*` for core, `CLK_*` for pyrung's CLICK checks, and kebab-case for
+  laddercodec's. The style shows who owns the rule.
+- Until part 3 is done, pyrung's own CLICK checks print a location, a message and a hint with no source
+  line. A report mixes the two looks until then, and Sam accepts that.
+
 **A laddercodec refusal keeps its parts** (Sam approved the design on 2026-11-18). Today laddercodec writes
 a finished sentence and then edits it in 16 places by searching it. A refusal will keep three parts, and
 its message will be derived from them: the operand with its short rule, the explanation, and CLICK's id.
