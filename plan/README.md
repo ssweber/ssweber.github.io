@@ -556,7 +556,8 @@ queue.
 - Give the go for a run that writes to the PLC or that needs a person at the PLC. That includes pyrung's
   hardware round, and one new question: what a PLC does to a read-only bit inside an SC range that a coil
   writes, such as SC52 under `out(SC50..SC60)` (row R4 in `rule-decisions.md`). Sam preapproved every run of
-  ClickNick's runner on 2026-11-18, until he writes "StopRuns". Those runs are on a CLICK that the runner starts, and they write nothing to the PLC. Running
+  ClickNick's runner on 2026-11-18, until he writes "StopRuns". Those runs are on a CLICK that the runner
+  starts, and they write nothing to the PLC. Running
   or queued on 2026-11-18: the full dialog grids; the dialog dumps; and the typed nickname, comment and
   Text initial value. Answered that day: laddercodec's Compare and Search case lists; a coil beside a
   timer that has a reset pin; a NOP beside outputs that meet only at the rail; ten values for a Real in
