@@ -152,8 +152,22 @@ runner. None of them waits on Sam.
 | N6 | A Fill into two or more YD | Accepts it | Refused it | Decided: laddercodec is right. CLICK accepts a Fill of 5 into every range from YD0..YD1 to YD1..YD8. It rejects YD0..YD9 (OBJ-003) |
 | N7 | A termination code on a constant source that is copied into TXT | Refuses it (`option-not-offered`) | Warned | Closed. The runner asked CLICK, and laddercodec follows the answer (#135, #138). pyrung takes it when the pin moves |
 | N10 | A hex constant copied into DH or YD. pyrung's export writes `copy(14, dh[1])` as `copy(Eh,DH1)` | Refuses `Eh` and `1Eh` (`copy-hex-reads-as-real`), because CLICK reads `Eh` as the Real 0.0 | Exported it | Decided: laddercodec is right. The fix is in pyrung, whose export will write the decimal. A strict xfail, `test_a_copy_of_14_into_dh_exports`, holds the case until then |
+| N11 | A search value that does not suit the table: TXT or text in a number table, a number in a TXT table, a decimal bank in a DH table, XD, YD or DH in a DS-type table, or a bit tag | Refuses it (`search-value-bank`, `bank-not-allowed`) | Accepted it | Decided: laddercodec is right. This is row C5, widened to every table kind. CLICK's Search dialog refuses these (OBJ-004) |
+| N12 | A quote in a search text constant, such as `sub"name` | Refuses it (`invalid-text-constant`) | Accepted it | Stands on Sam's ruling for Search: laddercodec refuses it until a PLC shows what CLICK stores |
+| N13 | A search constant out of range: 2147483648, or text of 129 characters | Refuses it (`constant-out-of-range`) | Accepted it | Decided: laddercodec is right. CLICK refuses 2147483648 (OBJ-005) and accepts -2147483648 |
+| N14 | A search of a table with one address, such as DS5..DS5 | Refuses it (`range-not-ascending`) | Accepted it | Decided: laddercodec is right. CLICK refuses it with "The same address cannot be used here" (OBJ-012) |
+| N15 | `>=`, `<`, `<=` or `>` on a TXT search | Refuses it (`text-order-compare`) | Accepted it | Decided: laddercodec is right. This is row C6, widened. CLICK's dialog closes these modes for a TXT table |
+| N16 | A search found flag outside C, or a result outside DS | Refuses it (`bank-not-allowed`) | Refused X, T, CT, SC and SD under its own code, and accepted Y | Decided: laddercodec is right. This is row C4. Only the code changes, except that a found flag on Y is now refused |
+| N17 | A For count that is not a whole number: `forloop(3.5)` or `forloop(5.0)` | Refuses it | Accepted and exported it, and ran 3.5 as 3 | Decided: laddercodec is right. CLICK's For dialog refuses `1.5` and `1.` (OBJ-005) |
 
 The numbers follow the pyrung session's ledger, which is why N8 and N9 are not here.
+
+The pyrung session reported N11 to N17 on 2026-11-19, from its proofs of the Search and For families. In
+every row laddercodec refuses a form that pyrung's `main` accepted. Of 591 Search forms swept, 317 change
+verdict, and every form that both versions export writes the same rows. The planner checked N13, N14, N15
+and N17 against the answers in laddercodec's `search.answers.json` and `for.answers.json`. All seven fall
+under rule 1 or under a ruling that Sam has already given, so none waits on him. pyrung takes them when the
+family scaffold lands.
 
 One more disagreement is not a row. For a doubled quote in a Copy text constant, `"A""B"`, laddercodec keeps
 refusing it until a PLC shows what CLICK stores. That follows Sam's ruling for Search. The pyrung session adds
