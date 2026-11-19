@@ -169,9 +169,21 @@ and N17 against the answers in laddercodec's `search.answers.json` and `for.answ
 under rule 1 or under a ruling that Sam has already given, so none waits on him. pyrung takes them when the
 family scaffold lands.
 
-One more disagreement is not a row. For a doubled quote in a Copy text constant, `"A""B"`, laddercodec keeps
-refusing it until a PLC shows what CLICK stores. That follows Sam's ruling for Search. The pyrung session adds
-it to the PLC cases that go through ClickNick's queue on Sam's go.
+One more disagreement is not a row: a quote in a text constant. The state on 2026-11-19:
+
+- **A lone quote.** pyrung's family scaffold exports `copy('"', txt[1])`, a Fill of `'"'` and a search for
+  `'"'` as `$22`, which is CLICK's code form for that character. Before, pyrung refused the search and the
+  Fill, and its export wrote the Copy as `""""`, which laddercodec could not load.
+- **A quote among other characters in a Copy.** CLICK's Copy dialog accepts `"A"B"` and ends it at TXT3. It
+  accepts `"A""B"` and ends it at TXT4. So CLICK does not read a doubled quote as one quote, and it keeps a
+  quote as typed (ClickNick's `buildbot/jobs/lc-diff-click/RESULTS9-10.md`, case c10). Under rule 3
+  laddercodec is wrong to refuse it, and the laddercodec session has logged the fix. Until the fix lands,
+  pyrung refuses such a text at export, because its old form `"a""b"` did not load. A PLC case confirms it
+  when Sam gives the go for that round. Nothing waits on it.
+- **A quote among other characters in a Search value.** Sam's ruling stands, and laddercodec refuses it
+  until a PLC shows what it matches (row N12). The Search dialog gives no end address to count.
+- **A lone quote written as text.** This is open. `"""` saves no end in the Copy dialog. ClickNick's
+  runner will run `"A"` and `"""` into TXT1 as a control.
 
 ## Not yet compared
 
