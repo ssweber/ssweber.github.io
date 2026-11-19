@@ -178,10 +178,14 @@ One more disagreement is not a row: a quote in a text constant. The state on 202
   accepts `"A""B"` and ends it at TXT4. So CLICK does not read a doubled quote as one quote, and it keeps a
   quote as typed (ClickNick's `buildbot/jobs/lc-diff-click/RESULTS9-10.md`, case c10). Under rule 3
   laddercodec is wrong to refuse it, and the laddercodec session has logged the fix. Until the fix lands,
-  pyrung refuses such a text at export, because its old form `"a""b"` did not load. A PLC case confirms it
-  when Sam gives the go for that round. Nothing waits on it.
+  pyrung refuses such a text at export, because its old form `"a""b"` did not load. The PLC confirmed it on
+  2026-11-19, on Sam's go: a Copy of `"A"B"` into TXT1 wrote A, quote, B, and a Copy of `"A""B"` wrote A,
+  quote, quote, B. The answers are in ClickNick's `buildbot/jobs/quotes-text/out/runtime.answers.json`.
 - **A quote among other characters in a Search value.** Sam's ruling stands, and laddercodec refuses it
-  until a PLC shows what it matches (row N12). The Search dialog gives no end address to count.
+  until a PLC shows what it matches (row N12). The Search dialog gives no end address to count. The same
+  PLC run searched for `"A""B"` and matched the four characters as typed. A search for `"A"B"` gave no
+  answer, because CLICK dropped two of its operands on the paste (see the plan's item 4). Sam is deciding
+  this with the laddercodec session, and the ruling stands until he does.
 - **A lone quote written as text.** This is open. `"""` saves no end in the Copy dialog. ClickNick's
   runner will run `"A"` and `"""` into TXT1 as a control.
 
