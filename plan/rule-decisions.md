@@ -186,6 +186,13 @@ runner. None of them waits on Sam.
 | K3 | A text constant over 128 characters in a compare | Refuses it (`constant-out-of-range`) | Said nothing for a TXT compare, and reported a number register against it only as `compare-mixed-types` | Decided: laddercodec is right. This is row N13 for a compare |
 | K5 | A text order compare in an instruction's pin: `.reset(txt[1] > txt[2])`, a shift's `.clock()` or a drum's `.jog()` | Refuses it (`text-order-compare`) | Said nothing, and the export wrote it | Decided: laddercodec is right. This is row C6. pyrung checks the pins for the first time |
 | K7 | A pointer in a compare | Refuses it (`pointer-outside-copy`) | Refused it (`CLK_PTR_CONTEXT_ONLY_COPY`), and exported it when that code was allowed | Decided: laddercodec is right. `allow=` of the old code no longer lets it through. A pointer tag with no CLICK address keeps pyrung's code |
+| M1 | A TXT in a `math()` formula: `math(txt[5], ds[1])`, or `.max()`, `.min()`, `.median()` or `.mean()` of a TXT range | Refuses it (`math-operand-bank`) | Exported it | Decided: laddercodec is right. This is row A4, widened. CLICK refuses `DS1 = TXT1` and `DS1 = TXT1 + 1` in both modes (OBJ-1002) |
+| M2 | `randint(True, 9)` | Accepts it as `RAND(1,9)` | Refused it (`CLK_RAND_BOUND_TYPE`) | Decided: nobody refuses it. Python's `True` is the number 1, and pyrung draws from 1 to 9 |
+| M3 | One tag as both bounds: `randint(ds[1], ds[1])` | Refuses it (`random-equal-bounds`) | Accepted it | Decided: laddercodec is right. This is row A3, widened to tags (OBJ-1001) |
+| M4 | An unmapped tag in a formula, as an operand, a `.sum()` block or a RAND bound | Cannot see it | Exported the tag's name, such as `Bk2 + 1`, which CLICK cannot load | Decided: pyrung refuses it, under `CLK_BANK_UNRESOLVED` |
+| M5 | A formula longer than CLICK's Math holds | Refuses it (`math-formula-too-long`) | Exported it | Decided: laddercodec is right (OBJ-1008). pyrung's export brackets each pair, so a sum of 36 DS tags is already too long. Written flat, CLICK holds 68. Changing the brackets waits for the next release |
+| M6 | A text constant in a formula, such as `'A' + DS1` | Refuses it (`math-constant-kind`) | Exported it | Decided: laddercodec is right |
+| M8 | A constant or an expression as the first argument of LSH, RSH, LRO or RRO: `lsh(5, dh[1])` or `lsh(dh[1] + 1, 2)` | Refuses it (`math-arg-expression`) | Exported it | Decided: laddercodec is right. The runner asked CLICK on 2026-11-19, and it refuses them (OBJ-1001). laddercodec adds the id after the release |
 
 The numbers follow the pyrung session's ledger, which is why N8 and N9 are not here.
 
@@ -229,6 +236,13 @@ are not regressions. The rest of that report changes no verdict:
 - Two instructions of one class in one `forloop()` are each judged. Before, one finding was lost or
   reported twice.
 - Three codes are renamed: `immediate-contact-not-x`, `text-order-compare` and `compare-mixed-types`.
+
+The pyrung session reported M1 to M8 on 2026-11-19, from the Math family (pyrung's #114), which is the last
+one. The planner checked M1 against `math_decimal.answers.json` and `math_hex.answers.json`. M7 is not a
+row. `True` or `False` in a hex formula exports as `1h` or `0h`, where 0.17.0 wrote a bare `1` that
+laddercodec refuses on Sam's ruling. All 12 of pyrung's old Math codes take laddercodec's names.
+`CLK_MATH_RANGE_NOT_CONTIGUOUS` and `CLK_MATH_RANGE_MIXED_BANKS` stay pyrung's, because laddercodec sees
+only the two ends of a `SUM(a:b)`. On the branch, validation and the export agree on all 826 swept forms.
 
 One more disagreement is not a row: a quote in a text constant. The state on 2026-11-19:
 
