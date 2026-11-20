@@ -4,7 +4,7 @@ This is the coordination point for pyclickplc, laddercodec, pyrung and ClickNick
 crosses repos, written once, and the rules all four share. Work inside one repo lives in that repo's
 `scratchpad/roadmap.md`.
 
-Last updated 2026-11-20. Latest releases: pyclickplc 0.11.0, laddercodec 0.5.0, pyrung 0.17.0, ClickNick 0.25.0.
+Last updated 2026-11-20. Latest releases: pyclickplc 0.11.1, laddercodec 0.5.0, pyrung 0.18.0, ClickNick 0.25.0.
 Everything since those tags is on each repo's `main`, unreleased.
 
 ## How to use this file
@@ -64,11 +64,7 @@ Everything since those tags is on each repo's `main`, unreleased.
   BOB skill, the agent files, the hook and the queue have one source (item 7). No repo edits its own
   copy.
 - **A branch that needs an unreleased sibling** (a ClickNick branch that needs a new pyrung, say) is tested
-  locally against the sibling checkout. It merges after the sibling's release. One piece of work
-  does not follow this. pyrung's validation on laddercodec was to stay on a branch until the two release
-  together (item 2, "The joint release"). On 2026-11-19 the pyrung session merged the Copy family onto
-  `main` instead (#102). pyrung's `main` now builds laddercodec from laddercodec's `main`, so pyrung cannot
-  publish until laddercodec has released. The session made that call and told Sam. Sam has not ruled on it.
+  locally against the sibling checkout. It merges after the sibling's release.
 - **Arc folders stay out of git.** They are working state (ledgers, reviews, logs). When an arc closes, its
   open items move into the repo's roadmap, and you can delete the folder.
 - **Labels.** Each roadmap item says what it needs: CLICK software, a real PLC, Sam's judgment, or nothing
@@ -211,65 +207,28 @@ decided there, one at a time, and nowhere else.
 
 ##### The joint release
 
-laddercodec and pyrung release together. laddercodec's API is provisional until then, so that it can
-change on what pyrung finds while adopting it (Sam, 2026-11-17). laddercodec makes no separate
-release for the new `FieldError` (step 1). Sam settled the following on the same day:
+The joint release went out on 2026-11-20 as laddercodec 0.5.0 and pyrung 0.18.0. pyrung's validation goes
+through laddercodec for every instruction family, and pyrung's bank tables are gone. Export and import
+through laddercodec (steps 5 and 6) come next, as additive releases.
 
-- **What closes it:** pyrung's validation (step 2) passes its agreement tests against laddercodec's `main`.
-  Sam approved laddercodec's 93 code names on 2026-11-18, so that half is done. A code added later goes
-  back to him. He reviewed the public names on 2026-11-18, and he approved the last one, `addresses()`,
-  on 2026-11-20.
-- **What goes in before it:** the rest of laddercodec's breaking changes (see "In laddercodec"), so the API
-  breaks once. Export and import through laddercodec (steps 5 and 6) come after it, as additive releases.
-- **Where pyrung's work lives:** the plan was a branch that stays open until the joint release. Since
-  2026-11-19 it lands on pyrung's `main`, one family at a time, and `main` builds laddercodec from its
-  `main`. So a pyrung release now needs a laddercodec release first.
-- **The list for the joint release is closed** (the planner's ruling, 2026-11-19, from Sam's words: "make
-  sure as we get to the edges we don't start going in circles, there's always next release"). Both sessions
-  took it.
-  - pyrung: Contacts, Math, the removal of the bank tables, then one pin to the released laddercodec and a
-    CHANGELOG check from the last tag. The CLICK export also refuses a send or receive whose target has
-    only a name, because it wrote a token that CLICK cannot load.
-  - laddercodec: what is on its `main`, the code names that Sam ruled on 2026-11-19, and the TCP address
-    written as the dialog saves it (row N23, ruled on 2026-11-20).
-  - Anything else waits for the next release and gets a roadmap line. One kind of fault stays in: one that
-    a user would hit as wrong output. That is output that CLICK cannot load or reads as another value, a
-    wrong answer at run time, a crash, a form that CLICK accepts and laddercodec refuses, a form that
-    0.17.0 exported correctly and `main` now refuses, or a public name that would break again later.
-  - Waiting by name: more message wording, a refusal with no code or no CLICK id, a form that validation
-    passes and the export refuses, a runner answer that only tightens a rule, a form that CLICK's dialog
-    refuses and laddercodec encodes without harm, parse-once, and laddercodec's four export needs.
-  - pyrung runs two sweeps once, at the release pin: the release pin against `main`, and `main` against
-    v0.17.0. Their output is rows and CHANGELOG lines.
 - **One name per rule.** laddercodec names a refusal of a field rule with its kebab-case `.code`. That is the
   name that pyrung's `allow=` accepts. pyrung keeps a code of its own only for a rule that only pyrung has.
   There is no alias layer from the old `CLK_` names.
+- **What the release deferred, by name:** more message wording, a refusal with no code or no CLICK id, a
+  form that validation passes and the export refuses, a runner answer that only tightens a rule, a form
+  that CLICK's dialog refuses and laddercodec encodes without harm, parse-once, and laddercodec's four
+  export needs. Each has a line in its repo's roadmap.
+- **The test for a late fix** (the planner, 2026-11-19, from Sam's words: "make sure as we get to the
+  edges we don't start going in circles, there's always next release"). Near a release, only a fault that
+  a user would hit as wrong output goes in. That is output that CLICK cannot load or reads as another
+  value, a wrong answer at run time, a crash, a form that CLICK accepts and laddercodec refuses, a form
+  that the last release handled and `main` now refuses, or a public name that would break again later.
+  Anything else gets a roadmap line.
 
 Steps keep their numbers, because the roadmaps refer to them.
 
-1. Done, on laddercodec's `main`: laddercodec raises one `FieldError` that carries every refusal of
-   the instruction in `.errors`. Each refusal has `.field` as `Class.attr`, a `.reason` from a small
-   fixed set, and `.click_id` where CLICK has an error id. Messages are free text and are not API.
-   The `.field` strings follow the CSV names and are still changing (`Math.result` is now
-   `Math.dest`), so nothing should match on an old string. To read what the checks would refuse,
-   call `read_csv(..., unchecked=True)`, or `raw(...)` in Python. These are the public ways to do
-   it.
-2. **pyrung: validation on laddercodec** (laddercodec becomes a runtime dependency here). The Copy
-   family is on pyrung's `main` (#102), and it is the example. Its adapter was then split into a shared
-   part and one declaration per family, with a written recipe, and For and Search proved the recipe
-   (#107). The other families are built in parallel from it, one builder per family in its own worktree
-   (Sam, 2026-11-19). Each family reports what laddercodec gets wrong straight to the laddercodec session.
-   Only the landing is serial. Timers and counters, Send and Receive, Shift and the drums, and the coils
-   landed as one train (#109), and Contacts followed (#113). Math, the last family, passed its gate on
-   2026-11-19 (#114). The bank tables go once, after Math.
-   pyrung moves its laddercodec pin in batches. For a field rule, pyrung's
-   validation builds the instruction's laddercodec object and
-   turns each refusal into a finding. The finding uses the name above and carries pyrung's advice
-   text. The pyrung session removes pyrung's bank tables and the checks that read them. pyrung's
-   existing validation tests are the agreement test. Each one either passes as before, or its
-   changed verdict becomes a row in `rule-decisions.md`. As it goes, the pyrung session reports
-   friction with the API to the laddercodec session, and tells the planner. The joint release is
-   waiting for that feedback.
+1. Done, in laddercodec 0.5.0: one `FieldError` that carries every refusal of the instruction.
+2. Done, in pyrung 0.18.0: pyrung's validation on laddercodec.
 3. **The runner: whole grids, not samples.** For each dialog field, the runner tries every bank and
    constant kind, and the answers are kept as test data in laddercodec. The laddercodec session
    writes the case lists, ClickNick's runner runs them, and laddercodec commits the cases and
@@ -337,41 +296,18 @@ blocks under two conventions, and the choice between them is still to settle.
 
 #### In laddercodec
 
-- **The breaking API changes are all on `main`.** They are: one `LaddercodecError` tree; `decode()` always
-  returns a list; the instruction fields use their CSV names; a kebab-case `.code` on every refusal, finding
-  and `LayoutError`; frozen instructions, changed with `laddercodec.replace()`; a frozen `Rung`; and a `Tee`
-  in the rung grid where `wire_down` was. `main` also exports a `Literal` alias for each fixed set of field
-  values, such as `ContactKind`. ClickNick reads laddercodec too, so its move onto the new names belongs to
-  the joint release. The ClickNick session lists what must change in its roadmap item 9.
-- **The code names are final** (Sam, 2026-11-18). The list is `docs/guides/codes.md`, which is generated
-  from the code and holds 94 codes. pyrung's `allow=` uses these names. Sam approved the 94th on
-  2026-11-18, `duplicate-subroutine-name`.
-- **The public names are reviewed** (Sam, 2026-11-18). He went through the 60 names added since 0.4.0.
-  Two change: `AfInstruction` becomes `Instruction`, and `AfToken` becomes `InstructionToken`. `Term` is
-  exported. The rest stay. The rename is one branch, after `allow=`. ClickNick uses the two old names in
-  one file and moves with the joint release.
-- **The parity test against pyclickplc** is on `main` (#125). It found no disagreement.
-- **Canonical constants:** the encoder writes CLICK's form. CLICK answered the digits of a Real in Math on
-  2026-11-18, and the rules follow it (#129). The form of a Math real is worked out in several places in
-  the code, and each answer took several fix rounds. So one source for it comes next, ahead of more
-  tightening to the grids (the planner's order, 2026-11-18).
-- **Small rulings by the planner** (2026-11-18), each made so that the result does not surprise:
-  - `lay_out` keeps refusing a coil beside a box whose pin is used. CLICK reports C000A for it. The
-    message says to give the coil a rung of its own.
-  - `read_csv` and `lay_out` both drop a NOP that the rail feeds with no contact, when it sits beside
-    other outputs. CLICK drops it too. A NOP behind a contact stays.
-  - `FieldError.span` is approved: half-open `(start, end)` offsets into the expression as typed, and
-    None where no span applies. It is built after the joint release, unless pyrung needs it sooner.
-  - A comment escapes its styling characters and the backslash with a backslash, as Markdown does.
+0.5.0 holds the breaking API changes, the final code names (`docs/guides/codes.md`) and the public names
+that Sam reviewed. ClickNick moves onto the new names in its next release (its roadmap item 9).
+
+- **`FieldError.span` is approved and not built:** half-open `(start, end)` offsets into the expression as
+  typed, and None where no span applies.
 - **CLICK's own error ids** such as "(OBJ-023)" stay in messages, because CLICK shows them to the user.
-- The pyrung-specific sections of laddercodec's `csv-format.md` move to pyrung.
-- **An undecodable rung no longer fails the whole program, and it fails loudly.** laddercodec
-  replaces the rung with a marker rung. The marker rung has the comment
-  `UNDECODED: rung N, row R: <error>` and one `Undecoded` instruction. In the main program that
-  instruction acts as End. In a subroutine it acts as Return. This is on laddercodec's `main`,
-  unreleased. After the joint release, pyrung runs the marker as a stop that says why. ClickNick
-  drops its empty stand-in rung, its Simulator runs up to the marker, and its Check Program lists
-  the marker.
+- laddercodec 0.5.0 removed the pyrung-specific sections from its `csv-format.md`. Nobody has confirmed that
+  pyrung's docs hold them.
+- **The undecoded marker.** laddercodec 0.5.0 replaces a rung that it cannot decode with a marker rung. The
+  marker acts as End in the main program and as Return in a subroutine. pyrung runs the marker as a stop
+  that says why, as its first work after 0.18.0 (Sam, 2026-11-20). ClickNick then drops its stand-in rung,
+  its Simulator runs up to the marker, and its Check Program lists the marker.
 
 ### 3. pyrung's public surface (pyrung, ClickNick)
 
@@ -556,19 +492,16 @@ queue.
 
 | Repo | Order |
 |---|---|
-| pyrung | v0.17.0 went out on 2026-11-18. Validation goes through laddercodec for every family (#102 to #114). `main` is pinned to a laddercodec commit that has `from_csv_token()` (#112), and pyrung has no private laddercodec imports left. Before the joint release, in order: 1. The removal of the bank tables. It was coded and uncommitted when Sam's computer crashed on 2026-11-20, and the session is redoing its proofs. 2. A pin move to laddercodec's `main`, which brings in its #164 to #167. 3. The move to pyclickplc 0.11.0: the floor, and `nicknames.csv` read in cp1252 or UTF-8 through pyclickplc. 4. The release tidy. 5. The pin to laddercodec 0.5.0, which is out, with the two sweeps, and the CHANGELOG lines that they produce. After the release, first: the importer runs laddercodec's undecoded marker as a stop that says why, which ClickNick's item 9 waits on (Sam, 2026-11-20). Then: parse operands once, in the builder. Then: CLICK-match fixes from the 2026-11-10 readings. For now there is no watchdog stop (Sam, 2026-11-17). There may be a warning on a heavy For loop. Then console commands for every change (item 1, step 3). Then float32 Reals, the per-PLC definitions table, the history API, calc into a pointer. The `how()` work follows the recording core. Export through laddercodec comes after the joint release. |
+| pyrung | v0.18.0 went out on 2026-11-20, the second half of the joint release. Two follow-ups are left from it: the lock file moves to pyclickplc 0.11.1, and `docs/guides/conformance.md` gives 0.17.0's case counts until a hardware round, which is Sam's. Next, in order: 1. The importer runs laddercodec's undecoded marker as a stop that says why, which ClickNick's item 9 waits on (Sam, 2026-11-20). 2. Parse operands once, in the builder. 3. CLICK-match fixes from the 2026-11-10 readings. For now there is no watchdog stop (Sam, 2026-11-17). There may be a warning on a heavy For loop. 4. Console commands for every change (item 1, step 3). 5. float32 Reals, the per-PLC definitions table, the history API, calc into a pointer. The `how()` work follows the recording core. Export through laddercodec (item 2, step 5) is open now that the joint release is out, and Sam has not placed it in this order. Low priority (Sam, 2026-11-20): the export brackets a Math formula only where precedence needs it (row M5 in `rule-decisions.md`). Until then ClickNick's Review Changes lists an unedited Math rung with two or more operators as changed. |
 | laddercodec | 0.5.0 went out on 2026-11-20, the first half of the joint release. Next, in the session's order: `FieldError.span`, the whole-program check, the deferred message wording, and then the other follow-ups on its roadmap. Alongside these, it tightens the rules to each grid as the runner returns it. |
-| pyclickplc | 0.11.0 went out on 2026-11-20. It breaks callers: `write_csv` writes the nickname CSV in cp1252, as CLICK reads it, and `write_csv` and `format_csv` raise `ValueError` for a character that cp1252 does not have. Two moves follow in the other repos. 1. pyrung requires `pyclickplc>=0.9.1` with no upper bound, so a user who installs pyrung gets both changes already. One call in pyrung 0.17.0 breaks on it: `ladder_to_pyrung_project(..., nickname_csv=path)` reads the file as UTF-8, so it fails on a file that pyrung wrote with a character such as `é` or `°`. pyrung fixes the read and raises its floor to 0.11.0 in the joint release. 2. ClickNick pins `==0.10.0` and changes only when it moves. The refusal matches CLICK. Sam checked by hand on 2026-11-20 that CLICK turns an emoji in an Address Comment into `??`. So no pyclickplc change follows, and the session decides as ordinary roadmap work whether the validators reject such a character. |
-| ClickNick | v0.25.0 went out on 2026-11-18, on pyrung 0.17.0 and its public names. Only runner work is on `main` since then. Before its next release, in order: 1. The move onto laddercodec's new names (roadmap items 8 and 9). The branch is built against the sibling checkouts and stays open until laddercodec's release. It never pastes an undecoded marker, and it keeps ClickNick's stand-in rung. The rest of the marker work waits for pyrung's release after this one (Sam, 2026-11-20), because pyrung's importer does not run the marker yet. 2. The pin to pyrung's joint release. 3. The move to pyclickplc 0.11.0, which waits on nothing. A file that a user hands to CLICK is cp1252, and a file that only ClickNick and pyrung read stays UTF-8. The Address Editor flags a character that cp1252 lacks before Sync. A project that already holds one stops at the workspace build, with a message that names the address and says to change it and Sync. 4. The release tidy, and then Sam's smoke test. Until the first of these lands, a runner job with `--keep` or `--wire` cannot decode in the main checkout, and the job decodes with a script of its own. After the release: the runner's waiting jobs (item 4), and then the ClickNick side of recording. |
+| pyclickplc | 0.11.1 went out on 2026-11-20. 0.11.0 writes the nickname CSV in cp1252, as CLICK reads it, and refuses a character that cp1252 does not have. 0.11.1 leaves a blank SD132 to SD135 nickname as it is (Sam, 2026-11-20). pyrung 0.18.0 requires 0.11.0 or later, and ClickNick's `main` pins 0.11.1. Left, as ordinary roadmap work: whether the validators reject a character that cp1252 does not have. Sam checked by hand on 2026-11-20 that CLICK turns an emoji in an Address Comment into `??`. |
+| ClickNick | v0.25.0 went out on 2026-11-18. Its `main` has moved to pyclickplc 0.11.1 (#151, #154). A file that a user hands to CLICK is cp1252, and a file that only ClickNick and pyrung read stays UTF-8. The Address Editor flags a character that cp1252 lacks before Sync, and a project that already holds one stops at the workspace build with a message that names the address. Before 0.26.0, in order: 1. The move onto laddercodec 0.5.0 and pyrung 0.18.0 (roadmap items 8 and 9). The branch never pastes an undecoded marker, and it turns every marker into ClickNick's stand-in rung with an "unreadable" finding. 2. The final CHANGELOG and release notes. 3. Sam's smoke test, and then his tag. After the release: the rest of the marker work, once pyrung runs the marker; the runner's waiting jobs (item 4); and then the ClickNick side of recording. |
 
 ## Only Sam can do these
 
-- Publish each release (the tag is the gate). pyclickplc 0.11.0 and laddercodec 0.5.0 went out on
-  2026-11-20. Two are left, and the version numbers are the sessions' proposals:
-  - pyrung 0.18.0, the second half of the joint release (item 2). pyrung first pins laddercodec 0.5.0 and
-    runs its two sweeps. Its compiled kernel fixes correct wrong answers that v0.17.0 gives.
-  - ClickNick 0.26.0, last. It moves onto pyclickplc 0.11.0, laddercodec 0.5.0 and pyrung 0.18.0, and then Sam runs a short smoke test
-    of the release candidate. The ClickNick session writes the steps for it.
+- Publish each release (the tag is the gate). pyclickplc 0.11.1, laddercodec 0.5.0 and pyrung 0.18.0 went
+  out on 2026-11-20. One is left: ClickNick 0.26.0, which is the session's proposal for the version. Sam
+  runs a short smoke test of the release candidate first, and the ClickNick session writes the steps for it.
 - Decide whether `read_csv` returns a rung of wires alone as drawn, or in the form CLICK's check gives it,
   with a `NOP`. This waits for the next release of laddercodec.
 - Run `/reload-plugins` in a session after it has updated the `bob` plugin. No session waits on this.
@@ -579,7 +512,7 @@ queue.
   or Y slots; `copy(5, TXT1)` and `copy(-5, TXT1)`; the hex constants; what a PLC does to a read-only bit
   inside an SC range that a coil writes, such as SC52 under `out(SC50..SC60)` (row R4 in
   `rule-decisions.md`); and a Search and a Compare with a quote inside the text. No release waits on
-  this round. Sam preapproved every run of ClickNick's runner
+  this round. The case counts in pyrung's `docs/guides/conformance.md` wait on it. Sam preapproved every run of ClickNick's runner
   on 2026-11-18, until he writes "StopRuns". Those runs are on a CLICK that the runner starts, and they
   write nothing to the PLC. Running or queued on 2026-11-18: the full dialog grids; the dialog dumps; and
   the typed nickname, comment and
