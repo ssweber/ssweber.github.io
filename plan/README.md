@@ -394,10 +394,25 @@ like a winner"). Four places in pyrung each decide which operands are valid: eac
 adds. Each builder would turn its arguments into checked operand objects once, and the other three would
 accept only those objects. The split is Sam's: pyrung's parse covers the shape of an operand (its kind, its
 type, a range against a tag, a count), which is most of the value for a small part of the work. laddercodec
-keeps every CLICK rule, which is the long tail. It starts after the shared validator and the kernel fixes
-are on `main`, and both are there since 2026-11-19 (#105, #106). After the joint release it follows one
-small item, the undecoded marker (Sam, 2026-11-20). The forms that validation passes and the export refuses wait for it, and so do the refusals
+keeps every CLICK rule, which is the long tail. It follows one small item, the undecoded marker (Sam,
+2026-11-20). The forms that validation passes and the export refuses wait for it, and so do the refusals
 that name no code (Sam, 2026-11-19: "parse will handle a lot of the edge I'm sure after in next").
+
+Sam agreed the shape on 2026-11-20. The planner read only the top of `core/instruction/operands.py`, so
+the pyrung session checks the fit against `execute()` and the kernel before it builds.
+
+- The operand declarations parse. `Operand.fits(value) -> bool` becomes `parse(call, arg, value) -> T`,
+  which returns a small frozen object or raises the refusal that it already words.
+- The results are a closed set of frozen dataclasses, one for each thing an operand can turn out to be,
+  such as a tag, a pointer, a constant and a range. `immediate` is a field of the result.
+- An instruction holds only parsed objects, and the builder is the one place where raw arguments come in.
+  The type checker holds that line, and the consumers do not check again.
+- Each consumer matches on the union and ends with `assert_never`, so a new kind of operand fails the
+  type check wherever it is not handled.
+- The parse holds what is fixed when the program is built. A value that is read at scan time stays with
+  the scan.
+- One family settles the result types first, and the others are swept from it (Sam: "It's always easier
+  to lock things down once we know the shape"). Copy has all three consumers.
 
 ### 4. CLICK runner (ClickNick; used by laddercodec and pyrung)
 
