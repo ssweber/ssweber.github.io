@@ -548,3 +548,9 @@ queue.
 ## Settled without further work
 
 pyrung's six unmerged branches are dropped. None matters as code, and their notes are kept.
+
+laddercodec does not get pyrung's parse-once work. Sam asked on 2026-11-20, and the laddercodec session
+and the planner both answered no. An instruction's constructor is the one place that decides what is
+valid, and the public fields stay strings. Copy's check, encoder and decoder do ask the same questions
+again, but each question has one named helper, so they agree. The question opens again only if a later
+Copy round finds the check and the encoder answering one question differently.
