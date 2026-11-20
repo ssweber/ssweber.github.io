@@ -238,7 +238,8 @@ Steps keep their numbers, because the roadmaps refer to them.
    (#107). The other families are built in parallel from it, one builder per family in its own worktree
    (Sam, 2026-11-19). Each family reports what laddercodec gets wrong straight to the laddercodec session.
    Only the landing is serial. Timers and counters, Send and Receive, Shift and the drums, and the coils
-   land as one train. Contact and Math follow.
+   landed as one train (#109). Contacts and Math are left. Contacts needs a shared change to how pyrung
+   walks conditions, and Math goes last. The bank tables go once, after Math.
    pyrung moves its laddercodec pin in batches. For a field rule, pyrung's
    validation builds the instruction's laddercodec object and
    turns each refusal into a finding. The finding uses the name above and carries pyrung's advice
@@ -534,8 +535,8 @@ queue.
 
 | Repo | Order |
 |---|---|
-| pyrung | v0.17.0 went out on 2026-11-18. The queue is serial, at about 50 minutes a train. On `main` since then, unreleased: two fixes to the compiled kernel, which gave wrong answers for some copy, pack, unpack and block copy forms, in v0.17.0 too, and the SUM range that exported the wrong end (#105); the shared operand validator (#106; Sam, 2026-11-18); the family scaffold, with For and Search (#107); and a quote kept as typed in a Copy text (#108). Its laddercodec pin is at 0dd14d3, which has the message wording. Next, validation onto laddercodec (item 2, step 2): 1. One train with four families: timers and counters, Send and Receive, Shift and the drums, and the coils. 2. Contact and Math. 3. The bank tables go, once, after the last family. Later: parse operands once, in the builder. Then: CLICK-match fixes from the 2026-11-10 readings. For now there is no watchdog stop (Sam, 2026-11-17). There may be a warning on a heavy For loop. 4. Console commands for every change (item 1, step 3). 5. float32 Reals, the per-PLC definitions table, the history API, calc into a pointer. The `how()` work follows the recording core. Export through laddercodec comes after the joint release. |
-| laddercodec | On `main` since 2026-11-18: the comment escapes, the public renames, one source for a Math real, CLICK's answers for the box grids, and the message parts for every family. Since 2026-11-19 also: plain errors for odd input (#150, #151), the message wording (#152), a quote kept as typed in a Copy text and in a Search value (#156), a decoded program written in the clipboard's form (#154), and `addresses()` (#155). 1. The joint release, on Sam's tag. 2. After the joint release: the whole-program check and `FieldError.span`. Two pieces of work go on alongside these steps and are not steps of their own. Take pyrung's reports from adopting the API, before the joint release. Tighten the rules to each grid as the runner returns it. |
+| pyrung | v0.17.0 went out on 2026-11-18. The queue is serial, at about 50 minutes a train. On `main` since then, unreleased: two fixes to the compiled kernel, which gave wrong answers for some copy, pack, unpack and block copy forms, in v0.17.0 too, and the SUM range that exported the wrong end (#105); the shared operand validator (#106; Sam, 2026-11-18); the family scaffold, with For and Search (#107); and a quote kept as typed in a Copy text (#108). Four more families followed in one train (#109): timers and counters, Send and Receive, Shift and the drums, and the coils. In CI or review on 2026-11-19: the removal of the checks and codes that those moves left unreachable (#110), and a pin move that brings quotes as typed in a Search and a Compare. Next, to finish validation onto laddercodec (item 2, step 2): 1. Contacts, which needs a shared change to how conditions are walked. 2. Math. 3. The bank tables go, once. 4. A small pin move after laddercodec's `Send.from_csv_token()` and `Receive.from_csv_token()`, which removes pyrung's last private laddercodec imports. Before a release: the pin to a released laddercodec, and a CHANGELOG check from the last tag. Later: parse operands once, in the builder. Then: CLICK-match fixes from the 2026-11-10 readings. For now there is no watchdog stop (Sam, 2026-11-17). There may be a warning on a heavy For loop. 4. Console commands for every change (item 1, step 3). 5. float32 Reals, the per-PLC definitions table, the history API, calc into a pointer. The `how()` work follows the recording core. Export through laddercodec comes after the joint release. |
+| laddercodec | On `main` since 2026-11-18: the comment escapes, the public renames, one source for a Math real, CLICK's answers for the box grids, and the message parts for every family. Since 2026-11-19 also: plain errors for odd input (#150, #151), the message wording (#152), a quote kept as typed in a Copy text and in a Search value (#156), a decoded program written in the clipboard's form (#154), and `addresses()` (#155). Also on `main`: CLICK's answers for Receive, the drums, the SC coils, the TCP address and the Set and Reset ranges (#157, #159), and quotes in a Compare (#158). 1. Three branches that are building: CLICK's ids for drum events; a `short()` and a `detail()` on every refusal; and `Send.from_csv_token()` and `Receive.from_csv_token()`, which Sam approved on 2026-11-19. 2. The joint release, on Sam's tag. 3. After the joint release: the whole-program check and `FieldError.span`. Two pieces of work go on alongside these steps and are not steps of their own. Take pyrung's reports from adopting the API, before the joint release. Tighten the rules to each grid as the runner returns it. |
 | pyclickplc | 0.10.0 went out on 2026-11-18. It reads and writes a new CLICK 4.00 project's `Project.ini` by CLICK 4's rules, and ClickNick has moved to it. One CLICK question is left, the encoding of a nickname export. It waits on a runner extension. |
 | ClickNick | v0.25.0 went out on 2026-11-18, on pyrung 0.17.0 and its public names. The runner now asks seven more instruction dialogs and exports nicknames. 1. The runner's waiting jobs (item 4), ahead of recording (Sam, 2026-11-17). 2. laddercodec's new names, with the joint release. 3. Then the ClickNick side of recording. |
 
@@ -552,13 +553,20 @@ queue.
   two ends are the same address is `duplicate-address` in Shift and `range-not-ascending` in a coil, a
   Search and a Copy. The laddercodec session recommends `duplicate-address` everywhere (OBJ-012), with
   `range-not-ascending` kept for an end below the start (OBJ-009). pyrung's `allow=` takes these names.
+  Three more questions are laddercodec's: how a refusal says where in a Math formula it is, when one
+  formula has two refusals that read the same; whether an empty flag keeps its `LegacyEncodingWarning`; and
+  whether a zero-padded TCP address is kept as typed (row N23 in `rule-decisions.md`).
+- Decide whether laddercodec raises or splits its 600 second limit on the local test run. The suite now
+  takes 360 to 470 seconds.
 - Run `/reload-plugins` in a session after it has updated the `bob` plugin. laddercodec's session waits on
   this.
 - Decide what a declared `min`, `max` or `choices` means on a tag that the ladder writes (pyrung, deferred).
 - At the PLC: wiring, power cycles, and distinct live X inputs for laddercodec's runs B and C.
 - Give the go for a run that writes to the PLC or that needs a person at the PLC. That includes pyrung's
-  hardware round, and one new question: what a PLC does to a read-only bit inside an SC range that a coil
-  writes, such as SC52 under `out(SC50..SC60)` (row R4 in `rule-decisions.md`). Sam preapproved every run of
+  hardware round. The pyrung session's list for that round on 2026-11-19: a SUM across a gap between X
+  or Y slots; `copy(5, TXT1)` and `copy(-5, TXT1)`; the hex constants; what a PLC does to a read-only bit
+  inside an SC range that a coil writes, such as SC52 under `out(SC50..SC60)` (row R4 in
+  `rule-decisions.md`); and, from laddercodec, where a Send with a zero-padded TCP address connects. Sam preapproved every run of
   ClickNick's runner on 2026-11-18, until he writes "StopRuns". Those runs are on a CLICK that the runner
   starts, and they write nothing to the PLC. Running
   or queued on 2026-11-18: the full dialog grids; the dialog dumps; and the typed nickname, comment and
