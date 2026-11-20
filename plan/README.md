@@ -573,8 +573,6 @@ queue.
     of the release candidate. The ClickNick session writes the steps for it.
 - Decide whether `read_csv` returns a rung of wires alone as drawn, or in the form CLICK's check gives it,
   with a `NOP`. This waits for the next release of laddercodec.
-- Discard the 15 changed Send and Receive goldens in laddercodec's main checkout. A stale script wrote them
-  on 2026-11-19, and the committed files are the checked ones. The session's `git checkout` was refused.
 - Run `/reload-plugins` in a session after it has updated the `bob` plugin. No session waits on this.
 - Decide what a declared `min`, `max` or `choices` means on a tag that the ladder writes (pyrung, deferred).
 - At the PLC: wiring, power cycles, and distinct live X inputs for laddercodec's runs B and C.
