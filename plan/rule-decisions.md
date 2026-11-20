@@ -180,6 +180,7 @@ runner. None of them waits on Sam.
 | P3 | A Copy text that the old CSV form could not read back, such as `'a",b'` or `'","'` | Accepts it | Refused it (`invalid-text-constant`) | Decided: nobody refuses it. This is the quote in a Copy text, described below. In CSV the text runs from the first quote to the last |
 | P4 | A comparison of text with a number or a number register: `txt[1] == 5`, `ds[1] == 'A'` or `txt[1] == ds[1]` | Refuses it (`compare-mixed-types`) | Exported a cell that CLICK cannot load | Decided: laddercodec is right. This is row C10. CLICK refuses `TXT1 == DS1`, `DS1 == "A"` and `TXT1 == 5` (OBJ-007). `allow=` keeps the form for simulation |
 | P5 | A comparison of two texts whose CSV cell reads two ways, such as `"A"=="B"=="C"` | Has no way to write it | Could build it only through `LiteralExpr` with `CLK_EXPR_ONLY_IN_MATH` allowed | Decided: pyrung refuses it, and `allow=` does not let it through |
+| P7 | A Modbus target name with `(` or `)` in it, such as `a(b` | Refused it on its `main` for a time (`blank-field` or `invalid-modbus-target`), and accepts it since #163 | Accepts it since its #112 | Closed. The refusal came from laddercodec's reader and not from CLICK, and no release had it |
 
 The numbers follow the pyrung session's ledger, which is why N8 and N9 are not here.
 
@@ -204,7 +205,8 @@ A timer's mismatched pair is `timer-pair-mismatch`. The pair check on debounce, 
 `CLK_TIMER_PAIR_MISMATCH`, and an unmapped Done bit keeps `CLK_BANK_UNRESOLVED`. A shift on Y is accepted
 (row C8), and a drum preset over 32767 is refused (row C3).
 
-The pyrung session reported P1 to P5 on 2026-11-19, with its move to laddercodec `8bd3362` (pyrung's #111).
+The pyrung session reported P1 to P7 on 2026-11-19, with two moves of its laddercodec pin (pyrung's #111 and
+#112). Its ledger has no P6 row, because P6 changes no verdict.
 The planner checked P2 and P4 against `compare.answers.json`. Fill still refuses a text with a quote inside
 it. The same move makes four kinds of finding a warning where each was a hint, with no change of verdict,
 because the export refuses them even under `allow=`: `CLK_COPY_WIDE_CONSTANT`,

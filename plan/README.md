@@ -217,8 +217,24 @@ release for the new `FieldError` (step 1). Sam settled the following on the same
   breaks once. Export and import through laddercodec (steps 5 and 6) come after it, as additive releases.
 - **Where pyrung's work lives:** the plan was a branch that stays open until the joint release. Since
   2026-11-19 it lands on pyrung's `main`, one family at a time, and `main` builds laddercodec from its
-  `main`. So a pyrung release now needs a laddercodec release first. Whether the joint release still waits
-  for every family is open, and it is Sam's decision.
+  `main`. So a pyrung release now needs a laddercodec release first.
+- **The list for the joint release is closed** (the planner's ruling, 2026-11-19, from Sam's words: "make
+  sure as we get to the edges we don't start going in circles, there's always next release"). Both sessions
+  took it.
+  - pyrung: Contacts, Math, the removal of the bank tables, then one pin to the released laddercodec and a
+    CHANGELOG check from the last tag. The CLICK export also refuses a send or receive whose target has
+    only a name, because it wrote a token that CLICK cannot load.
+  - laddercodec: what is on its `main`, the code names that Sam ruled on 2026-11-19, and what is left on
+    Sam's list below.
+  - Anything else waits for the next release and gets a roadmap line. One kind of fault stays in: one that
+    a user would hit as wrong output. That is output that CLICK cannot load or reads as another value, a
+    wrong answer at run time, a crash, a form that CLICK accepts and laddercodec refuses, a form that
+    0.17.0 exported correctly and `main` now refuses, or a public name that would break again later.
+  - Waiting by name: more message wording, a refusal with no code or no CLICK id, a form that validation
+    passes and the export refuses, a runner answer that only tightens a rule, a form that CLICK's dialog
+    refuses and laddercodec encodes without harm, parse-once, and laddercodec's four export needs.
+  - pyrung runs two sweeps once, at the release pin: the release pin against `main`, and `main` against
+    v0.17.0. Their output is rows and CHANGELOG lines.
 - **One name per rule.** laddercodec names a refusal of a field rule with its kebab-case `.code`. That is the
   name that pyrung's `allow=` accepts. pyrung keeps a code of its own only for a rule that only pyrung has.
   There is no alias layer from the old `CLK_` names.
@@ -546,18 +562,15 @@ queue.
   - ClickNick: v0.25.0 is out, and nothing waits.
   - laddercodec and pyrung together: when the joint release closes (item 2). pyrung cannot publish before
     laddercodec does. Its compiled kernel fixes correct wrong answers that v0.17.0 gives, so they wait too.
-- Decide whether the joint release still waits for every family, now that pyrung's validation lands on
-  its `main` one family at a time.
-- Before laddercodec's release: its list of public names and the `.field` names that pyrung now reads,
-  the codes for OBJ-028 and OBJ-023, and `FieldError.span`. One more code is on that list. A range whose
-  two ends are the same address is `duplicate-address` in Shift and `range-not-ascending` in a coil, a
-  Search and a Copy. The laddercodec session recommends `duplicate-address` everywhere (OBJ-012), with
-  `range-not-ascending` kept for an end below the start (OBJ-009). pyrung's `allow=` takes these names.
-  Three more questions are laddercodec's: how a refusal says where in a Math formula it is, when one
-  formula has two refusals that read the same; whether an empty flag keeps its `LegacyEncodingWarning`; and
-  whether a zero-padded TCP address is kept as typed (row N23 in `rule-decisions.md`).
-- Decide whether laddercodec raises or splits its 600 second limit on the local test run. The suite now
-  takes 360 to 470 seconds.
+- Before the joint release, as the laddercodec session holds the list on 2026-11-19:
+  - The PLC write for a zero-padded TCP address, planned for 2026-11-20, and then the ruling on whether
+    laddercodec writes the address as the dialog saves it (row N23 in `rule-decisions.md`).
+  - The list of public API names. Every code name is approved.
+  - Whether `read_csv` returns a rung of wires alone as drawn, or in the form CLICK's check gives it, with
+    a `NOP`. This one can wait for the next release.
+  - The planner's closed list has Contacts and Math in the release. Sam can cut either.
+  Sam ruled the rest of the earlier list on 2026-11-19, and laddercodec's #160 records it. That covers the
+  codes for OBJ-012, OBJ-028 and OBJ-023, and the limit on the local test run.
 - Run `/reload-plugins` in a session after it has updated the `bob` plugin. laddercodec's session waits on
   this.
 - Decide what a declared `min`, `max` or `choices` means on a tag that the ladder writes (pyrung, deferred).
