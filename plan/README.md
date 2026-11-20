@@ -566,10 +566,11 @@ queue.
   hardware round. The pyrung session's list for that round on 2026-11-19: a SUM across a gap between X
   or Y slots; `copy(5, TXT1)` and `copy(-5, TXT1)`; the hex constants; what a PLC does to a read-only bit
   inside an SC range that a coil writes, such as SC52 under `out(SC50..SC60)` (row R4 in
-  `rule-decisions.md`); and, from laddercodec, where a Send with a zero-padded TCP address connects. Sam preapproved every run of
-  ClickNick's runner on 2026-11-18, until he writes "StopRuns". Those runs are on a CLICK that the runner
-  starts, and they write nothing to the PLC. Running
-  or queued on 2026-11-18: the full dialog grids; the dialog dumps; and the typed nickname, comment and
+  `rule-decisions.md`); a Search and a Compare with a quote inside the text; and, from laddercodec,
+  where a Send with a zero-padded TCP address connects. Sam preapproved every run of ClickNick's runner
+  on 2026-11-18, until he writes "StopRuns". Those runs are on a CLICK that the runner starts, and they
+  write nothing to the PLC. Running or queued on 2026-11-18: the full dialog grids; the dialog dumps; and
+  the typed nickname, comment and
   Text initial value. Answered that day: laddercodec's Compare and Search case lists; a coil beside a
   timer that has a reset pin; a NOP beside outputs that meet only at the rail; ten values for a Real in
   Math; and subroutine names that differ only in the case of a non-ASCII letter.

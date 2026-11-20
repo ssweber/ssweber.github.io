@@ -175,6 +175,11 @@ runner. None of them waits on Sam.
 | R2 | A coil over scattered, mixed-bank or descending addresses. This includes an `immediate()` range | No list form. It refuses a descending range | Exported a list for the range that is not immediate | Decided: pyrung refuses it, under `CLK_COPY_RANGE_NOT_CONSECUTIVE`. CLICK's Out dialog refuses C2..C1 (OBJ-009) |
 | R3 | `latch(SC162)` and `reset(SC162)` | Accepts them | Refused them | Decided: laddercodec is right. This is row A6 for Set and Reset. CLICK accepts both on SC162 and refuses both on SC163 (OBJ-003) |
 | R4 | An SC range with a read-only bit inside it, such as `out(SC50..SC60)` | Accepts it, in Out, Set and Reset | Refused it | Decided by rule 3: nobody refuses it. CLICK accepts SC50..SC60 in all three dialogs, and it refuses a read-only SC on its own. Nobody knows what a PLC then does to SC52. That needs a PLC run on Sam's go, and pyrung's simulation must match the answer |
+| P1 | A quote inside a Search value, such as `'A",B'` | Accepts it since #156 | Refused it | Decided by Sam's ruling (row N12). pyrung writes it as typed since its #111 |
+| P2 | A quote inside the text on either side of a comparison, such as `txt[1] == 'a"b'` or `"A==B" == TXT1` | Accepts it since #158 | Refused it | Decided: nobody refuses it. Sam ruled it in the laddercodec session. CLICK's Compare dialog accepts `"A"B"` and `"A""B"` on either side and reads them back as typed |
+| P3 | A Copy text that the old CSV form could not read back, such as `'a",b'` or `'","'` | Accepts it | Refused it (`invalid-text-constant`) | Decided: nobody refuses it. This is the quote in a Copy text, described below. In CSV the text runs from the first quote to the last |
+| P4 | A comparison of text with a number or a number register: `txt[1] == 5`, `ds[1] == 'A'` or `txt[1] == ds[1]` | Refuses it (`compare-mixed-types`) | Exported a cell that CLICK cannot load | Decided: laddercodec is right. This is row C10. CLICK refuses `TXT1 == DS1`, `DS1 == "A"` and `TXT1 == 5` (OBJ-007). `allow=` keeps the form for simulation |
+| P5 | A comparison of two texts whose CSV cell reads two ways, such as `"A"=="B"=="C"` | Has no way to write it | Could build it only through `LiteralExpr` with `CLK_EXPR_ONLY_IN_MATH` allowed | Decided: pyrung refuses it, and `allow=` does not let it through |
 
 The numbers follow the pyrung session's ledger, which is why N8 and N9 are not here.
 
@@ -199,6 +204,12 @@ A timer's mismatched pair is `timer-pair-mismatch`. The pair check on debounce, 
 `CLK_TIMER_PAIR_MISMATCH`, and an unmapped Done bit keeps `CLK_BANK_UNRESOLVED`. A shift on Y is accepted
 (row C8), and a drum preset over 32767 is refused (row C3).
 
+The pyrung session reported P1 to P5 on 2026-11-19, with its move to laddercodec `8bd3362` (pyrung's #111).
+The planner checked P2 and P4 against `compare.answers.json`. Fill still refuses a text with a quote inside
+it. The same move makes four kinds of finding a warning where each was a hint, with no change of verdict,
+because the export refuses them even under `allow=`: `CLK_COPY_WIDE_CONSTANT`,
+`CLK_MATH_RANGE_NOT_CONTIGUOUS`, `CLK_MATH_RANGE_MIXED_BANKS` and Fill's quote findings.
+
 One more disagreement is not a row: a quote in a text constant. The state on 2026-11-19:
 
 - **A lone quote.** pyrung's family scaffold exports `copy('"', txt[1])`, a Fill of `'"'` and a search for
@@ -218,7 +229,8 @@ One more disagreement is not a row: a quote in a text constant. The state on 202
   laddercodec session. In CSV, the text of a Copy or a Search runs from the first quote to the last, and
   laddercodec accepts a quote in a Search value since #156.
 - **A quote in a Compare.** Sam ruled in the laddercodec session on 2026-11-19 that both sides of a Compare
-  accept quotes. The laddercodec session is building that branch.
+  accept quotes. laddercodec accepts them since #158, and pyrung writes them as typed since its #111
+  (rows P2 and P4).
 - **A lone quote written as text.** This is open. `"""` saves no end in the Copy dialog. ClickNick's
   runner will run `"A"` and `"""` into TXT1 as a control.
 
