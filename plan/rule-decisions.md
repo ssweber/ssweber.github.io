@@ -181,6 +181,11 @@ runner. None of them waits on Sam.
 | P4 | A comparison of text with a number or a number register: `txt[1] == 5`, `ds[1] == 'A'` or `txt[1] == ds[1]` | Refuses it (`compare-mixed-types`) | Exported a cell that CLICK cannot load | Decided: laddercodec is right. This is row C10. CLICK refuses `TXT1 == DS1`, `DS1 == "A"` and `TXT1 == 5` (OBJ-007). `allow=` keeps the form for simulation |
 | P5 | A comparison of two texts whose CSV cell reads two ways, such as `"A"=="B"=="C"` | Has no way to write it | Could build it only through `LiteralExpr` with `CLK_EXPR_ONLY_IN_MATH` allowed | Decided: pyrung refuses it, and `allow=` does not let it through |
 | P7 | A Modbus target name with `(` or `)` in it, such as `a(b` | Refused it on its `main` for a time (`blank-field` or `invalid-modbus-target`), and accepts it since #163 | Accepts it since its #112 | Closed. The refusal came from laddercodec's reader and not from CLICK, and no release had it |
+| K1 | A bit compared as a value: `c[1] == True`, `c[1] != 0`, `c[1] > 0` or `c[1] == c[2]` | Refuses it (`bank-not-allowed`) | Exported `C1==1` | Decided: laddercodec is right. CLICK's Compare dialog refuses a bit on either side (OBJ-004). The advice says to write the contact `C1` or `~C1` |
+| K2 | An edge contact on a register: `rise(ds[1])`, `fall(dd[1])` or `rise(txt[1])` | Refuses it (`bank-not-allowed`) | Exported it | Decided: laddercodec is right. The pyrung session reports that it follows CLICK's recorded answers. The planner did not check it |
+| K3 | A text constant over 128 characters in a compare | Refuses it (`constant-out-of-range`) | Said nothing for a TXT compare, and reported a number register against it only as `compare-mixed-types` | Decided: laddercodec is right. This is row N13 for a compare |
+| K5 | A text order compare in an instruction's pin: `.reset(txt[1] > txt[2])`, a shift's `.clock()` or a drum's `.jog()` | Refuses it (`text-order-compare`) | Said nothing, and the export wrote it | Decided: laddercodec is right. This is row C6. pyrung checks the pins for the first time |
+| K7 | A pointer in a compare | Refuses it (`pointer-outside-copy`) | Refused it (`CLK_PTR_CONTEXT_ONLY_COPY`), and exported it when that code was allowed | Decided: laddercodec is right. `allow=` of the old code no longer lets it through. A pointer tag with no CLICK address keeps pyrung's code |
 
 The numbers follow the pyrung session's ledger, which is why N8 and N9 are not here.
 
@@ -211,6 +216,19 @@ The planner checked P2 and P4 against `compare.answers.json`. Fill still refuses
 it. The same move makes four kinds of finding a warning where each was a hint, with no change of verdict,
 because the export refuses them even under `allow=`: `CLK_COPY_WIDE_CONSTANT`,
 `CLK_MATH_RANGE_NOT_CONTIGUOUS`, `CLK_MATH_RANGE_MIXED_BANKS` and Fill's quote findings.
+
+The pyrung session reported K1 to K7 on 2026-11-19, from the Contacts family (pyrung's #113). Its ledger
+calls them C1 to C10, and they are renamed here because section C has those numbers. The planner checked K1
+against `compare.answers.json`. 0.17.0 exported the forms in K1 and K2, and CLICK loaded neither, so they
+are not regressions. The rest of that report changes no verdict:
+
+- A number compared with text on an order compare is reported once, as `compare-mixed-types`. A text order
+  compare in a rung with branches is reported once. Each was reported more than once.
+- An unmapped tag in a contact or a compare gets `CLK_BANK_UNRESOLVED`. Before, validation said nothing and
+  the export refused it.
+- Two instructions of one class in one `forloop()` are each judged. Before, one finding was lost or
+  reported twice.
+- Three codes are renamed: `immediate-contact-not-x`, `text-order-compare` and `compare-mixed-types`.
 
 One more disagreement is not a row: a quote in a text constant. The state on 2026-11-19:
 
