@@ -453,7 +453,9 @@ adds. Each builder would turn its arguments into checked operand objects once, a
 accept only those objects. The split is Sam's: pyrung's parse covers the shape of an operand (its kind, its
 type, a range against a tag, a count), which is most of the value for a small part of the work. laddercodec
 keeps every CLICK rule, which is the long tail. It starts after the shared validator and the kernel fixes
-are on `main`, and both are there since 2026-11-19 (#105, #106). Nothing more is decided.
+are on `main`, and both are there since 2026-11-19 (#105, #106). It is the first pyrung work after the
+joint release. The forms that validation passes and the export refuses wait for it, and so do the refusals
+that name no code (Sam, 2026-11-19: "parse will handle a lot of the edge I'm sure after in next").
 
 ### 4. CLICK runner (ClickNick; used by laddercodec and pyrung)
 
@@ -568,7 +570,7 @@ queue.
   - The list of public API names. Every code name is approved.
   - Whether `read_csv` returns a rung of wires alone as drawn, or in the form CLICK's check gives it, with
     a `NOP`. This one can wait for the next release.
-  - The planner's closed list has Contacts and Math in the release. Sam can cut either.
+  - Contacts and Math stay in the release. Sam, 2026-11-19: "I want to close out the validation stuff".
   Sam ruled the rest of the earlier list on 2026-11-19, and laddercodec's #160 records it. That covers the
   codes for OBJ-012, OBJ-028 and OBJ-023, and the limit on the local test run.
 - Run `/reload-plugins` in a session after it has updated the `bob` plugin. laddercodec's session waits on
