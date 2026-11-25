@@ -15,7 +15,7 @@ types, because core serves the P1AM as well as CLICK. laddercodec states CLICK's
 banks. Where both hold the same rule, a test checks that they agree. laddercodec checks its copy of
 pyclickplc's bank facts the same way (Sam, 2026-11-25).
 
-Last updated 2026-11-25. Latest releases: pyclickplc 0.11.3, laddercodec 0.5.1, pyrung 0.18.1, ClickNick 0.26.0.
+Last updated 2026-11-25. Latest releases: pyclickplc 0.12.0, laddercodec 0.5.1, pyrung 0.18.1, ClickNick 0.27.0.
 Everything since those tags is on each repo's `main`, unreleased.
 
 ## How to use this file
@@ -252,7 +252,7 @@ Steps keep their numbers, because the roadmaps refer to them.
    without running those sweeps. By 2026-11-25 the runner had answered every case in the Fill,
    Timer, Counter, Shift, For and Drum grids too. laddercodec's tests list 46 places where its rules
    and CLICK's answers differ, and each one is marked deliberate or kept. What is left is CLICK's
-   saves. The laddercodec session wrote 25 save cases for kept differences where nobody recorded
+   saves. The laddercodec session wrote 29 save cases for kept differences where nobody recorded
    what CLICK saves, and the runner runs them after ClickNick 0.27.0 (Sam, 2026-11-25). laddercodec also commits the 25 Fill, Math and Copy saves that the runner recorded
    as J4.
 4. **laddercodec: catch up with the editor.** Decoding no longer depends on the checks. If a rule
@@ -593,10 +593,8 @@ queue.
   text of a refused link) and ClickNick (three fixes). ClickNick's marker work waits on the pyrung
   release.
 - Tag the next round when the sessions report ready, in this order: pyclickplc 0.11.3, laddercodec 0.5.1,
-  pyrung 0.18.1, and then ClickNick 0.27.0 after `make smoke` passes on those pins. It was first planned as 0.26.1. pyclickplc 0.11.3 and
+  pyrung 0.18.1, and then ClickNick 0.27.0 after `make smoke` passes on those pins. It was first planned as 0.26.1. All four went out on 2026-11-25, with pyclickplc 0.12.0 the same day. pyclickplc 0.11.3 and
   laddercodec 0.5.1 went out on 2026-11-25.
-- Tag pyclickplc 0.12.0 after ClickNick 0.27.0 is out (Sam, 2026-11-25). The pyclickplc session prepares it
-  on `main` without a tag. It holds three breaking changes and the public names that each module declares.
 - Approve the design for links in pyrung before anyone builds it. The design says whether an address that
   no rung names exists for a link, as it does today for a force and a patch (see the pyrung row).
 - Approve the design for Review Changes comparing objects before anyone builds it (item 2).
