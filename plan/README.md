@@ -458,6 +458,24 @@ the pyrung session checks the fit against `execute()` and the kernel before it b
 - One family settles the result types first, and the others are swept from it (Sam: "It's always easier
   to lock things down once we know the shape"). Copy has all three consumers.
 
+Copy, Fill and Blockcopy went first (pyrung #127), and they showed that the shape holds. Sam ruled on three
+questions on 2026-11-25:
+
+- **The Copy converter rule.** This rule says which converter can store into which bank. pyrung's core keeps its
+  own copy, because core also serves the P1AM and does not import laddercodec. A pyrung test checks the copy
+  against laddercodec. It builds laddercodec's `Copy` for each pair and checks for `copy-converter-bank`.
+  laddercodec exports no table.
+- **How far the final check reaches.** The check that no reader tests an operand's kind again covers only the
+  code that reads operands. pyrung's `isinstance` calls in conditions, expression parts and the generic
+  walkers stay, and there is no list of allowed walkers. Sam wants to come back to those calls later.
+  Parsing contacts and comparisons would be its own piece of work, and nobody starts it now.
+- **The shape of the export.** laddercodec's fields stay strings, as settled below. pyrung's export turns each
+  parsed operand into display-form text in one function. A question that laddercodec's helpers do not answer
+  gets one new helper, not typed fields.
+
+The choice between the two XD and YD conventions stays open. The pyrung session brings Sam a proposal when
+it replaces its copies of pyclickplc's facts after parse-once.
+
 ### 4. CLICK runner (ClickNick; used by laddercodec and pyrung)
 
 The runner drives the CLICK software unattended, so work that needs CLICK no longer needs Sam. It is
