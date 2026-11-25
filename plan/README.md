@@ -312,16 +312,28 @@ pyrung passes those findings on as they are (this is the relay) and has no rule 
 pyrung's bridge warning goes when the relay arrives. The relay needs laddercodec as a dependency, which pyrung
 gains in step 2. Until then the importer stays as it is.
 
-**Small, any time (pyrung):** the pyrung session derives these from pyclickplc: the bank-name lists,
-the bit-bank set (written three times), the timer and counter pairs and the value limits. The system
-nicknames already come from pyclickplc's catalog. pyrung's system-nickname code was 190 lines, and
-nobody has recounted what is left of it. The ladder-writable SC and SD sets are not derived from
-pyclickplc, and the pyrung session removes them when validation moves. Nothing outside their own
-test uses `COMPARE_COMPATIBILITY` and `COMPARE_CONSTANT_COMPATIBILITY`. pyrung builds XD and YD
-blocks under two conventions, and the choice between them is still to settle.
-The pyclickplc session surveys these first, without changing pyrung or ClickNick, and brings the list
-to both sessions (Sam, 2026-11-25). The list says which facts pyclickplc already exports and which need
-a new public name. Sam approves any new name. The pyrung session makes its changes around parse-once.
+**Copies of pyclickplc's facts in pyrung and ClickNick.** The pyclickplc session surveyed both repos on
+2026-11-25 without changing them. Its list is `SURVEY.md` in `pyclickplc-wt/.bob/jobs/dup-survey/`, and
+the pyrung and ClickNick sessions have it.
+
+- Every copied fact already has a name in pyclickplc, so pyclickplc needs no new name. Most of those
+  names were in no `__all__` and no doc. Sam ruled on 2026-11-25 that each pyclickplc module declares
+  its public names in its own `__all__` and documents them. They are not exported from the top level.
+  The pyclickplc session is building this.
+- pyrung has four copies of the bit-bank set, six bank-name lists, its own `_PAIRED_BANKS`, and its
+  own value limits, which match pyclickplc's. 101 lines of its system-nickname code are left, and 5 of
+  them copy pyclickplc.
+- Nothing outside its own test uses `COMPARE_COMPATIBILITY`. `COMPARE_CONSTANT_COMPATIBILITY` is not
+  used only by its test. It feeds `HEX_CONSTANT_BANKS`, which the translator
+  and the hardware validation use. pyclickplc's `BANKS` gives the same set.
+- pyrung builds XD and YD blocks two ways. `ClickBlocks` counts by display index, 0 to 8. The tag map
+  parsers count by MDB index, 0 to 16. The pyrung session and Sam choose between them.
+- ClickNick has four copies of the timer and counter pairs, and an `ADDRESS_JUMPS` that matches
+  pyclickplc. One SC test is written by hand.
+- The ladder-writable SC and SD sets are not pyclickplc facts. pyrung removes them when the last
+  validation moves to laddercodec.
+
+Each session replaces its copies in its own time. The pyrung session does it after parse-once.
 
 #### In laddercodec
 
