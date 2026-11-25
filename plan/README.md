@@ -547,7 +547,7 @@ queue.
   no rung names exists for a link, as it does today for a force and a patch (see the pyrung row).
 - Approve the design for Review Changes comparing objects before anyone builds it (item 2).
 - Decide whether `read_csv` returns a rung of wires alone as drawn, or in the form CLICK's check gives it,
-  with a `NOP`. This waits for the next release of laddercodec.
+  with a `NOP`. This waits until after laddercodec 0.5.1.
 - Run `/reload-plugins` in a session after it has updated the `bob` plugin. No session waits on this.
 - Decide what a declared `min`, `max` or `choices` means on a tag that the ladder writes (pyrung, deferred).
 - At the PLC: wiring, power cycles, and distinct live X inputs for laddercodec's runs B and C. ClickNick's
