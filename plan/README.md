@@ -315,6 +315,9 @@ nobody has recounted what is left of it. The ladder-writable SC and SD sets are 
 pyclickplc, and the pyrung session removes them when validation moves. Nothing outside their own
 test uses `COMPARE_COMPATIBILITY` and `COMPARE_CONSTANT_COMPATIBILITY`. pyrung builds XD and YD
 blocks under two conventions, and the choice between them is still to settle.
+The pyclickplc session surveys these first, without changing pyrung or ClickNick, and brings the list
+to both sessions (Sam, 2026-11-25). The list says which facts pyclickplc already exports and which need
+a new public name. Sam approves any new name. The pyrung session makes its changes around parse-once.
 
 #### In laddercodec
 
