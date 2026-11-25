@@ -561,7 +561,10 @@ queue.
   text of a refused link) and ClickNick (three fixes). ClickNick's marker work waits on the pyrung
   release.
 - Tag the next round when the sessions report ready, in this order: pyclickplc 0.11.3, laddercodec 0.5.1,
-  pyrung, and then ClickNick 0.26.1 after `make smoke` passes on those pins.
+  pyrung 0.18.1, and then ClickNick 0.26.1 after `make smoke` passes on those pins. pyclickplc 0.11.3 and
+  laddercodec 0.5.1 went out on 2026-11-25.
+- Tag pyclickplc 0.12.0 after ClickNick 0.26.1 is out (Sam, 2026-11-25). The pyclickplc session prepares it
+  on `main` without a tag. It holds three breaking changes and the public names that each module declares.
 - Approve the design for links in pyrung before anyone builds it. The design says whether an address that
   no rung names exists for a link, as it does today for a force and a patch (see the pyrung row).
 - Approve the design for Review Changes comparing objects before anyone builds it (item 2).
@@ -570,7 +573,9 @@ queue.
 - Run `/reload-plugins` in a session after it has updated the `bob` plugin. No session waits on this.
 - Decide what a declared `min`, `max` or `choices` means on a tag that the ladder writes (pyrung, deferred).
 - At the PLC: wiring, power cycles, and distinct live X inputs for laddercodec's runs B and C. ClickNick's
-  roadmap lists the other runner jobs that need Sam or the PLC, under "Needs Sam or the PLC".
+  roadmap lists the other runner jobs that need Sam or the PLC, under "Needs Sam or the PLC". pyclickplc
+  has one question for a real PLC. Its rule for a TXT initial value and its rule for a value at run time
+  disagree about € and U+0080. Only a PLC shows what it holds for an initial value of €.
 - Give the go for a run that writes to the PLC or that needs a person at the PLC. That includes pyrung's
   hardware round. The pyrung session's list for that round on 2026-11-19: a SUM across a gap between X
   or Y slots; `copy(5, TXT1)` and `copy(-5, TXT1)`; the hex constants; what a PLC does to a read-only bit
