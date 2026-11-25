@@ -241,9 +241,8 @@ Steps keep their numbers, because the roadmaps refer to them.
    without running those sweeps. By 2026-11-25 the runner had answered every case in the Fill,
    Timer, Counter, Shift, For and Drum grids too. laddercodec's tests list 46 places where its rules
    and CLICK's answers differ, and each one is marked deliberate or kept. What is left is CLICK's
-   saves. About 12 kept differences say that nobody recorded what CLICK saves. The laddercodec
-   session writes those as save cases, and the runner runs them after ClickNick 0.26.1 (Sam,
-   2026-11-25). laddercodec also commits the 25 Fill, Math and Copy saves that the runner recorded
+   saves. The laddercodec session wrote 25 save cases for kept differences where nobody recorded
+   what CLICK saves, and the runner runs them after ClickNick 0.26.1 (Sam, 2026-11-25). laddercodec also commits the 25 Fill, Math and Copy saves that the runner recorded
    as J4.
 4. **laddercodec: catch up with the editor.** Decoding no longer depends on the checks. If a rule
    refuses a stored value, laddercodec decodes it as its instruction and gives a warning. The rules
