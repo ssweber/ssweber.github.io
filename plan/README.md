@@ -15,7 +15,7 @@ types, because core serves the P1AM as well as CLICK. laddercodec states CLICK's
 banks. Where both hold the same rule, a test checks that they agree. laddercodec checks its copy of
 pyclickplc's bank facts the same way (Sam, 2026-11-25).
 
-Last updated 2026-11-25. Latest releases: pyclickplc 0.12.0, laddercodec 0.5.1, pyrung 0.18.1, ClickNick 0.27.0.
+Last updated 2026-11-26. Latest releases: pyclickplc 0.12.0, laddercodec 0.6.0, pyrung 0.18.1, ClickNick 0.27.0.
 Everything since those tags is on each repo's `main`, unreleased.
 
 ## How to use this file
@@ -323,7 +323,9 @@ The ClickNick session builds the comment guard first, and then the first step of
   as #185. A Call matches a subroutine name without regard to case, as in CLICK. The End and Return rules come
   next, as `missing-end` (C0201) and `missing-return` (C0105), which Sam approved on 2026-11-26. Both fire only
   when `check()` is given a whole `Project`, because a lone `Program` is usually a fragment. They wait for
-  runner cases on the shapes that CLICK hasn't answered yet. The 8,000-step limit waits for a reliable step count. CLICK shows only a
+  runner cases on the shapes that CLICK hasn't answered yet. Both merged as #188, and the check shipped in
+  laddercodec 0.6.0 on 2026-11-26. CLICK's paste silently empties a Return in Main and an End in a subroutine.
+  Sam ruled that pyrung's builder and importer refuse them, and laddercodec adds no finding for them. The 8,000-step limit waits for a reliable step count. CLICK shows only a
   box for it (GUI-039) and still saves.
 - Spelling a constant from a Python value (hex, Real, text). laddercodec's encoder now writes constants as
   CLICK stores them. Nobody has moved the spelling code out of pyrung yet.
